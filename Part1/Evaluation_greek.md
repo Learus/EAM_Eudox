@@ -48,15 +48,15 @@
 6. Κατ'αρχάς, η ιστοσελίδα θα πρέπει να είναι αρκετά σαφής, έτσι ώστε να μήν χρειάζεται περιοχή FAQ. Παρά ταύτα, η περιοχή αυτή μπορεί να επανασχεδιαστεί ώς εξής:
    * Η όλη περιοχή θα μπορούσε να οργανωθεί σε περισσότερες και πιο περιεκτικές κατηγορίες.
    * Οι επιμέρους ερωτήσεις θα έπρεπε να είναι πιο συνοπτικές, αν όχι απόλυτα βασισμένες σε <span style="color: orange">**λέξεις-κλειδιά**</span> με ειδικό χρωμματισμό.
-7. Depth reduction, via the removal of certain useless "proxy pages", and the introduction of **clear** and **explicit** links.
-8. The informational videos should be moved to an "About Us" or "Help" section if not be completely scrapped as a feature. Moreover, they could be made shorter, and certainly be updated to a more modern style.
-9. Introduction of efficient search filters and a more pleasing presentation of search results.
-10. When typing into the search bar, the system could display possible predicted outcomes which would in turn eliminate spelling mistakes.
-11. Every individual application should be implemented from the ground up, in order to maintain aesthetic consistency.
-12. A renewed/modern design following minimalistic standards would not only make the users feel comfortable when using the site but also would contribute towards the site's accessibility. It should be noted that these applications are the **Alpha and the Omega** of the site and their functional design should be a priority.
-13. These links **do** draw the user's attention to the appropriate place.<br>
+7. Μείωση του *βάθους* της δομής του ιστοχώρου, μέσω της αφαίρεσης των "μεσάζουσων" σελίδων και την εισαγωγή **ξεκάθαρων** συνδέσμων προς τις λειτουργίες του ιστοχώρου.
+8. Τα ενημερωτικά/βοηθητικά βίντεο θα ήταν καλό να μετακινηθούν σε μία περιοχή τύποθ "About Us" ή "Help", αν όχι να αφαιρεθούν εξ'ολοκλήρου. Επιπρόσθετα, θα μπορούσαν να γίνουν πιο σύντομα και σίγουρα να αναβαθμισούν σε ένα πιο σύγχρονο στυλ.
+9. Χρήση αποδοτικών φίλτρων αναζήτησης και καλύτερη/ομορφότερη παρουσίαση των αποτελεσμάτων αναζήτησης.
+10. Θα μπορούσε το σύστημα, κατά την πληκτρολόγηση στην περιοχή αναζήτησης, να τυπώνει πιθανές προβλέψεις για αυτό που αναζητά ο χρήστης. Με αυτόν τον τρόπο αποκλείονται οποιαδήποτε ορθογραφικά ή άλλα λάθη.
+11. Όλες οι επιμέρους εφαρμογές πρέπει να υλοποιηθούν εξ'αρχής, έτσι ώστε να δημιουργηθεί και να διατηρηθεί μια λειτουργική και αισθητική συνέπεια.
+12. Ένας καινούργιος και σύγχρονος σχεδιασμός των εφαρμογών, ο οποίος θα ακολουθεί μινιμαλιστικά αισθητικά πρότυπα, όχι μόνο θα έκανε τους χρήστες να αισθάνονται πιο *άνετα* όταν τις χρησιμοποιούν, αλλά και θα συνεισέφερε στην προσβασιμότητά του ιστοχώρου. Πρέπει εδώ να σημειωθεί, ότι οι εφαρμογές αυτές είναι το *Άλφα και το Ωμέγα* του ιστοχώρου. Για το λόγο αυτό, ο καλός και λειτουργικός σχεδιασμός τους πρεπει να είναι **προτεραιότητα**.
+13. Οι σύνδεσμοι αυτοί **τραβούν** την προσοχή του χρήστη στο σωστό σημείο.<br>
     ![title](./images/instructions_fixed.png)
-14. Alternative website titles:
+14. Εναλλακτικοί τίτλοι για τον ιστοχώρο:
     * ### Textbook Management Service
     * ### Υπηρεσία Διαχείρισης Συγγραμάτων
 
