@@ -1,462 +1,644 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Evaluation_greek.md</title>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
-<style>
-/*---------------------------------------------------------------------------------------------
+<head>
+	<title>Eudoxus Evaluation</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+	<style>
+		/*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-body {
-	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
-	font-size: 14px;
-	padding: 0 12px;
-	line-height: 22px;
-	word-wrap: break-word;
-}
+		body {
+			font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+			font-size: 14px;
+			padding: 0 12px;
+			line-height: 22px;
+			word-wrap: break-word;
+		}
 
-#code-csp-warning {
-	position: fixed;
-	top: 0;
-	right: 0;
-	color: white;
-	margin: 16px;
-	text-align: center;
-	font-size: 12px;
-	font-family: sans-serif;
-	background-color:#444444;
-	cursor: pointer;
-	padding: 6px;
-	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
-}
+		#code-csp-warning {
+			position: fixed;
+			top: 0;
+			right: 0;
+			color: white;
+			margin: 16px;
+			text-align: center;
+			font-size: 12px;
+			font-family: sans-serif;
+			background-color: #444444;
+			cursor: pointer;
+			padding: 6px;
+			box-shadow: 1px 1px 1px rgba(0, 0, 0, .25);
+		}
 
-#code-csp-warning:hover {
-	text-decoration: none;
-	background-color:#007acc;
-	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
-}
+		#code-csp-warning:hover {
+			text-decoration: none;
+			background-color: #007acc;
+			box-shadow: 2px 2px 2px rgba(0, 0, 0, .25);
+		}
 
 
-body.scrollBeyondLastLine {
-	margin-bottom: calc(100vh - 22px);
-}
+		body.scrollBeyondLastLine {
+			margin-bottom: calc(100vh - 22px);
+		}
 
-body.showEditorSelection .code-line {
-	position: relative;
-}
+		body.showEditorSelection .code-line {
+			position: relative;
+		}
 
-body.showEditorSelection .code-active-line:before,
-body.showEditorSelection .code-line:hover:before {
-	content: "";
-	display: block;
-	position: absolute;
-	top: 0;
-	left: -12px;
-	height: 100%;
-}
+		body.showEditorSelection .code-active-line:before,
+		body.showEditorSelection .code-line:hover:before {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 0;
+			left: -12px;
+			height: 100%;
+		}
 
-body.showEditorSelection li.code-active-line:before,
-body.showEditorSelection li.code-line:hover:before {
-	left: -30px;
-}
+		body.showEditorSelection li.code-active-line:before,
+		body.showEditorSelection li.code-line:hover:before {
+			left: -30px;
+		}
 
-.vscode-light.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.15);
-}
+		.vscode-light.showEditorSelection .code-active-line:before {
+			border-left: 3px solid rgba(0, 0, 0, 0.15);
+		}
 
-.vscode-light.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.40);
-}
+		.vscode-light.showEditorSelection .code-line:hover:before {
+			border-left: 3px solid rgba(0, 0, 0, 0.40);
+		}
 
-.vscode-dark.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.4);
-}
+		.vscode-dark.showEditorSelection .code-active-line:before {
+			border-left: 3px solid rgba(255, 255, 255, 0.4);
+		}
 
-.vscode-dark.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.60);
-}
+		.vscode-dark.showEditorSelection .code-line:hover:before {
+			border-left: 3px solid rgba(255, 255, 255, 0.60);
+		}
 
-.vscode-high-contrast.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 160, 0, 0.7);
-}
+		.vscode-high-contrast.showEditorSelection .code-active-line:before {
+			border-left: 3px solid rgba(255, 160, 0, 0.7);
+		}
 
-.vscode-high-contrast.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 160, 0, 1);
-}
+		.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+			border-left: 3px solid rgba(255, 160, 0, 1);
+		}
 
-img {
-	max-width: 100%;
-	max-height: 100%;
-}
+		img {
+			max-width: 100%;
+			max-height: 100%;
+		}
 
-a {
-	color: #4080D0;
-	text-decoration: none;
-}
+		a {
+			color: #4080D0;
+			text-decoration: none;
+		}
 
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-	outline: 1px solid -webkit-focus-ring-color;
-	outline-offset: -1px;
-}
+		a:focus,
+		input:focus,
+		select:focus,
+		textarea:focus {
+			outline: 1px solid -webkit-focus-ring-color;
+			outline-offset: -1px;
+		}
 
-hr {
-	border: 0;
-	height: 2px;
-	border-bottom: 2px solid;
-}
+		hr {
+			border: 0;
+			height: 2px;
+			border-bottom: 2px solid;
+		}
 
-h1 {
-	padding-bottom: 0.3em;
-	line-height: 1.2;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-}
+		h1 {
+			padding-bottom: 0.3em;
+			line-height: 1.2;
+			border-bottom-width: 1px;
+			border-bottom-style: solid;
+		}
 
-h1, h2, h3 {
-	font-weight: normal;
-}
+		h1,
+		h2,
+		h3 {
+			font-weight: normal;
+		}
 
-h1 code,
-h2 code,
-h3 code,
-h4 code,
-h5 code,
-h6 code {
-	font-size: inherit;
-	line-height: auto;
-}
+		h1 code,
+		h2 code,
+		h3 code,
+		h4 code,
+		h5 code,
+		h6 code {
+			font-size: inherit;
+			line-height: auto;
+		}
 
-a:hover {
-	color: #4080D0;
-	text-decoration: underline;
-}
+		a:hover {
+			color: #4080D0;
+			text-decoration: underline;
+		}
 
-table {
-	border-collapse: collapse;
-}
+		table {
+			border-collapse: collapse;
+		}
 
-table > thead > tr > th {
-	text-align: left;
-	border-bottom: 1px solid;
-}
+		table>thead>tr>th {
+			text-align: left;
+			border-bottom: 1px solid;
+		}
 
-table > thead > tr > th,
-table > thead > tr > td,
-table > tbody > tr > th,
-table > tbody > tr > td {
-	padding: 5px 10px;
-}
+		table>thead>tr>th,
+		table>thead>tr>td,
+		table>tbody>tr>th,
+		table>tbody>tr>td {
+			padding: 5px 10px;
+		}
 
-table > tbody > tr + tr > td {
-	border-top: 1px solid;
-}
+		table>tbody>tr+tr>td {
+			border-top: 1px solid;
+		}
 
-blockquote {
-	margin: 0 7px 0 5px;
-	padding: 0 16px 0 10px;
-	border-left: 5px solid;
-}
+		blockquote {
+			margin: 0 7px 0 5px;
+			padding: 0 16px 0 10px;
+			border-left: 5px solid;
+		}
 
-code {
-	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
-	font-size: 14px;
-	line-height: 19px;
-}
+		code {
+			font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+			font-size: 14px;
+			line-height: 19px;
+		}
 
-body.wordWrap pre {
-	white-space: pre-wrap;
-}
+		body.wordWrap pre {
+			white-space: pre-wrap;
+		}
 
-.mac code {
-	font-size: 12px;
-	line-height: 18px;
-}
+		.mac code {
+			font-size: 12px;
+			line-height: 18px;
+		}
 
-pre:not(.hljs),
-pre.hljs code > div {
-	padding: 16px;
-	border-radius: 3px;
-	overflow: auto;
-}
+		pre:not(.hljs),
+		pre.hljs code>div {
+			padding: 16px;
+			border-radius: 3px;
+			overflow: auto;
+		}
 
-/** Theming */
+		/** Theming */
 
-.vscode-light,
-.vscode-light pre code {
-	color: rgb(30, 30, 30);
-}
+		.vscode-light,
+		.vscode-light pre code {
+			color: rgb(30, 30, 30);
+		}
 
-.vscode-dark,
-.vscode-dark pre code {
-	color: #DDD;
-}
+		.vscode-dark,
+		.vscode-dark pre code {
+			color: #DDD;
+		}
 
-.vscode-high-contrast,
-.vscode-high-contrast pre code {
-	color: white;
-}
+		.vscode-high-contrast,
+		.vscode-high-contrast pre code {
+			color: white;
+		}
 
-.vscode-light code {
-	color: #A31515;
-}
+		.vscode-light code {
+			color: #A31515;
+		}
 
-.vscode-dark code {
-	color: #D7BA7D;
-}
+		.vscode-dark code {
+			color: #D7BA7D;
+		}
 
-.vscode-light pre:not(.hljs),
-.vscode-light code > div {
-	background-color: rgba(220, 220, 220, 0.4);
-}
+		.vscode-light pre:not(.hljs),
+		.vscode-light code>div {
+			background-color: rgba(220, 220, 220, 0.4);
+		}
 
-.vscode-dark pre:not(.hljs),
-.vscode-dark code > div {
-	background-color: rgba(10, 10, 10, 0.4);
-}
+		.vscode-dark pre:not(.hljs),
+		.vscode-dark code>div {
+			background-color: rgba(10, 10, 10, 0.4);
+		}
 
-.vscode-high-contrast pre:not(.hljs),
-.vscode-high-contrast code > div {
-	background-color: rgb(0, 0, 0);
-}
+		.vscode-high-contrast pre:not(.hljs),
+		.vscode-high-contrast code>div {
+			background-color: rgb(0, 0, 0);
+		}
 
-.vscode-high-contrast h1 {
-	border-color: rgb(0, 0, 0);
-}
+		.vscode-high-contrast h1 {
+			border-color: rgb(0, 0, 0);
+		}
 
-.vscode-light table > thead > tr > th {
-	border-color: rgba(0, 0, 0, 0.69);
-}
+		.vscode-light table>thead>tr>th {
+			border-color: rgba(0, 0, 0, 0.69);
+		}
 
-.vscode-dark table > thead > tr > th {
-	border-color: rgba(255, 255, 255, 0.69);
-}
+		.vscode-dark table>thead>tr>th {
+			border-color: rgba(255, 255, 255, 0.69);
+		}
 
-.vscode-light h1,
-.vscode-light hr,
-.vscode-light table > tbody > tr + tr > td {
-	border-color: rgba(0, 0, 0, 0.18);
-}
+		.vscode-light h1,
+		.vscode-light hr,
+		.vscode-light table>tbody>tr+tr>td {
+			border-color: rgba(0, 0, 0, 0.18);
+		}
 
-.vscode-dark h1,
-.vscode-dark hr,
-.vscode-dark table > tbody > tr + tr > td {
-	border-color: rgba(255, 255, 255, 0.18);
-}
+		.vscode-dark h1,
+		.vscode-dark hr,
+		.vscode-dark table>tbody>tr+tr>td {
+			border-color: rgba(255, 255, 255, 0.18);
+		}
 
-.vscode-light blockquote,
-.vscode-dark blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
-}
+		.vscode-light blockquote,
+		.vscode-dark blockquote {
+			background: rgba(127, 127, 127, 0.1);
+			border-color: rgba(0, 122, 204, 0.5);
+		}
 
-.vscode-high-contrast blockquote {
-	background: transparent;
-	border-color: #fff;
-}
-</style>
+		.vscode-high-contrast blockquote {
+			background: transparent;
+			border-color: #fff;
+		}
+	</style>
 
-<style>
-/* Tomorrow Theme */
-/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
-/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+	<style>
+		/* Tomorrow Theme */
+		/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+		/* Original theme - https://github.com/chriskempson/tomorrow-theme */
 
-/* Tomorrow Comment */
-.hljs-comment,
-.hljs-quote {
-	color: #8e908c;
-}
+		/* Tomorrow Comment */
+		.hljs-comment,
+		.hljs-quote {
+			color: #8e908c;
+		}
 
-/* Tomorrow Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-regexp,
-.hljs-deletion {
-	color: #c82829;
-}
+		/* Tomorrow Red */
+		.hljs-variable,
+		.hljs-template-variable,
+		.hljs-tag,
+		.hljs-name,
+		.hljs-selector-id,
+		.hljs-selector-class,
+		.hljs-regexp,
+		.hljs-deletion {
+			color: #c82829;
+		}
 
-/* Tomorrow Orange */
-.hljs-number,
-.hljs-built_in,
-.hljs-builtin-name,
-.hljs-literal,
-.hljs-type,
-.hljs-params,
-.hljs-meta,
-.hljs-link {
-	color: #f5871f;
-}
+		/* Tomorrow Orange */
+		.hljs-number,
+		.hljs-built_in,
+		.hljs-builtin-name,
+		.hljs-literal,
+		.hljs-type,
+		.hljs-params,
+		.hljs-meta,
+		.hljs-link {
+			color: #f5871f;
+		}
 
-/* Tomorrow Yellow */
-.hljs-attribute {
-	color: #eab700;
-}
+		/* Tomorrow Yellow */
+		.hljs-attribute {
+			color: #eab700;
+		}
 
-/* Tomorrow Green */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-	color: #718c00;
-}
+		/* Tomorrow Green */
+		.hljs-string,
+		.hljs-symbol,
+		.hljs-bullet,
+		.hljs-addition {
+			color: #718c00;
+		}
 
-/* Tomorrow Blue */
-.hljs-title,
-.hljs-section {
-	color: #4271ae;
-}
+		/* Tomorrow Blue */
+		.hljs-title,
+		.hljs-section {
+			color: #4271ae;
+		}
 
-/* Tomorrow Purple */
-.hljs-keyword,
-.hljs-selector-tag {
-	color: #8959a8;
-}
+		/* Tomorrow Purple */
+		.hljs-keyword,
+		.hljs-selector-tag {
+			color: #8959a8;
+		}
 
-.hljs {
-	display: block;
-	overflow-x: auto;
-	color: #4d4d4c;
-	padding: 0.5em;
-}
+		.hljs {
+			display: block;
+			overflow-x: auto;
+			color: #4d4d4c;
+			padding: 0.5em;
+		}
 
-.hljs-emphasis {
-	font-style: italic;
-}
+		.hljs-emphasis {
+			font-style: italic;
+		}
 
-.hljs-strong {
-	font-weight: bold;
-}
-</style>
+		.hljs-strong {
+			font-weight: bold;
+		}
+	</style>
 
-<style>
-/*
+	<style>
+		/*
  * Markdown PDF CSS
  */
 
- body {
-	font-family:  "Meiryo", "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
-}
+		body {
+			font-family: "Meiryo", "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+		}
 
-pre {
-	background-color: #f8f8f8;
-	border: 1px solid #cccccc;
-	border-radius: 3px;
-	overflow-x: auto;
-	white-space: pre-wrap;
-	overflow-wrap: break-word;
-}
+		pre {
+			background-color: #f8f8f8;
+			border: 1px solid #cccccc;
+			border-radius: 3px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			overflow-wrap: break-word;
+		}
 
-pre:not(.hljs) {
-	padding: 23px;
-	line-height: 19px;
-}
+		pre:not(.hljs) {
+			padding: 23px;
+			line-height: 19px;
+		}
 
-blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
-}
+		blockquote {
+			background: rgba(127, 127, 127, 0.1);
+			border-color: rgba(0, 122, 204, 0.5);
+		}
 
-.emoji {
-	height: 1.4em;
-}
+		.emoji {
+			height: 1.4em;
+		}
 
-/* for inline code */
-:not(pre):not(.hljs) > code {
-	color: #C9AE75; /* Change the old color so it seems less like an error */
-	font-size: inherit;
-}
+		/* for inline code */
+		:not(pre):not(.hljs)>code {
+			color: #C9AE75;
+			/* Change the old color so it seems less like an error */
+			font-size: inherit;
+		}
 
-/* Page Break : use <div class="page"/> to insert page break
+		/* Page Break : use <div class="page"/> to insert page break
 -------------------------------------------------------- */
-.page {
-	page-break-after: always;
-}
-
-</style>
+		.page {
+			page-break-after: always;
+		}
+	</style>
 
 </head>
+
 <body>
-<body style="background-color: rgb(43, 43, 43); color:white">
-<h1 id="%CE%B5%CF%8D%CE%B4%CE%BF%CE%BE%CE%BF%CF%82---%CE%B1%CE%BE%CE%B9%CE%BF%CE%BB%CF%8C%CE%B3%CE%B7%CF%83%CE%B7">Εύδοξος - Αξιολόγηση</h1>
-<h2 id="top-5-%CF%80%CF%81%CE%BF%CE%B2%CE%BB%CE%AE%CE%BC%CE%B1%CF%84%CE%B1-%CF%87%CF%81%CE%B7%CF%83%CF%84%CE%B9%CE%BA%CF%8C%CF%84%CE%B7%CF%84%CE%B1%CF%82">Top 5 Προβλήματα Χρηστικότητας</h2>
-<ul>
-<li>Άκομψος, θορυβώδης σχεδιασμός.</li>
-<li>Υπερβολική χρήση κειμένου, στη μέση ακριβώς της οθόνης. Είναι γνωστό, ότι ο χρήστης <strong>δεν διαβάζει</strong>, αλλά <strong>σκανάρει</strong>.</li>
-<li>Το μέγεθος της γραμματοσειράς που χρησιμοποιείται είναι πολύ μικρό, ειδικότερα στους επιμέρους συνδέσμους της αριστερής περιοχής πλοήγησης. Επίσης, οι χρωματικές επιλογές είναι ίσως κακές.</li>
-<li>Ο τίτλος δεν αντικατοπτρίζει <strong>ακριβώς</strong> τον σκοπό του ιστοχώρου. Χρησιμοποιεί πολλές και αχρείαστες λέξεις, τις οποίες ο χρήστης δεν θα έπρεπε να υποχρεούται να διαβάσει.<br>
-<img src="./images/eudoxustitle.png" alt="title"></li>
-<li>Δεν μπορεί να διακριθεί εύκολα ο προορισμός ορισμένων συνδέσμων στην αριστερή μπάρα πλοήγησης. Επιπρόσθετα, πολλοί από αυτούς μπορεί να μπερδευθόυν μεταξύ τους, ως προς τη λειτουργία και τον προορισμό τους.</li>
-</ul>
-<p><strong>Τιμητική Αναφορά</strong>: <em>Μπορεί</em> να γίνει δύσκολο για την εκάστοτε ομάδα χρηστών να ξεχωρίσει το <em>που</em> βρίσκεται ο στόχος της.</p>
-<hr>
-<h2 id="%CF%80%CE%B1%CF%81%CE%B1%CE%B2i%CE%AC%CF%83%CE%B5%CE%B9%CF%82-%CE%BA%CE%B1%CE%BD%CF%8C%CE%BD%CF%89%CE%BD-nielsen">Παραβiάσεις Κανόνων Nielsen</h2>
-<ol>
-<li>Δεν υπάρχει τρόπος για το χρήστη να &quot;ανιχνέυσει&quot; την πορεία που ακολουθεί, κατα τη χρήση του ιστοχώρου. <span style ="color:cyan"> <strong>Ορατότητα της κατάστασης του συστήματος  | Έλεγχος</strong> </span></li>
-<li>Οι σύνδεσμοι που χρησιμοποιούνται στις περιοχές με κείμενο, δεν φέρουν το χρώμα που περιγράφουν τα συνήθη πρότυπα. είναι <span style="color:orange">πορτοκαλί</span>, σε αντίθεση με <span style="color:cornflowerblue">μπλε</span>. <span style ="color:cyan"> <strong>Συνέπεια και χρήση προτύπων</strong> </span></li>
-<li>Μη ξεκάθαρα και συγκεκριμένοι σύνδεσμοι, όσον αφορά τις επιμέρους λειτουργίες της εκάστοτε ομάδας χρηστών. <span style="color:cyan"><strong>Μινιμαλιστική εικαστική σχεδίαση | Αναγνώριση παρά επανάκτηση</strong></span></li>
-<li>Εκτεταμένη χρήση κειμένου, συνυφασμένη με πολύ μεγάλα κομμάτια με <em>άχρηστες</em> πληροφορίες.<span style="color:cyan"><strong>Μινιμαλιστική εικαστική σχεδίαση</strong></span></li>
-<li>Θολές, διαφορετικού εικαστικού στυλ εικόνες με ασυνεπείς λεζάντες. <span style ="color:cyan"> <strong>Συνέπεια | Μινιμαλιστική εικαστική σχεδίαση</strong> </span></li>
-<li>Η περιοχή FAQ είναι αρκετά κακογραμμένη. Είναι πολύ δύσκολο να βρεθέι μια απάντηση σε κάποια πιθανή ερώτηση, λόγω της <em>ακατάστατης</em> κατηγοριοποίησης της. Επίσης, ο χρωματισμός τείνει να είναι κουραστικός στο μάτι. <span style="color:cyan"><strong>Βοήθεια και τεκμηρίωση</strong></span></li>
-<li>Όταν ο χρήστης πατάει έναν σύνδεσμο στην αριστερή περιοχή πλοήγησης, αντί να κατευθύνεται απευθείας στον αναμενόμενο προορισμό, καθοδηγείται σε μια &quot;μεσάζουσα&quot; σελίδα που περιέχει οδηγίες. Εκέι, χρειάζεται να πατήσει <em>άλλον</em> έναν παρόμοιο σύνδεσμο για να καταλήξει στον επιθυμητό προορισμό. <span style="color:cyan"><strong>Ευελιξία και αποδοτικότητα</strong></span></li>
-<li>Τα ενημερωτικά βίντεο είναι σε αμήχανο σημείο, με αποτέλεσμα οι περισσότεροι χρήστες να μην το προσέχουν, ενώ ίσως να το χρειαστούν. Παρόλο που ένα από αυτά είναι συνοπτικό και αρκετά ξεκάθαρο (Εύδοξος+), θα μπορούσε να χαρακτηρισθεί ως &quot;παλιομοδίτικο&quot;. <span style="color:cyan"><strong>Αναγνώριση παρά επανάκτηση | Βοήθεια και τεκμηρίωση</strong></span></li>
-<li>Οι σελίδες &quot;Γενική Βάση Συγγραμμάτων&quot; και &quot;Επιλεγμένα Συγγράμματα..&quot; είναι ακατάστατες και καθιστούν δύσκολη την εύρεση του επιθυμητού συγγράμματος. <span style="color:cyan"><strong>Αποδοτικότητα | Μινιμαλιστική εικαστική σχεδίαση</strong></span></li>
-<li>Η λειτουργία αναζήτησης, όπως είναι φτιαγμένη τώρα, δεν προλαμβάνει πιθανά ορθογραφικά ή άλλα λάθη και δεν προσφέρει κάποια <em>αναγνώριση</em> ή <em>υπενθύμιση/πρόβλεψη</em> ως προς το αναζητούμενο σύγγραμμα. <span style ="color:cyan"> <strong>Πρόληψη Λαθών | Αναγνώριση παρά επανάκτηση</strong> </span></li>
-<li>Κάθε επιμέρους εφαρμογή συνδεδεμένη με τον ιστοχώρο (Ανταλλαγή, Δήλωση Συγγραμμάτων, Εφαρμογές ομαδών χρηστών, κλπ) είναι <em>τελείως</em> διαφορετικές μεταξύ τους. <span style ="color:cyan"> <strong>Συνέπεια</strong> </span></li>
-<li>Οι επιμέρους εφαρμογές συνδεδεμένες με τον ιστοχώρο, παρά την αποτελεσματικότητα τους, χαρακτηρίζονται από μια παλιομοδίτικη αισθητική. <span style ="color:cyan"> <strong>Μινιμαλιστική εικαστική σχεδίαση</strong> </span></li>
-<li>Οι σύνδεσμοι αυτοί <strong>δεν</strong> τραβούν την προσοχή του χρήστη στο σωστό σημείο.<br>
-<img src="./images/instructions.png" alt="title">
-<br><span style="color:cyan"><span style="color:cyan"><strong>Αναγνώριση παρά επανάκτηση | Βοήθεια και τεκμηρίωση</strong></span></li>
-</ol>
-<hr>
-<h2 id="possible-solutions">Possible Solutions</h2>
-<ol>
-<li>Χρήση breadcrumbs.</li>
-<li>Χρήση ορθού χρωμματισμού, βάσει σύμβασης.</li>
-<li>Διακριτές περιοχές για κάθε ομάδα χρηστών, με υπομενού/σελίδες που <em>αρμόζουν</em> στην κάθε μία. <br>
-Προτεινόμενες λύσεις:
-<ul>
-<li>Radial Menu με χρωματικά κωδικοποιημένες περιοχές, ανάλογα με την ομάδα χρηστών. <br>
-<img src="./images/radial.png" width="250" height="250"><br>
-(a work <strong>very</strong> much in progress)</li>
-<li>Περιοχές σε μορφή πίνακα για κάθε ομάδα χρήστη.</li>
-</ul>
-</li>
-<li>Το κείμενο αυτό περιέχει πληροφορίες που αφορούν την <em>καινοτομία που επιτυγχάνεται</em> απο τον ιστοχώρο, την ιστορία του και άλλες όχι άμεσα χρήσιμες πληροφορίες. Τέτοιου τύπου κείμενο θα ήταν φρόνιμο να τοποθετηθούν σε μία ειδική περιοχή/tab, τύπου &quot;About us&quot; ή κάτι παρόμοιο.</li>
-<li>Χρήση μινιμαλιστικών και ευκρινών εικονιδίων, τα οποία αντικατοπτρίζουν σαφώς τη λειτουργία τους. Λεζάντες και υπότιτλοι μπορούν να αποφευχθούν, παρόλο που πολλές φορές είναι χρήσιμοι, ειδικά σε μεγαλύτερες ηλικίες χρηστών.</li>
-<li>Κατ'αρχάς, η ιστοσελίδα θα πρέπει να είναι αρκετά σαφής, έτσι ώστε να μήν χρειάζεται περιοχή FAQ. Παρά ταύτα, η περιοχή αυτή μπορεί να επανασχεδιαστεί ώς εξής:
-<ul>
-<li>Η όλη περιοχή θα μπορούσε να οργανωθεί σε περισσότερες και πιο περιεκτικές κατηγορίες.</li>
-<li>Οι επιμέρους ερωτήσεις θα έπρεπε να είναι πιο συνοπτικές, αν όχι απόλυτα βασισμένες σε <span style="color: orange"><strong>λέξεις-κλειδιά</strong></span> με ειδικό χρωμματισμό.</li>
-</ul>
-</li>
-<li>Μείωση του <em>βάθους</em> της δομής του ιστοχώρου, μέσω της αφαίρεσης των &quot;μεσάζουσων&quot; σελίδων και την εισαγωγή <strong>ξεκάθαρων</strong> συνδέσμων προς τις λειτουργίες του ιστοχώρου.</li>
-<li>Τα ενημερωτικά/βοηθητικά βίντεο θα ήταν καλό να μετακινηθούν σε μία περιοχή τύποθ &quot;About Us&quot; ή &quot;Help&quot;, αν όχι να αφαιρεθούν εξ'ολοκλήρου. Επιπρόσθετα, θα μπορούσαν να γίνουν πιο σύντομα και σίγουρα να αναβαθμισούν σε ένα πιο σύγχρονο στυλ.</li>
-<li>Χρήση αποδοτικών φίλτρων αναζήτησης και καλύτερη/ομορφότερη παρουσίαση των αποτελεσμάτων αναζήτησης.</li>
-<li>Θα μπορούσε το σύστημα, κατά την πληκτρολόγηση στην περιοχή αναζήτησης, να τυπώνει πιθανές προβλέψεις για αυτό που αναζητά ο χρήστης. Με αυτόν τον τρόπο αποκλείονται οποιαδήποτε ορθογραφικά ή άλλα λάθη.</li>
-<li>Όλες οι επιμέρους εφαρμογές πρέπει να υλοποιηθούν εξ'αρχής, έτσι ώστε να δημιουργηθεί και να διατηρηθεί μια λειτουργική και αισθητική συνέπεια.</li>
-<li>Ένας καινούργιος και σύγχρονος σχεδιασμός των εφαρμογών, ο οποίος θα ακολουθεί μινιμαλιστικά αισθητικά πρότυπα, όχι μόνο θα έκανε τους χρήστες να αισθάνονται πιο <em>άνετα</em> όταν τις χρησιμοποιούν, αλλά και θα συνεισέφερε στην προσβασιμότητά του ιστοχώρου. Πρέπει εδώ να σημειωθεί, ότι οι εφαρμογές αυτές είναι το <em>Άλφα και το Ωμέγα</em> του ιστοχώρου. Για το λόγο αυτό, ο καλός και λειτουργικός σχεδιασμός τους πρεπει να είναι <strong>προτεραιότητα</strong>.</li>
-<li>Οι σύνδεσμοι αυτοί <strong>τραβούν</strong> την προσοχή του χρήστη στο σωστό σημείο.<br>
-<img src="./images/instructions_fixed.png" alt="title"></li>
-<li>Εναλλακτικοί τίτλοι για τον ιστοχώρο:
-<ul>
-<li>
-<h3 id="textbook-management-service">Textbook Management Service</h3>
-</li>
-<li>
-<h3 id="%CF%85%CF%80%CE%B7%CF%81%CE%B5%CF%83%CE%AF%CE%B1-%CE%B4%CE%B9%CE%B1%CF%87%CE%B5%CE%AF%CF%81%CE%B9%CF%83%CE%B7%CF%82-%CF%83%CF%85%CE%B3%CE%B3%CF%81%CE%B1%CE%BC%CE%AC%CF%84%CF%89%CE%BD">Υπηρεσία Διαχείρισης Συγγραμάτων</h3>
-</li>
-</ul>
-</li>
-</ol>
+	<html>
+
+	<body style="background-color: rgb(43, 43, 43); color:white">
+		<h1 id="1">1. Eπικοινωνία Ανθρώπου-Μηχανής</h1>
+		<h2 id="11">1.1. Συγγραφείς:</h2>
+		<ul>
+			<li>
+				<h3>Ιωάννης Μαλιάρας - 1115201500084</h3>
+			</li>
+			<li>
+				<h3>Ιωάννης Χείλαρης - 1115201500176</h3>
+			</li>
+		</ul>
+		<h2 id="12">1.2. Περιεχόμενα</h2>
+		<!-- TOC -->
+		<ul>
+			<li><a href="#1">1. Eπικοινωνία Ανθρώπου-Μηχανής</a>
+				<ul>
+					<li><a href="#11">1.1. Συγγραφείς:</a></li>
+					<li><a href="#12">1.2. Περιεχόμενα</a></li>
+				</ul>
+			</li>
+			<li><a href="#2">2. Εύδοξος - Αξιολόγηση</a>
+				<ul>
+					<li><a href="#21">2.1. Top 5 Προβλήματα Χρηστικότητας</a></li>
+					<li><a href="#22">2.2. Μερικά θετικά σχόλια</a></li>
+					<li><a href="#23">2.3. Παραβiάσεις Κανόνων Nielsen</a></li>
+					<li><a href="#24">2.4. Possible Solutions</a></li>
+				</ul>
+			</li>
+		</ul>
+		<!-- /TOC -->
+		<h1 id="2">2. Εύδοξος - Αξιολόγηση</h1>
+		<h2 id="21">2.1. Top 5 Προβλήματα Χρηστικότητας</h2>
+		<ul>
+			<li>
+				<p>Άκομψος, θορυβώδης σχεδιασμός.</p>
+			</li>
+			<li>
+				<p>Υπερβολική χρήση κειμένου, στη μέση ακριβώς της οθόνης. Είναι γνωστό, ότι ο χρήστης <strong>δεν διαβάζει</strong>,
+					αλλά <strong>σκανάρει</strong>.</p>
+			</li>
+			<li>
+				<p>Το μέγεθος της γραμματοσειράς που χρησιμοποιείται είναι πολύ μικρό, ειδικότερα στους επιμέρους συνδέσμους της
+					αριστερής περιοχής πλοήγησης. Επίσης, οι χρωματικές επιλογές είναι ίσως κακές.</p>
+			</li>
+			<li>
+				<p>Ο τίτλος δεν αντικατοπτρίζει <strong>ακριβώς</strong> τον σκοπό του ιστοχώρου. Χρησιμοποιεί πολλές και
+					αχρείαστες λέξεις, τις οποίες ο χρήστης δεν θα έπρεπε να υποχρεούται να διαβάσει.<br><br>
+					<!-- <img src="./images/eudoxustitle.png" alt="title"></p> -->
+					<br><br><br>
+				<p>Ένας καλύτερος τίτλος θα ήταν:</p>
+				<ul>
+					<li>
+						<h3>Υπηρεσία Διαχείρισης Συγγραμάτων</h3>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p>Δεν μπορεί να διακριθεί εύκολα ο προορισμός ορισμένων συνδέσμων στην αριστερή μπάρα πλοήγησης. Επιπρόσθετα,
+					πολλοί από αυτούς μπορεί να μπερδευθόυν μεταξύ τους, ως προς τη λειτουργία και τον προορισμό τους.</p>
+			</li>
+		</ul>
+		<hr>
+		<h2 id="22">2.2. Μερικά θετικά σχόλια</h2>
+		<ul>
+			<li>
+				<p>Η εφαρμογή δήλωσης συγγραμμάτων είναι αρκετά λειτουργική και σαφής.</p>
+			</li>
+			<li>
+				<p>Οι ερωτήσεις της περιοχής FAQ είναι στοχευμένες και ακριβείς, βοηθώντας τον χρήστη με τις απορίες του, παρά την
+					κακή κατηγοριοποίηση και παρουσίαση της. <span style="color:cyan"> <strong>Βοήθεια και τεκμηρίωση</strong> </span></p>
+			</li>
+			<li>
+				<p>Υπάρχει μια <a href="https://service.eudoxus.gr">βελτιωμένη σελίδα</a>, η οποία προσφέρει μια μεγαλύτερη
+					αμεσότητα και άνεση στη χρήση.</p>
+			</li>
+			<li>
+				<p>Το μενού πλοήγησης βρίσκεται στην αριστερή πλευρά της αρχικής σελίδας, όπως συνιθίζεται, σε άλλους γνωστούς ή
+					μη, ιστοχώρους <span style="color:cyan"> <strong>Ομοιότητα με τον πραγματικό κόσμο | Χρήση προτύπων</strong>
+					</span></p>
+			</li>
+			<li>
+				<p>Το λογότυπο του ιστοχώρου βρίσκεται, όπως συνιθίζεται, στην πάνω αριστερή γωνία και πατώντας το, ο χρήστης
+					οδηγείται πίσω στην αρχική σελίδα. <span style="color:cyan"> <strong>Ομοιότητα με τον πραγματικό κόσμο | Χρήση
+							προτύπων</strong> </span></p>
+			</li>
+		</ul>
+		<hr>
+		<h2 id="23">2.3. Παραβiάσεις Κανόνων Nielsen</h2>
+		<ol>
+			<li>
+				<p>Δεν υπάρχει τρόπος για το χρήστη να &quot;ανιχνέυσει&quot; την πορεία που ακολουθεί, κατα τη χρήση του
+					ιστοχώρου. <span style="color:cyan"> <strong>Ορατότητα της κατάστασης του συστήματος | Έλεγχος</strong> </span></p>
+			</li>
+			<li>
+				<p>Οι σύνδεσμοι που χρησιμοποιούνται στις περιοχές με κείμενο, δεν φέρουν το χρώμα που περιγράφουν τα συνήθη
+					πρότυπα. είναι <span style="color:orange">πορτοκαλί</span>, σε αντίθεση με <span style="color:cornflowerblue">μπλε</span>.
+					<span style="color:cyan"> <strong>Ομοιότητα με τον πραγματικό κόσμο</strong> </span></p>
+			</li>
+			<li>
+				<p>Μη ξεκάθαρα και συγκεκριμένοι σύνδεσμοι, όσον αφορά τις επιμέρους λειτουργίες της εκάστοτε ομάδας χρηστών. <span
+					 style="color:cyan"><strong>Μινιμαλιστική εικαστική σχεδίαση | Αναγνώριση παρά επανάκτηση</strong></span></p>
+			</li>
+			<li>
+				<p>Εκτεταμένη χρήση κειμένου, συνυφασμένη με πολύ μεγάλα κομμάτια με <em>άχρηστες</em> πληροφορίες.<span style="color:cyan"><strong>Μινιμαλιστική
+							εικαστική σχεδίαση</strong></span></p>
+			</li>
+			<li>
+				<p>Θολές, διαφορετικού εικαστικού στυλ εικόνες με ασυνεπείς λεζάντες στο δεξιό &quot;μενού πλοήγησης&quot;. <span
+					 style="color:cyan"> <strong>Συνέπεια | Μινιμαλιστική εικαστική σχεδίαση</strong> </span></p>
+			</li>
+			<li>
+				<p>Ασαφείς αναλογίες εικονιδίου και λειτουργίας στο στο δεξιό &quot;μενού πλοήγησης&quot;. Ο χρήστης δεν
+					καταλαβαίνει διαισθητικά τη λειτουργία του κουμπιού που πατάει. <span style="color:cyan"> <strong>Ομοιότητα με τον
+							πραγματικό κόσμο</strong> </span></p>
+			</li>
+			<li>
+				<p>Η περιοχή FAQ είναι αρκετά κακογραμμένη. Είναι πολύ δύσκολο να βρεθέι μια απάντηση σε κάποια πιθανή ερώτηση,
+					λόγω της <em>ακατάστατης</em> κατηγοριοποίησης της. Επίσης, ο χρωματισμός τείνει να είναι κουραστικός στο μάτι.
+					<span style="color:cyan"><strong>Βοήθεια και τεκμηρίωση</strong></span></p>
+			</li>
+			<li>
+				<p>Όταν ο χρήστης πατάει έναν σύνδεσμο στην αριστερή περιοχή πλοήγησης, αντί να κατευθύνεται απευθείας στον
+					αναμενόμενο προορισμό, καθοδηγείται σε μια &quot;μεσάζουσα&quot; σελίδα που περιέχει οδηγίες. Εκέι, χρειάζεται να
+					πατήσει <em>άλλον</em> έναν παρόμοιο σύνδεσμο για να καταλήξει στον επιθυμητό προορισμό. <span style="color:cyan"><strong>Ευελιξία
+							και αποδοτικότητα</strong></span></p>
+			</li>
+			<li>
+				<p>Τα ενημερωτικά βίντεο είναι τοποθετημένο σε αμήχανο σημείο, με αποτέλεσμα οι περισσότεροι χρήστες να μην το
+					προσέχουν, ενώ ίσως να το χρειαστούν. Παρόλο που ένα από αυτά είναι συνοπτικό και αρκετά ξεκάθαρο (Εύδοξος+), θα
+					μπορούσε να χαρακτηρισθεί ως &quot;παλιομοδίτικο&quot;. <span style="color:cyan"><strong>Αναγνώριση παρά
+							επανάκτηση | Βοήθεια και τεκμηρίωση</strong></span></p>
+			</li>
+			<li>
+				<p>Οι σελίδες &quot;Γενική Βάση Συγγραμμάτων&quot; και &quot;Επιλεγμένα Συγγράμματα..&quot; είναι ακατάστατες και
+					καθιστούν δύσκολη την εύρεση του επιθυμητού συγγράμματος. <span style="color:cyan"><strong>Αποδοτικότητα |
+							Μινιμαλιστική εικαστική σχεδίαση</strong></span></p>
+			</li>
+			<li>
+				<p>Το κουμπί &quot;Σύνθετη Αναζήτηση&quot; στη σελίδα &quot;Γενική Βάση Συγγραμάτων&quot; δεν είναι τοποθετημένο με
+					τέτοιο τρόπο, ώστε ο χρήστης να το βλέπει απευθείας. (Συγκεκριμένα, εμείς δεν το είδαμε..) Η λειτουργικότητα
+					υπάρχει, αλλά θέλει επιπλέον &quot;δουλειά&quot; για να χρησιμοποιηθεί, παρόλο που είναι πολύ συνιθισμένη απαίτηση
+					ενός χρήστη. <span style="color:cyan"><strong>Ευελιξία και αποδοτικότητα | Ομοιότητα με την πραγματικότητα</strong></span></p>
+			</li>
+			<li>
+				<p>Η λειτουργία αναζήτησης, απλή ή σύνθετη, όπως είναι φτιαγμένη τώρα, δεν προλαμβάνει πιθανά ορθογραφικά ή άλλα
+					λάθη και δεν προσφέρει κάποια <em>αναγνώριση</em> ή <em>υπενθύμιση/πρόβλεψη</em> ως προς το αναζητούμενο
+					σύγγραμμα. <span style="color:cyan"> <strong>Πρόληψη Λαθών | Αναγνώριση παρά επανάκτηση</strong> </span></p>
+			</li>
+			<li>
+				<p>Κάθε επιμέρους εφαρμογή συνδεδεμένη με τον ιστοχώρο (Ανταλλαγή, Δήλωση Συγγραμμάτων, Εφαρμογές ομαδών χρηστών,
+					κλπ) είναι <em>τελείως</em> διαφορετικές μεταξύ τους. <span style="color:cyan"> <strong>Συνέπεια</strong> </span></p>
+			</li>
+			<li>
+				<p>Οι επιμέρους εφαρμογές συνδεδεμένες με τον ιστοχώρο, παρά την αποτελεσματικότητα τους, χαρακτηρίζονται από μια
+					παλιομοδίτικη αισθητική. <span style="color:cyan"> <strong>Μινιμαλιστική εικαστική σχεδίαση</strong> </span></p>
+			</li>
+			<li>
+				<p>Οι σύνδεσμοι αυτοί <strong>δεν</strong> τραβούν την προσοχή του χρήστη στο σωστό σημείο.<br><br>
+					<!-- <img src="./images/instructions.png" alt="title"><br> -->
+					<br>
+					<br>
+					<br>
+					<br><span style="color:cyan"><span style="color:cyan"><strong>Αναγνώριση παρά επανάκτηση | Βοήθεια και τεκμηρίωση</strong></span></p>
+			</li>
+		</ol>
+		<hr>
+		<h2 id="24">2.4. Πιθανές Λύσεις</h2>
+		<ol>
+			<li>
+				<p>Χρήση breadcrumbs.</p>
+			</li>
+			<li>
+				<p>Χρήση ορθού χρωματισμού, βάσει σύμβασης.</p>
+			</li>
+			<li>
+				<p>Διακριτές περιοχές για κάθε ομάδα χρηστών, με υπομενού/σελίδες που <em>αρμόζουν</em> στην κάθε μία. <br><br>
+					Προτεινόμενες λύσεις:</p>
+				<ul>
+					<li>Radial Menu με χρωματικά κωδικοποιημένες περιοχές, ανάλογα με την ομάδα χρηστών. <br><br>
+						<p  width="250" height="250"></p><br><br>
+						(a work <strong>very</strong> much in progress)</li>
+					<li>Περιοχές σε μορφή πίνακα για κάθε ομάδα χρήστη.</li>
+				</ul>
+			</li>
+			<li>
+				<p>Το κείμενο αυτό περιέχει πληροφορίες που αφορούν την <em>καινοτομία που επιτυγχάνεται</em> απο τον ιστοχώρο, την
+					ιστορία του και άλλες όχι άμεσα χρήσιμες πληροφορίες. Τέτοιου τύπου κείμενο θα ήταν φρόνιμο να τοποθετηθούν σε μία
+					ειδική περιοχή/tab, τύπου &quot;About us&quot; ή κάτι παρόμοιο.</p>
+			</li>
+			<li>
+				<p>Χρήση μινιμαλιστικών και ευκρινών εικονιδίων, τα οποία αντικατοπτρίζουν σαφώς τη λειτουργία τους. Λεζάντες και
+					υπότιτλοι μπορούν να αποφευχθούν, παρόλο που πολλές φορές είναι χρήσιμοι, ειδικά σε μεγαλύτερες ηλικίες χρηστών.</p>
+			</li>
+			<li>
+				<p>Παρόμοια με την λύση 5.</p>
+			</li>
+			<li>
+				<p>Κατ'αρχάς, η ιστοσελίδα θα πρέπει να είναι αρκετά σαφής, έτσι ώστε να μήν χρειάζεται περιοχή FAQ. Παρά ταύτα, η
+					περιοχή αυτή μπορεί να επανασχεδιαστεί ώς εξής:</p>
+				<ul>
+					<li>Η όλη περιοχή θα μπορούσε να οργανωθεί σε περισσότερες και πιο περιεκτικές κατηγορίες.</li>
+					<li>Οι επιμέρους ερωτήσεις θα έπρεπε να είναι πιο συνοπτικές, αν όχι απόλυτα βασισμένες σε <span style="color: orange"><strong>λέξεις-κλειδιά</strong></span>
+						με ειδικό χρωματισμό.</li>
+				</ul>
+			</li>
+			<li>
+				<p>Μείωση του <em>δομικού βάθους</em> του ιστοχώρου, δια της αφαίρεσης των &quot;μεσάζουσων&quot; σελίδων και την
+					εισαγωγή <strong>ξεκάθαρων</strong> συνδέσμων προς τις λειτουργίες του ιστοχώρου.</p>
+			</li>
+			<li>
+				<p>Τα ενημερωτικά/βοηθητικά βίντεο θα ήταν καλό να μετακινηθούν σε μία περιοχή τύπου &quot;About Us&quot; ή
+					&quot;Help&quot;, αν όχι να αφαιρεθούν εξ'ολοκλήρου. Επιπλέον, θα μπορούσαν να γίνουν πιο σύντομα και σίγουρα να
+					αναβαθμισθούν σε ένα πιο σύγχρονο στυλ.</p>
+			</li>
+			<li>
+				<p>Χρήση αποδοτικών φίλτρων αναζήτησης και καλύτερη/ομορφότερη παρουσίαση των αποτελεσμάτων αναζήτησης.</p>
+			</li>
+			<li>
+				<p>Θα μπορούσε η &quot;σύνθετη αναζήτηση&quot; να ήταν η προεπιλεγμένη περίπτωση και όχι να απαιτεί επιπλέον κλικ
+					από τον χρήστη. Στην περίπτωση, όμως, που θέλουμε κάτι τέτοιο, το κουμπί που οδηγεί στην αναζήτηση αυτή, θα έπρεπε
+					να είναι σε πιο ευκρινές σημείο και ίσως να συνοδεύεται από ένα περιγραφικό εικονίδιο.</p>
+			</li>
+			<li>
+				<p>Θα μπορούσε το σύστημα, κατά την πληκτρολόγηση στην περιοχή αναζήτησης, να τυπώνει πιθανές προβλέψεις για αυτό
+					που αναζητά ο χρήστης. Με αυτόν τον τρόπο αποκλείονται οποιαδήποτε ορθογραφικά ή άλλα λάθη.</p>
+			</li>
+			<li>
+				<p>Όλες οι επιμέρους εφαρμογές πρέπει να υλοποιηθούν εξ'αρχής, έτσι ώστε να δημιουργηθεί και να διατηρηθεί μια
+					λειτουργική και αισθητική συνέπεια.</p>
+			</li>
+			<li>
+				<p>Ένας καινούργιος και σύγχρονος σχεδιασμός των εφαρμογών, ο οποίος θα ακολουθεί μινιμαλιστικά αισθητικά πρότυπα,
+					όχι μόνο θα έκανε τους χρήστες να αισθάνονται πιο <em>άνετα</em> όταν τις χρησιμοποιούν, αλλά και θα συνεισέφερε
+					στην προσβασιμότητά του ιστοχώρου. Πρέπει εδώ να σημειωθεί, ότι οι εφαρμογές αυτές είναι το <em>Άλφα και το Ωμέγα</em>
+					του ιστοχώρου. Για το λόγο αυτό, ο καλός και λειτουργικός σχεδιασμός τους πρεπει να είναι <strong>προτεραιότητα</strong>.</p>
+			</li>
+			<li>
+				<p>Οι σύνδεσμοι αυτοί <strong>τραβούν</strong> την προσοχή του χρήστη στο σωστό σημείο.<br><br>
+					<!-- <img src="./images/instructions_fixed.png" alt="title"></p> -->
+				<br>
+				<br>
+				<br>
+
+			</li>
+		</ol>
+	</body>
+
+	</html>
 </body>
-</body>
+
 </html>
