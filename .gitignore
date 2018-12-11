@@ -2,8 +2,6 @@ Part1/Evaluation.pdf
 Part2/Eudoxus_URA.pdf
 Part2/*.rar
 Part2/tmp
-App/.vscode
 App/node_modules
-App/dist
 App/*.log
 App/yarn.lock
