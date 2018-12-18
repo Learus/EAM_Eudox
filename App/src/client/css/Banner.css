@@ -1,0 +1,19 @@
+.stud-banner {
+    grid-area: stud-banner;
+    background-color: #4B8EE6;
+}
+
+.secr-banner  {
+    grid-area: secr-banner;
+    background-color: #FA3A5B;
+}
+
+.publ-banner {
+    grid-area: publ-banner;
+    background-color: #00C748;
+}
+
+.dist-banner {
+    grid-area: dist-banner;
+    background-color: #FF9933;
+}
