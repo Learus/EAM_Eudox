@@ -1,0 +1,9 @@
+.account-circle {
+    position: relative;
+    top: 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: gray;
+    grid-column-start: end
+}

@@ -1,10 +1,11 @@
 .header-main {
     background-color: #ffffff;
-    padding: 55px;
+    display: grid;
+    grid-template-columns: [start] 1800px [end];
 }
 
 .header-bottom {
     background-color: #707070;
-    padding: 25px;
+    height: 75px;
 }
 
