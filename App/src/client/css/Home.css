@@ -32,8 +32,11 @@
     top: 89px;
 }
 
-.secr-banner-below, .dist-banner-below{
+.secr-banner-below {
     top: 93px;
+}
+.dist-banner-below {
+    top: 65px;
 }
 
 .stud-banner>button, .secr-banner>button, .publ-banner>button, .dist-banner>button{

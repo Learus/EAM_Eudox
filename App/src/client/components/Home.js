@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Header from './Header';
-import '../css/Home.css'
+import '../css/Home.css';
 import stud_logo from '../images/student_logo.png';
+import secr_logo from '../images/secretary_logo.svg';
 import publ_logo from '../images/publisher_logo.png';
+import dist_logo from '../images/distributor_logo.svg';
 
 export default class Home extends Component{
     render() {
@@ -45,7 +47,7 @@ class Banner extends Component {
             case 'Secretary':
                 return (
                         <div className="secr-banner">
-                            <img src={stud_logo} width="200"/>
+                            <img src={secr_logo} width="150"/>
                             <h1>Γραμματείες</h1>
                             <button>Καταχώρηση Μαθημάτων</button>
                             <button>Αντιστοίχηση Συγγραμμάτων</button>
@@ -68,7 +70,7 @@ class Banner extends Component {
             case 'Distributor':
                 return (
                         <div className="dist-banner">
-                            <img src={stud_logo} width="200"/>
+                            <img src={dist_logo} width="120"/>
                             <h1>Διανομείς</h1>
                             <button>Παράδοση Συγγραμμάτων</button>
                             <button>Προβολή Αιτήσεων</button>
