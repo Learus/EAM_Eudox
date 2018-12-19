@@ -2,9 +2,10 @@
 
 .grid-container {
     display: grid;
-    background-color: rgb(44, 180, 135);
-    padding: 10px;
+    background-color: transparent;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    padding: 30px;
+    text-align: center;
     /*grid-template-areas: 'stud-banner secr-banner publ-banner dist-banner';*/
 }

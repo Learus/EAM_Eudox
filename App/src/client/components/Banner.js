@@ -14,35 +14,36 @@ export default class Banner extends Component {
         {
             case 'Student':
                 return (
-                    <div className="stud-banner">
-                        Student
-                    </div>
+                        <div className="stud-banner">
+                            <button>Δήλωση Συγγραμμάτων</button>
+                            <div className="stud-banner-below"/>
+                        </div>
                 );
-            break;
 
             case 'Secretary':
                 return (
-                    <div className="secr-banner">
-                        Secretary
-                    </div>
+                        <div className="secr-banner">
+                            <button>Δήλωση Συγγραμμάτων</button>
+                            <div className="secr-banner-below"/>
+                        </div>
                 );
-            break;
 
             case 'Publisher':
                 return (
-                    <div className="publ-banner">
-                        Publisher
-                    </div>
+                        <div className="publ-banner">
+                            <button>Δήλωση Συγγραμμάτων</button>
+                            <div className="publ-banner-below"/>
+                        </div>
                 );
-            break;
 
             case 'Distributor':
                 return (
-                    <div className="dist-banner">
-                        Distributor
-                    </div>
+                        <div className="dist-banner">
+                            <button>Δήλωση Συγγραμμάτων</button>
+                            <div className="dist-banner-below"/>
+                        </div>
+                        
                 );
-            break;
         }
     }
 }

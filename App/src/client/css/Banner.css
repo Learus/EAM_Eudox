@@ -1,19 +1,88 @@
-.stud-banner {
-    grid-area: stud-banner;
-    background-color: #4B8EE6;
+.stud-banner, .secr-banner, .publ-banner, .dist-banner{
+    position: relative;
+    height: 500px;
+    width: 360px;
+    text-align: center;
+    display: inline-block;
 }
+
+.stud-banner-below, .secr-banner-below, .publ-banner-below, .dist-banner-below {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-bottom: 150px solid white;
+    position: relative;
+    top: 274px;
+}
+
+.stud-banner>button, .secr-banner>button, .publ-banner>button, .dist-banner>button{
+    border: 0;
+    color: white;
+    width: 360px;
+    height: 76px;
+    font-size: large;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+.stud-banner {
+    background-color: #4B8EE6;
+    /* grid-column: 1 / 2; */
+}
+
+.stud-banner>button{
+    background-color: rgb(63, 118, 190);
+}
+
+.stud-banner-below {
+    border-left: 180px solid #4B8EE6;
+	border-right: 180px solid #4B8EE6;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
 
 .secr-banner  {
-    grid-area: secr-banner;
     background-color: #FA3A5B;
+    /* grid-column: 2 / 3; */
 }
+
+.secr-banner>button{
+    background-color: rgb(185, 42, 66);
+}
+
+.secr-banner-below {
+    border-left: 180px solid #FA3A5B;
+	border-right: 180px solid #FA3A5B;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
 
 .publ-banner {
-    grid-area: publ-banner;
     background-color: #00C748;
+    /* grid-column: 3 / 4; */
 }
 
+.publ-banner>button{
+    background-color: rgb(0, 146, 54);
+}
+
+.publ-banner-below {
+    border-left: 180px solid #00C748;
+	border-right: 180px solid #00C748;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
 .dist-banner {
-    grid-area: dist-banner;
     background-color: #FF9933;
+    /* grid-column: 4/5; */
+}
+
+.dist-banner>button {
+    background-color: rgb(197, 118, 40);
+}
+
+.dist-banner-below {
+    border-left: 180px solid #FF9933;
+	border-right: 180px solid #FF9933;
 }
