@@ -5,3 +5,4 @@ Part2/tmp
 App/node_modules
 App/*.log
 App/yarn.lock
+App/package-lock.json
