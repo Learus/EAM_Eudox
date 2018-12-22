@@ -121,7 +121,7 @@ DROP TABLE IF EXISTS `mydb`.`University_Department` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`University_Department` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `University_Id` INT NOT NULL,
-  `Name` VARCHAR(45) NOT NULL,
+  `Name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`Id`),
   INDEX `fk_University_Department_University1_idx` (`University_Id` ASC),
   CONSTRAINT `fk_University_Department_University1`
