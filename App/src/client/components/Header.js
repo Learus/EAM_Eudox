@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router";
 import '../css/Header.css';
-import Profile from '../components/Profile';
+import Profile from './ActionPage';
 import logo from '../images/logo.svg';
 
 export default class Header extends Component {
@@ -14,7 +14,13 @@ export default class Header extends Component {
                     <AccountSnapshot/>
                 </div>
 
-                <div className="header-bottom"/>
+                <div className="header-bottom">
+                    <Link className="header-bottom-entry">Φοιτητές</Link>
+                    <Link className="header-bottom-entry">Εκδότες</Link>
+                    <Link className="header-bottom-entry">Γραμματείες</Link>
+                    <Link className="header-bottom-entry">Διανομείς</Link>
+                    <Link className="header-bottom-entry">Σχετικά με εμάς</Link>
+                </div>
             </div>
         );
     }
@@ -41,26 +47,26 @@ class AccountSnapshot extends Component {
         
 
         return (
-                <div className="account">
+                <div className="account" onClick={this.handleClick}>
                     Joseph_Stalin
 
                     {
                         this.state.open ?
-                        <span className="account_button_downward" style={this.css} onClick={this.handleClick}/>
+                        <span className="account_button_downward"/>
                         :
-                        <span className="account_button" style={this.css} onClick={this.handleClick}/>
+                        <span className="account_button"/>
                     }
                     
                     {
                         this.state.open ? 
                         <ul>
-                            <li><Link to="/profile" className="Link">Το προφίλ μου</Link></li>
-                            <li>Ρυθμίσεις</li>
-                            <li>Βοήθεια</li>
-                            <li>Αποσύνδεση</li>
+                            <li><Link to="/actionpage" className="Link">Το προφίλ μου</Link></li>
+                            <li><Link to="/actionpage" className="Link">Ρυθμίσεις</Link></li>
+                            <li><Link to="/actionpage" className="Link">Βοήθεια</Link></li>
+                            <li><Link to="/actionpage" className="Link">Αποσύνδεση</Link></li>
                         </ul>
                         :
-                        <ul/>
+                        ''
                     }
 
                 </div>

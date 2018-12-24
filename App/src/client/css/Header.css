@@ -5,8 +5,28 @@
 }
 
 .header-bottom {
-    background-color: #909090;
-    height: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.header-bottom-entry{
+
+    height: 65px;
+    width: 380px;
+    background: #BDBDBD;
+
+    
+    margin: auto;
+    text-align: center;
+    line-height: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 30px;
+    color: white;
+}
+
+.header-bottom-entry:hover{
+    background: rgb(158, 158, 158);
 }
 
 .account-circle {
@@ -29,7 +49,7 @@
     top: 40px;
 
     height: 20px;
-    width: 180px;
+    width: 190px;
 
     margin-bottom: 20px;
     margin-top: 20px;
@@ -107,14 +127,24 @@
     position: relative;
     list-style-type: none;
     padding: 0;
-
+    background: rgb(129, 129, 129);
+    width: 210px;
+    height: 180px;
 }
 
-.account  li {
-    width: 180px;
-    background: #E9E9E9;
+.account li {
+    position: relative;
+    top: 6px;
     margin: 5px;
+    width: 190px;
+    text-decoration: none;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: gray;
     padding: 5px;
+    background: #E9E9E9;
     border-radius: 5%;
 }
 
@@ -123,6 +153,14 @@
     font-style: normal;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    font-size: 24px;
     color: gray;
-    background-color: transparent;
+    padding: 5px;
+    background: #E9E9E9;
+    border-radius: 5%;
+}
+
+.Link:hover, .account li:hover{
+    background: rgb(107, 107, 107);
+    color: white;
 }

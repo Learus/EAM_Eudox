@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Header from './Header';
+import { BrowserRouter as Router, Route, Link } from "react-router";
+
 import '../css/Home.css';
+
 import stud_logo from '../images/student_logo.png';
 import secr_logo from '../images/secretary_logo.svg';
 import publ_logo from '../images/publisher_logo.png';
@@ -13,8 +16,8 @@ export default class Home extends Component{
                 <Header/>
                 <div className="grid-container">
                     <Banner type='Student'/>
-                    <Banner type='Secretary'/>
                     <Banner type='Publisher'/>
+                    <Banner type='Secretary'/>
                     <Banner type='Distributor'/>
                 </div>
             </div>
@@ -38,7 +41,7 @@ class Banner extends Component {
                             <img src={stud_logo} width="200"/>
                             <h1>Φοιτητές</h1>
                             <button>Δήλωση Συγγραμμάτων</button>
-                            <button>Ανταλλαγή Συγγραμμάτων</button>
+                            {/* <button>Ανταλλαγή Συγγραμμάτων</button> */}
                             <button>Προβολή Δηλώσεων</button>
                             <div className="stud-banner-below"/>
                         </div>
@@ -61,8 +64,8 @@ class Banner extends Component {
                             <img src={publ_logo} width="97"/>
                             <h1>Εκδότες</h1>
                             <button>Καταχώρηση Συγγραμμάτων</button>
-                            <button>Επιλογή Σημείων Διανομής</button>
-                            <button>Προβολή Περασμένων Συγγραμμάτων</button>
+                            {/* <button>Επιλογή Σημείων Διανομής</button>
+                            <button>Προβολή Περασμένων Συγγραμμάτων</button> */}
                             <div className="publ-banner-below"/>
                         </div>
                 );
@@ -70,10 +73,10 @@ class Banner extends Component {
             case 'Distributor':
                 return (
                         <div className="dist-banner">
-                            <img src={dist_logo} width="120"/>
+                            <img src={dist_logo} width="99"/>
                             <h1>Διανομείς</h1>
                             <button>Παράδοση Συγγραμμάτων</button>
-                            <button>Προβολή Αιτήσεων</button>
+                            {/* <button>Προβολή Αιτήσεων</button> */}
                             <div className="dist-banner-below"/>
                         </div>
                         

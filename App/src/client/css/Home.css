@@ -12,31 +12,30 @@
 
 .stud-banner, .secr-banner, .publ-banner, .dist-banner{
     position: relative;
-    height: 575px;
+    height: 450px;
     width: 300px;
     text-align: center;
     display: inline-block;
     filter: drop-shadow(10px 10px 4px gray);
 }
 
-.secr-banner, .dist-banner {
-    height: 500px;
+.publ-banner, .dist-banner {
+    height: 393px;
 }
 
 .stud-banner-below, .secr-banner-below, .publ-banner-below, .dist-banner-below {
     width: 0;
     height: 0;
     display: inline-block;
-    border-bottom: 100px solid transparent;
+    border-bottom: 80px solid transparent;
     position: relative;
-    top: 88px;
 }
 
 
 .stud-banner>button, .secr-banner>button, .publ-banner>button, .dist-banner>button{
     border: 0;
     color: white;
-    width: 300px;
+    width: 298px;
     height: 75px;
     font-size: large;
     margin: 2px;
@@ -61,11 +60,16 @@
 
 .stud-banner>button{
     background-color: rgb(63, 118, 190);
-    box-shadow: 0px 2px 5px rgb(37, 68, 109);
+    box-shadow: 0px 2px 10px rgb(37, 68, 109);
+}
+
+.stud-banner>button:hover{
+    background-color: rgb(53, 99, 160);
 }
 
 .stud-banner-below {
     
+    top: 43px;
     border-left: 150px solid #4B8EE6;
     border-right: 150px solid #4B8EE6;
 }
@@ -74,16 +78,20 @@
 
 .secr-banner  {
     background-color: #FA3A5B;
-    grid-column: 3 / 4;
+    grid-column: 4 / 5;
 }
 
 .secr-banner>button{
     background-color: rgb(185, 42, 66);
-    box-shadow: 0px 2px 5px rgb(93, 21, 33);
+    box-shadow: 0px 2px 10px rgb(93, 21, 33);
+}
+
+.secr-banner>button:hover{
+    background-color: rgb(141, 33, 51);
 }
 
 .secr-banner-below {
-    top: 92px;
+    top: 43px;
     border-left: 150px solid #FA3A5B;
     border-right: 150px solid #FA3A5B;
 }
@@ -92,15 +100,20 @@
 
 .publ-banner {
     background-color: #00C748;
-    grid-column: 4 / 5;
+    grid-column: 3 / 4;
 }
 
 .publ-banner>button{
     background-color: rgb(0, 146, 54);
-    box-shadow: 0px 2px 5px rgb(0, 71, 26);
+    box-shadow: 0px 2px 10px rgb(0, 71, 26);
+}
+
+.publ-banner>button:hover{
+    background-color: rgb(0, 122, 45);
 }
 
 .publ-banner-below {
+    top: 65px;
     border-left: 150px solid #00C748;
     border-right: 150px solid #00C748;
 }
@@ -114,7 +127,11 @@
 
 .dist-banner>button {
     background-color: rgb(197, 118, 40);
-    box-shadow: 0px 2px 5px  rgb(98, 59, 20);
+    box-shadow: 0px 2px 10px  rgb(98, 59, 20);
+}
+
+.dist-banner>button:hover {
+    background-color: rgb(163, 98, 33);
 }
 
 .dist-banner-below {
