@@ -1,36 +1,27 @@
-.LoginPopup {
-    width: 400px !important;
-
-    border-radius: 10px;
-
-    position: absolute;
-    top: 35% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-}
-
-.LoginForm {
+.SignupForm {
     display: grid;
 }
 
-.LoginForm > header {
+.SignupForm > header {
     text-shadow: 0.1px 0.1px 5px;
 
     font-family: Ubuntu, Helvetica, sans-serif;
     font-size: 25px;
 
-    margin: 10px;
+    text-align: left;
+
+    margin: 40px 100px;
 
     color: cornflowerblue;
 }
 
-.LoginForm > label {
+.SignupForm > label {
     margin: 0 auto;
     width: 80%;
     height: 100%;
 }
 
-.LoginForm > label > p {
+.SignupForm > label > p {
     text-shadow: 0.1px 0.1px 5px;
 
     margin: 10px auto;
@@ -43,15 +34,15 @@
     text-align: left;
 }
 
-.LoginForm > label > input.wrong {
+.SignupForm > label > input.wrong, .SignupForm > label > select.wrong {
     border: 1px solid rgb(248, 97, 97);
 }
 
-.LoginForm > label > input.right {
+.SignupForm > label > input.right, .SignupForm > label > select.right {
     border: none;
 }
 
-.LoginForm > label > input {
+.SignupForm > label > input, .SignupForm > label > select {
     border-radius: 5px;
     border: none;
 
@@ -64,7 +55,8 @@
     background-color: rgb(241, 241, 241)
 }
 
-.LoginForm > button {
+
+#SignupButton {
     box-shadow: 1px 1px 10px gray;
     
     border: none;
@@ -86,7 +78,7 @@
     background-color: cornflowerblue;
 }
 
-.LoginForm > span {
+.SignupForm > span {
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
     color: gray;
 }

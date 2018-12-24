@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import Popup from "reactjs-popup";
+import {Link} from 'react-router';
 import axios from "axios"
 import '../css/Login.css'
 
 export class LoginPopup extends React.Component {
-    closePopup() {
-        close();
-    }
-
     render() {
         return (
-            <Popup className='LoginPopup' trigger={<button>Trigger</button>}>
+            <Popup className='LoginPopup' trigger={<Link>Σύνδεση</Link>}>
                 <LoginForm/>
             </Popup>
         );
@@ -20,7 +17,7 @@ export class LoginPopup extends React.Component {
 export class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {username: '', password: ''};
+        this.state = {username: '', password: '', wrong: false};
             
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -42,7 +39,11 @@ export class LoginForm extends React.Component {
         })
             .then(res => {
                 if (res.data.error) {
-                    alert(res.data.message);
+                    this.setState({
+                        username: this.state.username,
+                        password: this.state.password,
+                        wrong: true
+                    })
                 }
                 else {
                     alert("Login successful, Welcome " + res.data.data.Type);
@@ -63,23 +64,37 @@ export class LoginForm extends React.Component {
         // let password = this.state.password.map
         return (
             <form className='LoginForm' onSubmit={this.handleSubmit}>
+
                 <header>Σύνδεση</header>
                 <label>
                     <p>Όνομα χρήστη</p>
-                    <input type="text" placeholder="Όνομα Χρήστη" value={this.state.username} onChange={this.handleUsernameChange} />
+                    <input 
+                        title={this.state.wrong ? 'Wrong Username' : ''}
+                        className={this.state.wrong ? 'wrong' : 'right'}
+                        type="text" placeholder="Όνομα Χρήστη"
+                        value={this.state.username}
+                        onChange={this.handleUsernameChange}
+                    />
                 </label>
 
                 <label>
                     <p>Κωδικός</p>
-                    <input type="password" placeholder="********" value={this.state.password} onChange={this.handlePasswordChange} />
+                    <input 
+                        title={this.state.wrong ? 'Wrong Password' : ''}
+                        className={this.state.wrong ? 'wrong' : 'right'}
+                        type="password" placeholder="********"
+                        value={this.state.password}
+                        onChange={this.handlePasswordChange}
+                    />
                 </label>
 
                 <button id="LoginButton" type="submit">Σύνδεση</button>
 
-                <p>Νέος χρήστης; </p>
+                <span>
+                    Νέος χρήστης; &nbsp;
+                    <Link to="/signup" id="SignupLink">Γίνε μέλος.</Link>
+                </span>
                 
-                
-
             </form>
         );
     }
