@@ -45,6 +45,9 @@ Values  (30003, 'Μικροοικονομική 1',                1, 'Ιωάν�
         (30004, 'Χειρουργική Ζώων Συντροφίας',      6, 'Αναστασία',     'Κομνηνού'),
         (30004, 'Παθολογία Πτηνών',                 6, 'Ιωάννα',        'Γεωργοπούλου');
 
+
+-- Users --
+
 Insert into mydb.User (Username, Email, Password, Type, Last_Login)
 Values  ('brewknight', 'jmaliaras@gmail.com', 'password', 'Stud', NOW() ),
         ('panospan', 'panospan@gmail.com', 'eimaimikros', 'Stud', NOW() ),
@@ -83,6 +86,7 @@ Insert into mydb.Publisher (Username, Name, Phone, Address_Id)
 Values  ('knossos', 'Εκδόσεις Κνωσσός', '2109784651', 60000),
         ('kleidarithmos', 'Εκδόσεις Κλειδάριθμος', '2106457894', 60001);
 
+
 Alter Table mydb.Distribution_Point AUTO_INCREMENT 70000;
 
 Insert into mydb.Distribution_Point (Owner, Address_Id, Phone, Working_Hours)
@@ -91,14 +95,32 @@ Values  ('knossos', 60000, '2109784651', 'ΔΕ - ΠΑ: 09:00 - 20:00'),
         ('papasotiriou', 60003, '2106457978', 'ΔΕ - ΣΑ: 09:00 - 20:00'),
         ('papasotiriou', 60004, '2106457978', 'ΔΕ - ΠΑ: 09:00 - 17:00');
 
-Select * From mydb.Publisher;
-Select * From mydb.Secretary;
-Select * From mydb.Student;
-Select * From mydb.Distribution_Point;
-Select * From mydb.User;
 
-Select c.Id, c.Name, s.Username 
-From Course as c, Secretary as s, University_Department as ud
-Where   s.University_Department_Id = ud.Id and 
-        c.University_Department_Id = ud.Id AND
-        s.Username = 'dituoa';
+-- Textbooks --
+
+Alter Table mydb.Textbook AUTO_INCREMENT 80000;
+
+Insert into mydb.Textbook (Publisher_Username, Name, Writer, Date_Published, Last_Edited, Date_Added, Price, ISBN, Issue_Number)
+Values  ('knossos', 'Η Μηχανική και Εγώ', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567890, 1),
+        ('kleidarithmos', 'Εισαγωγή στη Γλώσσα C', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654321, 3);
+
+Alter Table mydb.Keyword AUTO_INCREMENT 90000;
+
+Insert into mydb.Keyword (Word)
+Values ('Προγραμματισμός'), ('C'), ('Γλώσσα'), ('Μηχανική'), ('Εγώ'), ('Φρόυντ');
+
+Insert into mydb.Textbook_has_Keyword (Textbook_Id, Keyword_Id)
+Values (80000, 90003), (80000, 90004), (80000, 90005), (80001, 90000), (80001, 90001), (80001, 90002);
+
+
+Insert into mydb.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id)
+Values (70000, 80000), (70002, 80001), (70003, 80001);
+
+
+Select d.*, t.*
+From Textbook as t, Distribution_Point as d, Distribution_Point_has_Textbook as dht, Keyword as k, Textbook_has_Keyword as thk
+Where   d.Id = dht.Distribution_Point_id    and
+        dht.Textbook_Id = t.Id              and
+        k.Id = thk.Keyword_Id               and
+        t.id = thk.Textbook_Id              and
+        k.Word like '%γαμιεσαι%';
