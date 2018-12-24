@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router";
 import '../css/Header.css';
 import Profile from '../components/Profile';
 import logo from '../images/logo.svg';
@@ -9,7 +10,7 @@ export default class Header extends Component {
         return(
             <div>
                 <div className="header-main">
-                    <img src={logo} width="125"/>
+                    <Link to="/"><img src={logo} width="125"/></Link>
                     <AccountSnapshot/>
                 </div>
 
@@ -53,7 +54,7 @@ class AccountSnapshot extends Component {
                     {
                         this.state.open ? 
                         <ul>
-                            <li>Το προφίλ μου</li>
+                            <li><Link to="/profile" className="Link">Το προφίλ μου</Link></li>
                             <li>Ρυθμίσεις</li>
                             <li>Βοήθεια</li>
                             <li>Αποσύνδεση</li>
