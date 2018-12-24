@@ -29,15 +29,9 @@
     display: inline-block;
     border-bottom: 100px solid transparent;
     position: relative;
-    top: 89px;
+    top: 88px;
 }
 
-.secr-banner-below {
-    top: 93px;
-}
-.dist-banner-below {
-    top: 65px;
-}
 
 .stud-banner>button, .secr-banner>button, .publ-banner>button, .dist-banner>button{
     border: 0;
@@ -71,6 +65,7 @@
 }
 
 .stud-banner-below {
+    
     border-left: 150px solid #4B8EE6;
     border-right: 150px solid #4B8EE6;
 }
@@ -88,6 +83,7 @@
 }
 
 .secr-banner-below {
+    top: 92px;
     border-left: 150px solid #FA3A5B;
     border-right: 150px solid #FA3A5B;
 }
@@ -122,6 +118,7 @@
 }
 
 .dist-banner-below {
+    top: 65px;
     border-left: 150px solid #FF9933;
     border-right: 150px solid #FF9933;
 }

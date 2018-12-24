@@ -10,7 +10,7 @@ export default class Header extends Component {
             <div>
                 <div className="header-main">
                     <img src={logo} width="125"/>
-                    <Login/>
+                    <AccountSnapshot/>
                 </div>
 
                 <div className="header-bottom"/>
@@ -19,13 +19,50 @@ export default class Header extends Component {
     }
 }
 
-class Login extends Component {
+class AccountSnapshot extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {open: false};
+
+        //Bindings
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(e) {
+
+
+        this.setState( state => ( {open: !state.open} ) );
+    }
 
     render() {
+
+        
+
         return (
-            <div className="account-circle">
-                
-            </div>
+                <div className="account">
+                    Joseph_Stalin
+
+                    {
+                        this.state.open ?
+                        <span className="account_button_downward" style={this.css} onClick={this.handleClick}/>
+                        :
+                        <span className="account_button" style={this.css} onClick={this.handleClick}/>
+                    }
+                    
+                    {
+                        this.state.open ? 
+                        <ul>
+                            <li>Το προφίλ μου</li>
+                            <li>Ρυθμίσεις</li>
+                            <li>Βοήθεια</li>
+                            <li>Αποσύνδεση</li>
+                        </ul>
+                        :
+                        <ul/>
+                    }
+
+                </div>
         );
     }
 }
