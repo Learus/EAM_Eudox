@@ -369,7 +369,7 @@ function BaseSignupForm(props) {
                     onChange = {props.hrepassword}/>
 
             <label>
-                <p>Τύπος Λογαριασμού*</p>
+                <p>Τύπος Λογαριασμού *</p>
                 <select 
                     title = {props.ftype()}
                     className = {props.ftype() !== '' ? 'wrong' : 'right'}
