@@ -1,19 +1,71 @@
-.SignupForm {
-    display: grid;
-}
-
-.SignupForm > header {
-    text-shadow: 0.1px 0.1px 5px;
+.Signup > h1 {
+    /* text-shadow: 0.1px 0.1px 5px; */
 
     font-family: Ubuntu, Helvetica, sans-serif;
-    font-size: 25px;
+    /* font-size: 25px; */
+    font-weight: normal;
 
     text-align: left;
 
-    margin: 40px 100px;
+    margin: 40px 60px;
 
     color: cornflowerblue;
 }
+
+.SignupChoices {
+    float: left;
+    margin-left: 60px;
+}
+
+.SignupChoices > button {
+    box-shadow: 1px 1px 10px gray;
+    
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 20px;
+
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    
+    width: 150px;
+
+    text-align: center;
+
+    background-color: cornflowerblue;
+
+}
+
+.SignupChoices > div {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+}
+
+#SignupLink, #LoginLink {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    color: cornflowerblue;
+}
+
+
+.SignupForms {
+    display: flex;
+    /* display: grid; */
+    /* grid-template-columns: 1fr 1fr; */
+}
+
+
+.SignupForm {
+    display: grid;
+    /* float: left; */
+    width: 50vw;
+}
+
 
 .SignupForm > label {
     margin: 0 auto;
@@ -22,7 +74,7 @@
 }
 
 .SignupForm > label > p {
-    text-shadow: 0.1px 0.1px 5px;
+    /* text-shadow: 0.1px 0.1px 5px; */
 
     margin: 10px auto;
 
@@ -55,36 +107,18 @@
     background-color: rgb(241, 241, 241)
 }
 
-
-#SignupButton {
-    box-shadow: 1px 1px 10px gray;
-    
-    border: none;
-    border-radius: 5px;
-
-    cursor: pointer;
-
-    color: white;
-
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    font-size: 20px;
-
-    padding: 10px 20px;
-    margin: 20px auto;
-    width: 150px;
-
-    text-align: center;
-
-    background-color: cornflowerblue;
+.radioInputs {
+    float: left;
 }
+
+.SignupForm > label > .radioInputs > div > label {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    color: gray;
+}
+
 
 .SignupForm > span {
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
     color: gray;
 }
 
-#SignupLink {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    cursor: pointer;
-    color: cornflowerblue;
-}

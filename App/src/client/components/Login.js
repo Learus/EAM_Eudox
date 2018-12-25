@@ -7,7 +7,7 @@ import '../css/Login.css'
 export class LoginPopup extends React.Component {
     render() {
         return (
-            <Popup className='LoginPopup' trigger={<Link>Σύνδεση</Link>}>
+            <Popup className='LoginPopup' trigger={<Link id="LoginLink">Σύνδεση</Link>}>
                 <LoginForm/>
             </Popup>
         );
