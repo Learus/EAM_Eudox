@@ -81,7 +81,9 @@
 .account > ul{
     list-style-type: none;
     padding: 0;
-    background: rgb(129, 129, 129);
+    background-color: rgb(170, 170, 170, 0.7);
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px;
     width: 210px;
     height: 180px;
 }
@@ -91,6 +93,7 @@
     top: 6px;
     margin: 5px;
     width: 190px;
+    border-radius: 5px;
 }
 
 .Link, .account li {
@@ -101,7 +104,9 @@
     font-size: 24px;
     color: gray;
     padding: 5px;
-    background: #E9E9E9;
+    background-color: rgb(238, 238, 238);
+    transition: 200ms;
+    cursor: pointer;
 }
 
 .Link {
@@ -109,9 +114,15 @@
 }
 
 .Link:hover, .account li:hover{
-    background: rgb(107, 107, 107);
-    transition: 200ms;
-    color: white;
+    background-color: rgb(226, 226, 226);
+    
+    /* color: white; */
+}
+
+.Link:active, .account li:active{
+    background-color: rgb(207, 207, 207);
+    
+    /* color: white; */
 }
 
 /*//////////////////////////////////////////////////////////////////////////////////////////*/
