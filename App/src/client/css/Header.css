@@ -20,8 +20,28 @@
     font-family: Arial, Helvetica, sans-serif;
 
     font-size: 30px;
+    border: 0;
     color: white;
     background: #BDBDBD;
+}
+
+.header-bottom-entry > ul {
+    list-style-type: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.header-bottom-entry > div{
+    position: relative;
+    z-index: 1;
+    top: 5px;
+
+    padding: 0;
+    background-color: rgb(170, 170, 170, 0.7);
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px;
 }
 
 .header-bottom-entry:hover{
@@ -96,7 +116,7 @@
     border-radius: 5px;
 }
 
-.Link, .account li {
+.Link, .account li, .header-bottom-entry li{
     text-decoration: none;
     font-style: normal;
     font-family: Arial, Helvetica, sans-serif;
@@ -113,13 +133,13 @@
     background: transparent;
 }
 
-.Link:hover, .account li:hover{
+.Link:hover, .account li:hover, .header-bottom-entry li:hover{
     background-color: rgb(226, 226, 226);
     
     /* color: white; */
 }
 
-.Link:active, .account li:active{
+.Link:active, .account li:active, .header-bottom-entry li:active{
     background-color: rgb(207, 207, 207);
     
     /* color: white; */
@@ -151,3 +171,5 @@
     font-weight: bold;
     font-size: 18px;
 }
+
+/*//////////////////////////////////////////////////////////////////////////////////////////*/

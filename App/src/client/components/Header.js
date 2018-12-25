@@ -15,11 +15,22 @@ export default class Header extends Component {
                 </div>
 
                 <div className="header-bottom">
-                    <Link className="header-bottom-entry">Φοιτητές</Link>
-                    <Link className="header-bottom-entry">Εκδότες</Link>
-                    <Link className="header-bottom-entry">Γραμματείες</Link>
-                    <Link className="header-bottom-entry">Διανομείς</Link>
-                    <Link className="header-bottom-entry">Σχετικά με εμάς</Link>
+                    <MenuOption category="Φοιτητές" optionList = { ["Δήλωση Συγγραμμάτων",
+                                                                    "Ανταλλαγή Συγγραμμάτων",
+                                                                    "Προβολή Δηλώσεων"] }/>
+
+                    <MenuOption category="Εκδότες" optionList = { ["Καταχώρηση Συγγραμμάτων",
+                                                                    "Επιλογή Σημείων Διανομής",
+                                                                    "Προβολή Περασμένων Συγγραμμάτων"] }/>
+
+                    <MenuOption category="Γραμματείες" optionList = { ["Καταχώρηση Μαθημάτων",
+                                                                    "Αντιστοίχηση Συγγραμμάτων"] }/>
+
+                    <MenuOption category="Διανομείς" optionList = { ["Παράδοση Συγγραμμάτων",
+                                                                    "Προβολή Αιτήσεων"] }/>
+
+                    <button className="header-bottom-entry">Σχετικά με εμάς</button>
+
                 </div>
             </div>
         );
@@ -103,5 +114,59 @@ class AccountSnapshot extends Component {
                 </div>
             );
         }
+    }
+}
+
+class MenuOption extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            category: props.category,
+            optionList: props.optionList,
+            isOpen: false
+        };
+
+        this.objectList = this.state.optionList.map( (option) => 
+            <li><Link className="Link" key={option}>{option}<br/></Link></li>
+            );
+
+        this.handleClick = this.handleClick.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
+
+    }
+    
+    handleClick() {
+        if(!this.state.open)
+        {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        }
+        else
+        {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+
+        this.setState( state => ( {isOpen: !state.isOpen} ) );
+    }
+
+    handleOutsideClick(e) {
+        if (this.node.contains(e.target)) {
+            return;
+          }
+      
+          this.handleClick();
+    }
+
+    render() {
+
+        return (
+            <button className="header-bottom-entry" ref={node => {this.node = node;}} onClick={this.handleClick}>
+                {this.state.category}
+
+                { this.state.isOpen ? <ul>{this.objectList}</ul> : ''}
+
+            </button>
+        );
     }
 }
