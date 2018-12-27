@@ -1,6 +1,7 @@
 const express = require('express');
 const os = require('os');
-const mysql = require('mysql');
+
+const sql = require('./connection').initConnection();
 
 const bodyParser = require('body-parser');
 const app = express();
@@ -8,18 +9,19 @@ const app = express();
 app.use(express.static('dist'));
 app.use(bodyParser.json())
 
-app.get('/api/getUsername', function(req, res)  {
-    // console.log(req);
-    const connection = connect();
-    connection.connect();
+app.post('/api/getUsername', function(req, res)  {
+    console.log(req.body);
     
-    connection.query("Select Username From User", function (err, rows, fields) {
+    sql.query("Select 1 From User Where Username = ?", [req.body.username],  function (err, rows, fields) {
         if (err) throw err;
-        // console.log(rows);
-        res.send({username: rows[0].Username});
+        console.log(rows);
+        if (rows.length !== 0) {
+            res.send({error: true, message: "Username already exists"});
+        }
+        else {
+            res.send({error: false, message: "OK"});
+        }
     })
-    
-    connection.end();
 
 });
 
@@ -28,12 +30,9 @@ app.post('/api/Login', function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
 
-    const connection = connect();
-    connection.connect();
-
     const query = "Select * From User Where Username = '" + username + "' and Password = '" + password + "';"
     
-    connection.query(query, function (err, rows, fields) {
+    sql.query(query, function (err, rows, fields) {
         if (err) throw err;
 
         if (rows.length === 0) {
@@ -44,17 +43,17 @@ app.post('/api/Login', function (req, res) {
         }
     })
     
-    connection.end();
 })
+
+app.post('/api/Signup', require('./signup'))
 
 
 app.post('/api/getUniversities', function (req, res) {
-    const connection = connect();
-    connection.connect();
+
 
     const query = "Select * From University";
 
-    connection.query(query, function (err, rows, fields) {
+    sql.query(query, function (err, rows, fields) {
         if (err) throw err;
 
         if (rows.length === 0) {
@@ -67,13 +66,12 @@ app.post('/api/getUniversities', function (req, res) {
 })
 
 app.post('/api/getDepartments', function (req, res) {
-    const connection = connect();
 
     const uni = req.body.university;
 
     const query = "Select * From University_Department Where University_Id = " + uni;
 
-    connection.query(query, function (err, rows, fields) {
+    sql.query(query, function (err, rows, fields) {
         if (err) throw err;
 
         if (rows.length === 0) {
@@ -86,13 +84,3 @@ app.post('/api/getDepartments', function (req, res) {
 })
 
 app.listen(8080, () => console.log('Listening on port 8080!'));
-
-
-function connect() {
-    return ( mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'password',
-        database: 'mydb'
-    }) );
-}

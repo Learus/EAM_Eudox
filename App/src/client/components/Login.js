@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Popup from "reactjs-popup";
-import {Link} from 'react-router';
+import {Link, browserHistory} from 'react-router';
 import axios from "axios"
 import '../css/Login.css'
 
@@ -15,6 +15,7 @@ export class LoginPopup extends React.Component {
 }
 
 export class LoginForm extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {username: '', password: '', wrong: false};
@@ -47,11 +48,7 @@ export class LoginForm extends React.Component {
                 }
                 else {
                     alert("Login successful, Welcome " + res.data.data.Type);
-                    this.props.handler(res.data.data.Username);
-                    this.setState({
-                        username: '',
-                        password: ''
-                    })
+                    browserHistory.push('/profile');
                 }
             })
             .catch(err => console.log(err));
@@ -71,7 +68,7 @@ export class LoginForm extends React.Component {
                     <input 
                         title={this.state.wrong ? 'Wrong Username' : ''}
                         className={this.state.wrong ? 'wrong' : 'right'}
-                        type="text" placeholder="Όνομα Χρήστη"
+                        type="text" placeholder="π.χ. knossos83"
                         value={this.state.username}
                         onChange={this.handleUsernameChange}
                     />
