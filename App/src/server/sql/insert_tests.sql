@@ -89,12 +89,11 @@ Values  ('knossos', 'Εκδόσεις Κνωσσός', '2109784651', 60000),
 
 Alter Table mydb.Distribution_Point AUTO_INCREMENT 70000;
 
-Insert into mydb.Distribution_Point (Owner, Address_Id, Phone, Working_Hours)
-Values  ('knossos', 60000, '2109784651', 'ΔΕ - ΠΑ: 09:00 - 20:00'),
-        ('ianos', 60002, '2109950995', 'ΔΕ - ΠΑ: 09:00 - 20:00'),
-        ('papasotiriou', 60003, '2106457978', 'ΔΕ - ΣΑ: 09:00 - 20:00'),
-        ('papasotiriou', 60004, '2106457978', 'ΔΕ - ΠΑ: 09:00 - 17:00');
-
+Insert into mydb.Distribution_Point (Owner, Name, Address_Id, Phone, Working_Hours)
+Values  ('knossos', "Εκδόσεις Κνωσσός", 60000, '2109784651', 'ΔΕ - ΠΑ: 09:00 - 20:00'),
+        ('ianos', "Βιβλιοπωλείο Ιανός", 60002, '2109950995', 'ΔΕ - ΠΑ: 09:00 - 20:00'),
+        ('papasotiriou', "Παπασωτηρίου Πανεπιστήμιο", 60003, '2106457978', 'ΔΕ - ΣΑ: 09:00 - 20:00'),
+        ('papasotiriou', "Παπασωτηρίου Ηλιούπολη", 60004, '2106457978', 'ΔΕ - ΠΑ: 09:00 - 17:00');
 
 -- Textbooks --
 
@@ -122,5 +121,4 @@ From Textbook as t, Distribution_Point as d, Distribution_Point_has_Textbook as 
 Where   d.Id = dht.Distribution_Point_id    and
         dht.Textbook_Id = t.Id              and
         k.Id = thk.Keyword_Id               and
-        t.id = thk.Textbook_Id              and
-        k.Word like '%γαμιεσαι%';
+        t.id = thk.Textbook_Id              

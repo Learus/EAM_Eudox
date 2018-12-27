@@ -1,0 +1,124 @@
+.Signup > h1 {
+    /* text-shadow: 0.1px 0.1px 5px; */
+
+    font-family: Ubuntu, Helvetica, sans-serif;
+    /* font-size: 25px; */
+    font-weight: normal;
+
+    text-align: left;
+
+    margin: 40px 60px;
+
+    color: cornflowerblue;
+}
+
+.SignupChoices {
+    float: left;
+    margin-left: 60px;
+}
+
+.SignupChoices > button {
+    box-shadow: 1px 1px 10px gray;
+    
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 20px;
+
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    
+    width: 150px;
+
+    text-align: center;
+
+    background-color: cornflowerblue;
+
+}
+
+.SignupChoices > div {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+}
+
+#SignupLink, #LoginLink {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    color: cornflowerblue;
+}
+
+
+.SignupForms {
+    display: flex;
+    /* display: grid; */
+    /* grid-template-columns: 1fr 1fr; */
+}
+
+
+.SignupForm {
+    display: grid;
+    /* float: left; */
+    width: 50vw;
+}
+
+
+.SignupForm > label {
+    margin: 0 auto;
+    width: 80%;
+    height: 100%;
+}
+
+.SignupForm > label > p {
+    /* text-shadow: 0.1px 0.1px 5px; */
+
+    margin: 10px auto;
+
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+
+
+    color: cornflowerblue;
+    text-align: left;
+}
+
+.SignupForm > label > input.wrong, .SignupForm > label > select.wrong {
+    border: 1px solid rgb(248, 97, 97);
+}
+
+.SignupForm > label > input.right, .SignupForm > label > select.right {
+    border: none;
+}
+
+.SignupForm > label > input, .SignupForm > label > select {
+    border-radius: 5px;
+    border: none;
+
+    width : 80%;
+
+    float: left;
+
+    padding: 15px;
+
+    background-color: rgb(241, 241, 241)
+}
+
+.radioInputs {
+    float: left;
+}
+
+.SignupForm > label > .radioInputs > div > label {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    color: gray;
+}
+
+
+.SignupForm > span {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    color: gray;
+}
+

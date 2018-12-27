@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
+
+import {LoginPopup} from './Login'
 import { BrowserRouter as Router, Route, Link } from "react-router";
 
 import '../css/Home.css';
@@ -14,6 +16,7 @@ export default class Home extends Component{
         return(
             <div>
                 <Header/>
+                <LoginPopup/>
                 <div className="grid-container">
                     <Banner type='Student'/>
                     <Banner type='Publisher'/>

@@ -6,8 +6,8 @@ import { Route, IndexRoute } from 'react-router';
  */
 import App from './components/App';
 import Home from './components/Home';
+import Signup from './components/Signup';
 import ActionPage from './components/ActionPage';
-import SignupPage from './components/SignupPage';
 
 /**
  * All routes go here.
@@ -16,7 +16,7 @@ import SignupPage from './components/SignupPage';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home}/>
+    <Route path="/signup" component={Signup}/>
     <Route path="/actionpage" component={ActionPage}/>
-    <Route path="/signup" component={SignupPage}/>
   </Route>
 );
