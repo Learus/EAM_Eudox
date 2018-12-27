@@ -1,0 +1,41 @@
+.stud-action-bar, .publ-action-bar, .secr-action-bar, .dist-action-bar {
+    display: grid;
+    width: 500px;
+    height: 738px;
+    margin-top: 4px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+.stud-action-bar {
+    background: rgba(75, 142, 230, 0.8);
+}
+
+.stud-action-bar>button{
+    background: #4B8EE6;
+    border: 0;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+.publ-action-bar {
+    background: #00C748;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+.secr-action-bar {
+    background: #FA3A5B;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
+
+.dist-action-bar {
+    background: #FF9933;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////*/
