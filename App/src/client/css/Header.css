@@ -1,10 +1,175 @@
 .header-main {
     background-color: #ffffff;
-    padding: 55px;
+    display: grid;
+    grid-template-columns: [col1] 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr [col2];
 }
 
 .header-bottom {
-    background-color: #707070;
-    padding: 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
+.header-bottom-entry{
+
+    height: 65px;
+    width: 380px;
+
+    margin: auto;
+    text-align: center;
+    line-height: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 30px;
+    border: 0;
+    color: white;
+    background: #BDBDBD;
+}
+
+.header-bottom-entry > ul {
+    list-style-type: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.header-bottom-entry > div{
+    position: relative;
+    z-index: 1;
+    top: 5px;
+
+    padding: 0;
+    background-color: rgb(170, 170, 170, 0.7);
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px;
+}
+
+.header-bottom-entry:hover{
+    background: rgb(158, 158, 158);
+    transition: 200ms;
+}
+
+/*///////////////////////////////////////////////////////////////////*/
+
+.account, .account-empty {
+    z-index: 1;
+    grid-column-start: end;
+    
+    white-space: nowrap;
+
+    position: relative;
+    top: 40px;
+
+    height: 20px;
+    width: 190px;
+
+    margin-top: 20px;
+    margin-right: 30px;    
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: gray;
+    background-color: transparent;
+}
+
+.account_button, .account_button_downward {
+    
+    margin-left: 10px;
+
+    display: inline-block;
+
+    width: 0;
+    height: 0;
+
+    border-top: 0;
+    border-bottom: 14px solid gray;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+
+    background:  transparent;
+
+}
+
+.account_button_downward {
+    border-top: 14px solid gray;
+    border-bottom: 0;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////*/
+
+.account > ul{
+    list-style-type: none;
+    padding: 0;
+    background-color: rgb(170, 170, 170, 0.7);
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px;
+    width: 210px;
+    height: 180px;
+}
+
+.account li {
+    position: relative;
+    top: 6px;
+    margin: 5px;
+    width: 190px;
+    border-radius: 5px;
+}
+
+.Link, .account li, .header-bottom-entry li{
+    text-decoration: none;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: gray;
+    padding: 5px;
+    background-color: rgb(238, 238, 238);
+    transition: 200ms;
+    cursor: pointer;
+}
+
+.Link {
+    background: transparent;
+}
+
+.Link:hover, .account li:hover, .header-bottom-entry li:hover{
+    background-color: rgb(226, 226, 226);
+    
+    /* color: white; */
+}
+
+.Link:active, .account li:active, .header-bottom-entry li:active{
+    background-color: rgb(207, 207, 207);
+    
+    /* color: white; */
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////*/
+
+.account-empty {
+    width: 230px;
+    color: #4B8EE6;
+    text-decoration: none;
+}
+
+.account-empty .Link {
+    color: #4B8EE6;
+    background: transparent;
+    text-decoration: none;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////*/
+
+.home-img {
+    position: relative;
+    top: -8px;
+
+    color: rgb(106, 162, 235);
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////*/
