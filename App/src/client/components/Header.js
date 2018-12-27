@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router";
 import '../css/Header.css';
 import Profile from './ActionPage';
 import logo from '../images/logo.svg';
+import {LoginPopup} from './Login'
 
 export default class Header extends Component {
 
@@ -71,7 +72,7 @@ class AccountSnapshot extends Component {
 
     render() {
 
-        this.user = "Μπαιραμης"; // Εδω κατσε και βαλε συνδεση με τη βαση ή cookies ή δεν ξερω και γω τι σκατα
+        // this.user = "Μπαιραμης"; // Εδω κατσε και βαλε συνδεση με τη βαση ή cookies ή δεν ξερω και γω τι σκατα
 
         if(this.user != null)
         {
@@ -107,7 +108,8 @@ class AccountSnapshot extends Component {
         {
             return(
                 <div className="account-empty">
-                        Σύνδεση | <space/>
+                    <LoginPopup/>
+                    |
                     <Link to="/signup" className="Link">
                         Εγγραφή
                     </Link>
