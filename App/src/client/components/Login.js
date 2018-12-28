@@ -7,7 +7,7 @@ import '../css/Login.css'
 export class LoginPopup extends React.Component {
     render() {
         return (
-            <Popup className='LoginPopup' trigger={<Link id="LoginLink">Σύνδεση</Link>}>
+            <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
                 <LoginForm/>
             </Popup>
         );
@@ -48,7 +48,7 @@ export class LoginForm extends React.Component {
                 }
                 else {
                     alert("Login successful, Welcome " + res.data.data.Type);
-                    browserHistory.push('/profile');
+                    browserHistory.push('/actionpage');
                 }
             })
             .catch(err => console.log(err));
@@ -89,7 +89,7 @@ export class LoginForm extends React.Component {
 
                 <span>
                     Νέος χρήστης; &nbsp;
-                    <Link to="/signup" id="SignupLink">Γίνε μέλος.</Link>
+                    <Link to="/signup" className="Link">Γίνε μέλος.</Link>
                 </span>
                 
             </form>

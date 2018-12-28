@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router";
+import { Link, browserHistory } from "react-router";
 import '../css/Header.css';
 import Profile from './ActionPage';
 import logo from '../images/logo.svg';
-import {LoginPopup} from './Login'
+import {LoginPopup} from './Login';
+import Popup from 'reactjs-popup';
 
 export default class Header extends Component {
 
     render() {
         return(
             <div>
-                <div className="header-main">
-                    <Link to="/" className="home-img"><img src={logo} width="125"/>Εύδοξος</Link>
+                <div className="header-top">
+                    <Link to="/" className="home-img">
+                        <img src={logo}/>
+                        <br/>
+                        Εύδοξος
+                    </Link>
                     <AccountSnapshot/>
                 </div>
 
@@ -30,7 +35,7 @@ export default class Header extends Component {
                     <MenuOption category="Διανομείς" optionList = { ["Παράδοση Συγγραμμάτων",
                                                                     "Προβολή Αιτήσεων"] }/>
 
-                    <button className="header-bottom-entry">Σχετικά με εμάς</button>
+                    <button className="MenuOptionButton">Σχετικά με εμάς</button>
 
                 </div>
             </div>
@@ -42,33 +47,8 @@ class AccountSnapshot extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {open: false, logged_in: false};
-
-        //Bindings
-        this.handleClick = this.handleClick.bind(this);
-        this.handleOutsideClick = this.handleOutsideClick.bind(this);
     }
 
-    handleClick() {
-        if(!this.state.open)
-        {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        }
-        else
-        {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
-
-        this.setState( state => ( {open: !state.open} ) );
-    }
-
-    handleOutsideClick(e) {
-        if (this.node.contains(e.target)) {
-            return;
-          }
-      
-          this.handleClick();
-    }
 
     render() {
 
@@ -78,30 +58,37 @@ class AccountSnapshot extends Component {
         {
 
             return (
-                    <div className="account" ref={node => {this.node = node;}} onClick={this.handleClick} >
+                <Popup 
+                    className='AccountPopup' 
+                    trigger = {open => (
+                        <Link className="AccountPopupText">
+                            {this.user}
+                            {
+                                open ?
+                                <span className="account_button"/>
+                                :
+                                <span className="account_button_downward"/>
+                            }
+                        </Link>
+                    )}
+                >
 
-                        {this.user}
+                    <ul>
+                        <li key="profile" onClick={ () => {browserHistory.push("/actionpage")} }>
+                            <Link to="/actionpage" className="Link">Το προφίλ μου</Link>
+                        </li>
+                        <li key="settings" onClick={ () => {browserHistory.push("/actionpage")} }>
+                            <Link to="/actionpage" className="Link">Ρυθμίσεις</Link>
+                        </li>
+                        <li key="help" onClick={ () => {browserHistory.push("/actionpage")} }>
+                            <Link to="/actionpage" className="Link">Βοήθεια</Link>
+                        </li>
+                        <li key="logout" onClick={ () => {browserHistory.push("/actionpage")} }>
+                            <Link to="/actionpage" className="Link">Αποσύνδεση</Link>
+                        </li>
+                    </ul>
 
-                        {
-                            this.state.open ?
-                            <span className="account_button"/>
-                            :
-                            <span className="account_button_downward"/>
-                        }
-                        
-                        {
-                            this.state.open ? 
-                            <ul>
-                                <li><Link to="/actionpage" className="Link">Το προφίλ μου</Link></li>
-                                <li><Link to="/actionpage" className="Link">Ρυθμίσεις</Link></li>
-                                <li><Link to="/actionpage" className="Link">Βοήθεια</Link></li>
-                                <li><Link to="/actionpage" className="Link">Αποσύνδεση</Link></li>
-                            </ul>
-                            :
-                            ''
-                        }
-
-                    </div>
+                </Popup>
             );
         }
         else
@@ -109,7 +96,9 @@ class AccountSnapshot extends Component {
             return(
                 <div className="account-empty">
                     <LoginPopup/>
+                    &nbsp;
                     |
+                    &nbsp;
                     <Link to="/signup" className="Link">
                         Εγγραφή
                     </Link>
@@ -119,56 +108,35 @@ class AccountSnapshot extends Component {
     }
 }
 
-class MenuOption extends Component {
+function MenuOption(props) {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            category: props.category,
-            optionList: props.optionList,
-            isOpen: false
-        };
-
-        this.objectList = this.state.optionList.map( (option) => 
-            <li><Link className="Link" key={option}>{option}<br/></Link></li>
-            );
-
-        this.handleClick = this.handleClick.bind(this);
-        this.handleOutsideClick = this.handleOutsideClick.bind(this);
-
-    }
-    
-    handleClick() {
-        if(!this.state.open)
-        {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        }
-        else
-        {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
-
-        this.setState( state => ( {isOpen: !state.isOpen} ) );
-    }
-
-    handleOutsideClick(e) {
-        if (this.node.contains(e.target)) {
-            return;
-          }
-      
-          this.handleClick();
-    }
-
-    render() {
-
+    const links = props.optionList.map(option => {
         return (
-            <button className="header-bottom-entry" ref={node => {this.node = node;}} onClick={this.handleClick}>
-                {this.state.category}
+                <li key={option} onClick={ () => {browserHistory.push("/actionpage")} }>
+                    <Link to="/actionpage" className="MenuOptionLink">
+                        {option}
+                    </Link>
+                </li>
+        )
+    });
 
-                { this.state.isOpen ? <ul>{this.objectList}</ul> : ''}
+    return (
+        <Popup 
+            className = "SubMenuPopup"
+            trigger = { open => (
+                <button className={open ? "MenuOptionButton Open" : "MenuOptionButton Closed"}>
+                    {props.category}
+                </button>
+            )}
+            closeOnDocumentClick
+            on="hover"
+            position="bottom left"
+            arrow={false}
+        >
+            <ul>
+                {links}
+            </ul>
+        </Popup>
 
-            </button>
-        );
-    }
+    );
 }

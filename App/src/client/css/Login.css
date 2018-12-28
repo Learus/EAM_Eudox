@@ -5,12 +5,8 @@
 .LoginPopup {
     width: 400px !important;
 
-    border-radius: 10px;
+    border-radius: 5px;
 
-    position: absolute;
-    top: 35% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
     box-shadow: 1px 1px 10px !important;
 }
 
@@ -19,7 +15,7 @@
 }
 
 .LoginForm > header {
-    text-shadow: 0.1px 0.1px 5px;
+    /* text-shadow: 0.1px 0.1px 5px; */
 
     font-family: Ubuntu, Helvetica, sans-serif;
     font-size: 25px;
@@ -36,7 +32,7 @@
 }
 
 .LoginForm > label > p {
-    text-shadow: 0.1px 0.1px 5px;
+    /* text-shadow: 0.1px 0.1px 5px; */
 
     margin: 10px auto;
 
@@ -59,7 +55,6 @@
 .LoginForm > label > input {
     border-radius: 5px;
     border: none;
-
     width : 80%;
 
     float: left;
@@ -84,6 +79,7 @@
 
     padding: 10px 20px;
     margin: 20px auto;
+    margin-bottom: 10px;
     width: 150px;
 
     text-align: center;
@@ -93,11 +89,12 @@
 
 .LoginForm > span {
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 15px;
     color: gray;
 }
 
-#SignupLink {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+.Link {
+    color: #4b8ee6;
+    text-decoration: none;
     cursor: pointer;
-    color: cornflowerblue;
 }

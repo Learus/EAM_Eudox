@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Header from './Header';
 
-import {LoginPopup} from './Login'
-import { BrowserRouter as Router, Route, Link } from "react-router";
+import { Link, browserHistory } from "react-router";
 
 import '../css/Home.css';
+
+import Actions from './Actions';
 
 import stud_logo from '../images/student_logo.png';
 import secr_logo from '../images/secretary_logo.svg';
@@ -16,15 +17,38 @@ export default class Home extends Component{
         return(
             <div>
                 <Header/>
-                <LoginPopup/>
                 <div className="grid-container">
-                    <Banner type='Student'/>
-                    <Banner type='Publisher'/>
-                    <Banner type='Secretary'/>
-                    <Banner type='Distributor'/>
+                    <Banner 
+                        header="Φοιτητές" 
+                        type='Student'/>
+                    <Banner 
+                        header="Εκδότες" 
+                        type='Publisher'/>
+                    <Banner 
+                        header="Γραμματείες" 
+                        type='Secretary'/>
+                    <Banner 
+                        header="Διανομείς" 
+                        type='Distributor'/>
                 </div>
             </div>
         );
+    }
+}
+
+function BannerImage(props) {
+    switch(props.type) {
+        case 'Student':
+            return <img src={stud_logo} width="200" className="BannerImage"/>
+
+        case 'Secretary':
+            return <img src={secr_logo} width="150" className="BannerImage"/>
+
+        case 'Publisher':
+            return <img src={publ_logo} width="97" className="BannerImage"/>
+
+        case 'Distributor':
+            return <img src={dist_logo} width="99" className="BannerImage"/>
     }
 }
 
@@ -36,54 +60,29 @@ class Banner extends Component {
     }
 
     render() {
-        switch(this.type)
-        {
-            case 'Student':
-                return (
-                        <div className="stud-banner">
-                            <img src={stud_logo} width="200"/>
-                            <h1>Φοιτητές</h1>
-                            <button>Δήλωση Συγγραμμάτων</button>
-                            {/* <button>Ανταλλαγή Συγγραμμάτων</button> */}
-                            <button>Προβολή Δηλώσεων</button>
-                            <div className="stud-banner-below"/>
-                        </div>
-                );
+        const meta = Actions[`${this.props.type}`];
+        let buttons = meta.Quicks.map(index => {
+            return meta.Actions[index];
+        })
 
-            case 'Secretary':
-                return (
-                        <div className="secr-banner">
-                            <img src={secr_logo} width="150"/>
-                            <h1>Γραμματείες</h1>
-                            <button>Καταχώρηση Μαθημάτων</button>
-                            <button>Αντιστοίχηση Συγγραμμάτων</button>
-                            <div className="secr-banner-below"/>
-                        </div>
-                );
+        buttons = buttons.map( (button, index) => {
+            return (
+                <li key={button} onClick={ () => {browserHistory.push(`/actionpage/${this.props.type}/${index}`)} }>
+                    <Link to="/actionpage" className="BannerLink">{button}</Link>
+                </li>
+            )
+        });
 
-            case 'Publisher':
-                return (
-                        <div className="publ-banner">
-                            <img src={publ_logo} width="97"/>
-                            <h1>Εκδότες</h1>
-                            <button>Καταχώρηση Συγγραμμάτων</button>
-                            {/* <button>Επιλογή Σημείων Διανομής</button>
-                            <button>Προβολή Περασμένων Συγγραμμάτων</button> */}
-                            <div className="publ-banner-below"/>
-                        </div>
-                );
-
-            case 'Distributor':
-                return (
-                        <div className="dist-banner">
-                            <img src={dist_logo} width="99"/>
-                            <h1>Διανομείς</h1>
-                            <button>Παράδοση Συγγραμμάτων</button>
-                            {/* <button>Προβολή Αιτήσεων</button> */}
-                            <div className="dist-banner-below"/>
-                        </div>
-                        
-                );
-        }
+        return (
+            <div className={this.props.type + "Banner Banner"}>
+                <BannerImage type={this.props.type}/>
+                <h1>{meta.Header}</h1>
+                <ul>
+                    {buttons}
+                </ul>
+                <div className={this.props.type + "BannerBelow BannerBelow"}/>
+            </div>
+        )
+           
     }
 }

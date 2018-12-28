@@ -1,8 +1,6 @@
 .Signup > h1 {
-    /* text-shadow: 0.1px 0.1px 5px; */
 
     font-family: Ubuntu, Helvetica, sans-serif;
-    /* font-size: 25px; */
     font-weight: normal;
 
     text-align: left;
@@ -55,14 +53,11 @@
 
 .SignupForms {
     display: flex;
-    /* display: grid; */
-    /* grid-template-columns: 1fr 1fr; */
 }
 
 
 .SignupForm {
     display: grid;
-    /* float: left; */
     width: 50vw;
 }
 
@@ -74,7 +69,6 @@
 }
 
 .SignupForm > label > p {
-    /* text-shadow: 0.1px 0.1px 5px; */
 
     margin: 10px auto;
 
