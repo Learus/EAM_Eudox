@@ -346,8 +346,8 @@ export default class Signup extends Component {
                 else {
                     alert(`Signup successful, Welcome ${this.state.base.type} ${this.state.base.username}`);
                     const meta = Actions[`${this.state.base.type}`];
-                    console.log(meta);
-                    browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
+                    console.log(res.data);
+                    browserHistory.push(`/actionpage/${this.state.base.username}/${meta.Type}/${meta.Default}`);
                 }
             })
             .catch(err => console.log(err));

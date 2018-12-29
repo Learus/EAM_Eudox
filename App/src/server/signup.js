@@ -8,8 +8,8 @@ module.exports = function handleSignupPost(req, res) {
                         Values ( "${base.username}", "${base.password}", "${base.email}", NOW(), "${base.type}" )`
     console.log('userinsert', userinsert);
 
-    function sendResponse(res) {
-        res.send({error: false, message: "OK"})
+    function sendResponse(res, data) {
+        res.send({error: false, message: "OK", data: data})
     }
 
     sql.query(userinsert, function(err, rows, fields) {
@@ -21,16 +21,16 @@ module.exports = function handleSignupPost(req, res) {
         console.log("Inserted User.");
 
         switch(base.type) {
-            case "Stud":
+            case "Student":
                 insertStudent(base, spec, sendResponse, res);
                 break;
-            case "Publ":
+            case "Publisher":
                 insertAddress(base, spec, insertPublisher, sendResponse, res)
                 break;
-            case "Secr":
+            case "Secretary":
                 insertSecretary(base, spec, sendResponse, res);
                 break;
-            case "Dist":
+            case "Distributor":
                 insertAddress(base, spec, insertDistribution_Point, sendResponse, res)
                 break;
         }
@@ -51,7 +51,7 @@ function insertStudent(base, spec, responsecb, response) {
 
         console.log("Inserted Student.");
 
-        responsecb(response);
+        responsecb(response, rows[0]);
     })
 }
 
@@ -68,7 +68,7 @@ function insertPublisher(base, spec, responsecb, response) {
 
         console.log("Inserted Publisher.");
 
-        responsecb(response);
+        responsecb(response, rows[0]);
     })
 }
 
@@ -84,7 +84,7 @@ function insertSecretary(base, spec, responsecb, response) {
 
         console.log("Inserted Secretary.");
 
-        responsecb(response);
+        responsecb(response, rows[0]);
     })
 }
 
@@ -101,7 +101,7 @@ function insertDistribution_Point(base, spec, responsecb, response) {
 
         console.log("Inserted Distribution_Point.");
 
-        responsecb(response);
+        responsecb(response, rows[0]);
     })
 }
 
