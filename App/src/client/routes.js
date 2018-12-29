@@ -8,6 +8,7 @@ import App from './components/App';
 import Home from './components/Home';
 import Signup from './components/Signup';
 import ActionPage from './components/ActionPage';
+import About from './components/About'
 
 /**
  * All routes go here.
@@ -17,6 +18,7 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home}/>
     <Route path="/signup" component={Signup}/>
-    <Route path="/actionpage/:type/:active" component={ActionPage}/>
+    <Route path="/actionpage(/:user)/:type/:active" component={ActionPage}/>
+    <Route path="/about(/:user)" component={About}/>
   </Route>
 );

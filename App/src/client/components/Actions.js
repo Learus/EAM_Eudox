@@ -11,10 +11,14 @@ export default {
             "Οδηγίες - Βοήθεια"
         ],
         Quicks: [0, 1],
+        Default: 3,
         Components: [
-            () => {return <Header/>},
-            () => {return <Header/>}
-        ]
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test1</h1>},
+            () => {return <h1>Test2</h1>},
+            () => {return <h1>Test3</h1>},
+        ],
+        Type: "Student"
     },
     Secretary: {
         Header: "Γραμματείες",
@@ -24,7 +28,9 @@ export default {
             "Οδηγίες - Βοήθεια"
         ],
         Quicks: [0, 1],
-        Components: []
+        Default: 2,
+        Components: [],
+        Type: "Secretary"
     },
     Publisher: {
         Header: "Εκδότες",
@@ -36,16 +42,21 @@ export default {
             "Οδηγίες - Βοήθεια"
         ],
         Quicks: [0],
-        Components: []
+        Default: 4,
+        Components: [],
+        Type: "Publisher"
     },
     Distributor: {
         Header: "Διανομείς",
         Actions: [
             "Παράδοση Συγγραμμάτων",
             "Προβολή Συγγραμμάτων",
-            "Προβολή Αιτήσεων"
+            "Προβολή Αιτήσεων",
+            "Οδηγίες Βοήθεια"
         ],
         Quicks: [0],
-        Components: []
+        Default: 3,
+        Components: [],
+        Type: "Distributor"
     }
 }

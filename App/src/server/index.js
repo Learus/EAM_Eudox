@@ -25,6 +25,22 @@ app.post('/api/getUsername', function(req, res)  {
 
 });
 
+app.post('/api/getUser', function(req, res)  {
+    console.log(req.body);
+    
+    sql.query("Select * From User Where Username = ?", [req.body.username],  function (err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Something went wrong"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows[0]});
+        }
+    })
+
+});
+
 
 app.post('/api/Login', function (req, res) {
     let username = req.body.username;

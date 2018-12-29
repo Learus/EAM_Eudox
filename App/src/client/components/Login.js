@@ -3,12 +3,15 @@ import Popup from "reactjs-popup";
 import {Link, browserHistory} from 'react-router';
 import axios from "axios"
 import '../css/Login.css'
+import Actions from './Actions';
 
 export class LoginPopup extends React.Component {
     render() {
         return (
             <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
-                <LoginForm/>
+                { close => (
+                    <LoginForm userHandler={this.props.userHandler} Close={close}/>
+                )}
             </Popup>
         );
     }
@@ -34,24 +37,26 @@ export class LoginForm extends React.Component {
     }
   
     handleSubmit(event) {
-        axios.post('api/Login', {
+        axios.post('/api/Login', {
             username: this.state.username,
             password: this.state.password
         })
-            .then(res => {
-                if (res.data.error) {
-                    this.setState({
-                        username: this.state.username,
-                        password: this.state.password,
-                        wrong: true
-                    })
-                }
-                else {
-                    alert("Login successful, Welcome " + res.data.data.Type);
-                    browserHistory.push('/actionpage');
-                }
-            })
-            .catch(err => console.log(err));
+        .then(res => {
+            if (res.data.error) {
+                this.setState({
+                    username: this.state.username,
+                    password: this.state.password,
+                    wrong: true
+                })
+            }
+            else {
+                alert("Login successful, Welcome " + res.data.data.Type);
+                const meta = Actions[`${res.data.data.Type}`];
+                this.props.Close();
+                browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
+            }
+        })
+        .catch(err => console.log(err));
 
 
         event.preventDefault();

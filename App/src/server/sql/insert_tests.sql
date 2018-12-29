@@ -49,17 +49,17 @@ Values  (30003, 'Μικροοικονομική 1',                1, 'Ιωάν�
 -- Users --
 
 Insert into mydb.User (Username, Email, Password, Type, Last_Login)
-Values  ('brewknight', 'jmaliaras@gmail.com', 'password', 'Stud', NOW() ),
-        ('panospan', 'panospan@gmail.com', 'eimaimikros', 'Stud', NOW() ),
+Values  ('brewknight', 'jmaliaras@gmail.com', 'password', 'Student', NOW() ),
+        ('panospan', 'panospan@gmail.com', 'eimaimikros', 'Student', NOW() ),
         ('knossos', 'knossos.pub@gmail.com', 'xoxlious', 'PublDist',  NOW() ),
-        ('kleidarithmos', 'kleidarithmos@otenet.gr', 'qwe123', 'Publ', NOW() ),
-        ('dituoa', 'secret@di.uoa.gr', 'secretpassword', 'Secr', NOW() ),
-        ('semfeuoa', 'secret@semfe.uoa.gr', 'secretpassowrd', 'Secr', NOW() ),
-        ('msduoa', 'secret@msd.uoa.gr', 'secretpassword', 'Secr', NOW() ),
-        ('ecostudauth', 'secret@eco.auth.gr', 'secretoassword', 'Secr', NOW() ),
-        ('vetauth', 'secret@vet.auth.gr', 'secretpassword', 'Secr', NOW() ),
-        ('ianos', 'ianos@gmail.com', 'ianospw', 'Dist', NOW() ),
-        ('papasotiriou', 'papasotiriou@hotmail.com', 'papassword', 'Dist', NOW() );
+        ('kleidarithmos', 'kleidarithmos@otenet.gr', 'qwe123', 'Publisher', NOW() ),
+        ('dituoa', 'secret@di.uoa.gr', 'secretpassword', 'Secretary', NOW() ),
+        ('semfeuoa', 'secret@semfe.uoa.gr', 'secretpassowrd', 'Secretary', NOW() ),
+        ('msduoa', 'secret@msd.uoa.gr', 'secretpassword', 'Secretary', NOW() ),
+        ('ecostudauth', 'secret@eco.auth.gr', 'secretoassword', 'Secretary', NOW() ),
+        ('vetauth', 'secret@vet.auth.gr', 'secretpassword', 'Secretary', NOW() ),
+        ('ianos', 'ianos@gmail.com', 'ianospw', 'Distributor', NOW() ),
+        ('papasotiriou', 'papasotiriou@hotmail.com', 'papassword', 'Distributor', NOW() );
 
 
 

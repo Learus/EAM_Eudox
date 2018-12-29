@@ -19,16 +19,12 @@ export default class Home extends Component{
                 <Header/>
                 <div className="grid-container">
                     <Banner 
-                        header="Φοιτητές" 
                         type='Student'/>
                     <Banner 
-                        header="Εκδότες" 
                         type='Publisher'/>
                     <Banner 
-                        header="Γραμματείες" 
                         type='Secretary'/>
                     <Banner 
-                        header="Διανομείς" 
                         type='Distributor'/>
                 </div>
             </div>
@@ -68,7 +64,7 @@ class Banner extends Component {
         buttons = buttons.map( (button, index) => {
             return (
                 <li key={button} onClick={ () => {browserHistory.push(`/actionpage/${this.props.type}/${index}`)} }>
-                    <Link to="/actionpage" className="BannerLink">{button}</Link>
+                    <Link to={`/actionpage/${this.props.type}/${index}`} className="BannerLink">{button}</Link>
                 </li>
             )
         });

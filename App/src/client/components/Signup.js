@@ -5,6 +5,7 @@ import '../css/Signup.css';
 import axios from 'axios';
 import autoBind from 'react-autobind';
 import { browserHistory } from 'react-router';
+import Actions from './Actions';
 
 export default class Signup extends Component {
 
@@ -62,7 +63,7 @@ export default class Signup extends Component {
         newBase.type = event.target.value;
         switch(event.target.value) {
 			
-            case "Stud":
+            case "Student":
                 this.setState({
                     base: newBase,
                     spec: {
@@ -81,7 +82,7 @@ export default class Signup extends Component {
                     }
                 });
                 break;
-            case "Publ":
+            case "Publisher":
                 this.setState({
                     base: newBase,
                     spec: {
@@ -98,7 +99,7 @@ export default class Signup extends Component {
                     }
                 });
                 break;
-            case "Dist":
+            case "Distributor":
                 this.setState({
                     base: newBase,
                     spec: {
@@ -115,7 +116,7 @@ export default class Signup extends Component {
                     }
                 });
                 break;
-            case "Secr":
+            case "Secretary":
                 this.setState({
                     base: newBase,
                     spec: {
@@ -330,8 +331,9 @@ export default class Signup extends Component {
 
 
     handleSubmit(event) {
-        // console.log(this.state);
+        
         if (this.checkBaseMistakes() && this.checkSpecMistakes()) {
+            console.log(this.state);
             axios.post('api/Signup', {
                 base: this.state.base,
                 spec: this.state.spec
@@ -343,7 +345,9 @@ export default class Signup extends Component {
                 }
                 else {
                     alert(`Signup successful, Welcome ${this.state.base.type} ${this.state.base.username}`);
-                    browserHistory.push('/profile');
+                    const meta = Actions[`${this.state.base.type}`];
+                    console.log(meta);
+                    browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
                 }
             })
             .catch(err => console.log(err));
@@ -354,7 +358,7 @@ export default class Signup extends Component {
 
     SpecificSignupForm(props) {
         switch(props.type) {
-            case "Stud":
+            case "Student":
                 return (
                     <StudentSignupForm
                         hname = {this.handleNameChange}
@@ -370,7 +374,7 @@ export default class Signup extends Component {
                         fpersonalid = {this.state.spec.wrongPersonalIdMsg}
                         fudp = {this.state.spec.wrongUdpMsg}/>
                 )
-            case "Publ":
+            case "Publisher":
                 return (
                     <PublisherSignupForm
                         hname = {this.handleNameChange}
@@ -386,13 +390,13 @@ export default class Signup extends Component {
                         fnumber = {this.state.spec.wrongNumberMsg}
                         fzipcode = {this.state.spec.wrongZipcodeMsg}/>
                 )
-            case "Secr":
+            case "Secretary":
                 return(
                     <SecretarySignupForm
                         hudp = {this.handleUniversityDepartmentChange}
                         fudp = {this.state.spec.wrongUdpMsg}/>
                 )
-            case "Dist":
+            case "Distributor":
                 return(
                     <DistributorSignupForm
                         hname = {this.handleNameChange}
@@ -506,10 +510,10 @@ function BaseSignupForm(props) {
                     type = "dropdown"
                     onChange = {props.htype} >
                         <option value = ''></option>
-                        <option value = "Stud">Φοιτητής</option>
-                        <option value = "Publ">Εκδότης</option>
-                        <option value = "Dist">Διανομέας</option>
-                        <option value = "Secr">Γραμματεία Τμήματος</option>
+                        <option value = "Student">Φοιτητής</option>
+                        <option value = "Publisher">Εκδότης</option>
+                        <option value = "Distributor">Διανομέας</option>
+                        <option value = "Secretary">Γραμματεία Τμήματος</option>
                 </select>
             </label>
             
