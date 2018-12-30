@@ -10,7 +10,10 @@ export class LoginPopup extends React.Component {
         return (
             <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
                 { close => (
-                    <LoginForm userHandler={this.props.userHandler} Close={close}/>
+                    this.props.hasOwnProperty('loginHandler') ?
+                    <LoginForm loginHandler={this.props.loginHandler} Close={close}/>
+                    :
+                    <LoginForm Close={close}/>
                 )}
             </Popup>
         );
@@ -53,7 +56,13 @@ export class LoginForm extends React.Component {
                 alert("Login successful, Welcome " + res.data.data.Type);
                 const meta = Actions[`${res.data.data.Type}`];
                 this.props.Close();
-                browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
+                sessionStorage.setItem('EudoxusUser', JSON.stringify(res.data.data) );
+
+                if (this.props.hasOwnProperty('loginHandler')) {
+                    console.log(this.props);
+                    this.props.loginHandler();
+                }
+                // browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
             }
         })
         .catch(err => console.log(err));
@@ -63,7 +72,6 @@ export class LoginForm extends React.Component {
     }
   
     render() {
-        // let password = this.state.password.map
         return (
             <form className='LoginForm' onSubmit={this.handleSubmit}>
 

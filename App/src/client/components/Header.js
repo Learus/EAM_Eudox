@@ -9,35 +9,48 @@ import logo from '../images/logo.svg';
 import {LoginPopup} from './Login';
 import Popup from 'reactjs-popup';
 
-export default function Header(props) {
+export default class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {user: JSON.parse(sessionStorage.getItem('EudoxusUser')) };
+    }
 
-    return(
-        <div className="Header">
-            <div className="header-top">
-                <Link to="/" className="home-img">
-                    <img src={logo}/>
-                    <br/>
-                    Εύδοξος
-                </Link>
-                <AccountSnapshot user={props.user}/>
+    loginHandler() {
+        this.setState({
+            user: JSON.parse(sessionStorage.getItem('EudoxusUser')) 
+        });
+    }
+
+    render() {
+        return(
+            <div className="Header">
+                <div className="header-top">
+                    <Link to="/" className="home-img">
+                        <img src={logo}/>
+                        <br/>
+                        Εύδοξος
+                    </Link>
+                    <AccountSnapshot user={this.state.user} loginHandler={this.loginHandler.bind(this)}/>
+                </div>
+    
+                <div className="header-bottom">
+                    <MenuOption type="Student"/>
+    
+                    <MenuOption type="Publisher"/>
+    
+                    <MenuOption type="Secretary"/>
+    
+                    <MenuOption type="Distributor"/>
+    
+                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/about')}>
+                        <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Σχετικά με εμάς</Link>
+                    </button>
+    
+                </div>
             </div>
-
-            <div className="header-bottom">
-                <MenuOption type="Student"/>
-
-                <MenuOption type="Publisher"/>
-
-                <MenuOption type="Secretary"/>
-
-                <MenuOption type="Distributor"/>
-
-                <button className="MenuOptionButton" onClick={() => browserHistory.push('/about')}>
-                    <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Σχετικά με εμάς</Link>
-                </button>
-
-            </div>
-        </div>
-    );
+        );
+    }
+    
 }
 
 function AccountSnapshot(props) {
@@ -61,20 +74,23 @@ function AccountSnapshot(props) {
                 )}
             >
 
-                <ul>
-                    <li key="profile" onClick={ () => {browserHistory.push("/actionpage")} }>
-                        <Link to="/actionpage" className="Link">Το προφίλ μου</Link>
-                    </li>
-                    <li key="settings" onClick={ () => {browserHistory.push("/actionpage")} }>
-                        <Link to="/actionpage" className="Link">Ρυθμίσεις</Link>
-                    </li>
-                    <li key="help" onClick={ () => {browserHistory.push("/actionpage")} }>
-                        <Link to="/actionpage" className="Link">Βοήθεια</Link>
-                    </li>
-                    <li key="logout" onClick={ () => {browserHistory.push("/actionpage")} }>
-                        <Link to="/actionpage" className="Link">Αποσύνδεση</Link>
-                    </li>
-                </ul>
+                <div>
+                    <button key="profile" onClick={ () => {browserHistory.push("/actionpage")} }>
+                        Το προφίλ μου
+                    </button>
+
+                    <button key="settings" onClick={ () => {browserHistory.push("/actionpage")} }>
+                        Ρυθμίσεις
+                    </button>
+
+                    <button key="help" onClick={ () => {browserHistory.push("/actionpage")} }>
+                        Βοήθεια
+                    </button>
+
+                    <button key="logout" onClick={ () => {sessionStorage.removeItem('EudoxusUser'); props.loginHandler();} }>
+                        Αποσύνδεση
+                    </button>
+                </div>
 
             </Popup>
         );
@@ -83,7 +99,7 @@ function AccountSnapshot(props) {
     {
         return(
             <div className="account-empty">
-                <LoginPopup/>
+                <LoginPopup loginHandler={props.loginHandler}/>
                 &nbsp;
                 |
                 &nbsp;
@@ -101,11 +117,11 @@ function MenuOption(props) {
     let links = meta.Actions;
     links = links.map ( (option, index) => {
         return (
-            <li key={option} onClick={ () => {browserHistory.push(`/actionpage/${props.type}/${index}`)} }>
-                <Link to={`/actionpage/${props.type}/${index}`} className="MenuOptionLink">
+            <button key={option} onClick={ () => {browserHistory.push(`/actionpage/${props.type}/${index}`)} }>
+                {/* <Link to={`/actionpage/${props.type}/${index}`} className="MenuOptionLink"> */}
                     {option}
-                </Link>
-            </li>
+                {/* </Link> */}
+            </button>
         )
     });
 
@@ -122,9 +138,9 @@ function MenuOption(props) {
             position="bottom left"
             arrow={false}
         >
-            <ul>
+            <div>
                 {links}
-            </ul>
+            </div>
         </Popup>
 
     );

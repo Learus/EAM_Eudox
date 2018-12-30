@@ -32,36 +32,24 @@
     background-color: rgb(131, 131, 131);
 }
 
-.SubMenuPopup {
-    /* border-radius: 2px; */
+.SubMenuPopup, .AccountPopup {
     box-shadow: 1px 1px 10px !important;
     border: none !important;
     padding: 0 !important;
     background-color: inherit !important;
 }
 
-.SubMenuPopup > ul {
-    list-style-type: none;
+.SubMenuPopup > div, .AccountPopup > div {
+
     padding: 0;
     margin: 0 auto;
     width: 100%;
     height: 100%;
 }
 
-.SubMenuPopup > ul > li {
+.SubMenuPopup > div > button, .AccountPopup > div > button {
     margin: 1px;
 
-    background-color: rgb(238, 238, 238);
-    cursor: pointer;
-
-    text-decoration: none;
-
-    padding: 10px;
-
-    transition: 200ms;
-}
-
-.MenuOptionLink {
     height: 100%;
     width: 100%;
 
@@ -69,27 +57,28 @@
     font-size: 16px;
     color: gray;
     
+    background-color: rgb(238, 238, 238);
+    border: none;
+    outline: none;
 
-    background: none;
+    cursor: pointer;
 
-    text-decoration: none;
+    padding: 10px;
+
+    transition: 200ms;
 }
 
-.SubMenuPopup > ul > li:hover {
+.SubMenuPopup > div > button:hover, .AccountPopup > div > button:hover {
     background-color: rgb(226, 226, 226);
 }
 
-.SubMenuPopup > ul > li:active {
+.SubMenuPopup > div > button:active, .AccountPopup > div > button:active {
     background-color: rgb(207, 207, 207);
 }
 
 
 /*///////////////////////////////////////////////////////////////////*/
 .AccountPopup {
-    /* border-radius: 2px; */
-    box-shadow: 1px 1px 10px !important;
-    border: none !important;
-    padding: 0 !important;
     background-color: rgb(158, 158, 158) !important;
 }
 
@@ -107,7 +96,7 @@
 }
 
 .account_button, .account_button_downward {
-    margin-left: 10px;
+    margin-left: 8px;
 
     display: inline-block;
 
@@ -115,57 +104,21 @@
     height: 0;
 
     border-top: 0;
-    border-bottom: 14px solid #4b8ee6;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
+    border-bottom: 12px solid #4b8ee6;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
 }
 
 .account_button_downward {
-    border-top: 14px solid #4b8ee6;
+    border-top: 12px solid #4b8ee6;
     border-bottom: 0;
 }
 
-.AccountPopup > ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0 auto;
-    width: 100%;
-    height: 100%;
-}
 
-.AccountPopup > ul > li {
-    margin: 1px;
-    /* border-radius: 5px; */
-    background-color: rgb(238, 238, 238);
-    cursor: pointer;
-
-    text-decoration: none;
-
-    padding: 10px;
-
-    transition: 200ms;
-}
-
-.AccountPopup > ul > li:hover {
-    background-color: rgb(226, 226, 226);
-}
-
-.AccountPopup > ul > li:active {
-    background-color: rgb(207, 207, 207);
-}
-
-.AccountPopup > ul > li > .Link {
-    height: 100%;
-    width: 100%;
-
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+.AccountPopup > div > button {
     font-size: 24px;
-    color: gray;
-
-    background: none;
-
-    text-decoration: none;
 }
+
 
 /*//////////////////////////////////////////////////////////////////////////////////////////*/
 
