@@ -81,7 +81,7 @@ function ActionList(props) {
 
     const actions = props.meta.Actions.map( (action, index) => {
         return (
-            <li 
+            <button 
             key={action} 
             onClick={ () => {
                 browserHistory.push(`/actionpage/${props.meta.Type}/${index}`);
@@ -89,23 +89,16 @@ function ActionList(props) {
             } }
             className = { (index.toString() === props.active ? "ActionButton Active " : "ActionButton " ) + props.meta.Type}
             >
-
-                <Link 
-                to={`/actionpage/${props.meta.Type}/${index}`} 
-                className="ActionLink"
-                >
-                    {action}
-                </Link>
-
-            </li>
+                {action}
+            </button>
         )
     })
 
     return(
         <div className={"ActionContainer " + props.meta.Type}>
-            <ul>
+            <div>
                 {actions}
-            </ul>
+            </div>
         </div>
     );
 }

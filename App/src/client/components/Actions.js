@@ -29,7 +29,11 @@ export default {
         ],
         Quicks: [0, 1],
         Default: 2,
-        Components: [],
+        Components: [
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+        ],
         Type: "Secretary"
     },
     Publisher: {
@@ -43,7 +47,13 @@ export default {
         ],
         Quicks: [0],
         Default: 4,
-        Components: [],
+        Components: [
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+        ],
         Type: "Publisher"
     },
     Distributor: {
@@ -56,7 +66,12 @@ export default {
         ],
         Quicks: [0],
         Default: 3,
-        Components: [],
+        Components: [
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+        ],
         Type: "Distributor"
     }
 }

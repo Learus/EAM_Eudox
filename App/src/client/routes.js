@@ -18,7 +18,7 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home}/>
     <Route path="/signup" component={Signup}/>
-    <Route path="/actionpage(/:user)/:type/:active" component={ActionPage}/>
+    <Route path="/actionpage/:type/:active" component={ActionPage}/>
     <Route path="/about(/:user)" component={About}/>
   </Route>
 );
