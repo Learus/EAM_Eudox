@@ -60,7 +60,7 @@ export default class ActionPage extends Component {
             <div className = 'Container'>
                 <Header user={this.state.user}/>
                 <ActionList meta={this.state.meta} active={this.state.active} activeChanger={this.changeActive}/>
-                <Main meta={this.state.meta} active={this.state.active}/>
+                <Main meta={this.state.meta} active={this.state.active} state={this.state}/>
             </div>
         );
     }
@@ -70,7 +70,7 @@ function Main(props) {
     if (props.meta.Components[props.active])
         return (
             <div className="Main">
-                {props.meta.Components[props.active]()}
+                {props.meta.Components[props.active](props.state)}
             </div>
         )
 

@@ -1,5 +1,6 @@
 import Header from "./Header";
 import React from "react";
+import { StudentApplications } from "./StudentActions";
 
 export default {
     Student: {
@@ -10,13 +11,13 @@ export default {
             "Προβολή Δηλώσεων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0, 1],
+        Quicks: [0, 2],
         Default: 3,
         Components: [
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test1</h1>},
-            () => {return <h1>Test2</h1>},
-            () => {return <h1>Test3</h1>},
+            (state) => {return <h1>Test0</h1>},
+            (state) => {return <h1>Test1</h1>},
+            (state) => {return <StudentApplications username={state.user} />},
+            (state) => {return <h1>Test3</h1>},
         ],
         Type: "Student"
     },

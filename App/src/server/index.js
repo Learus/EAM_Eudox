@@ -99,4 +99,21 @@ app.post('/api/getDepartments', function (req, res) {
     })
 })
 
+app.post('/api/getStudentApplications', function(req, res) {
+    const username = req.body.username;
+
+    const query = "Select * From User Where Username = " + username;
+    console.log(query);
+    sql.query(query, function(err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"})
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows});
+        }
+    })
+})
+
 app.listen(8080, () => console.log('Listening on port 8080!'));
