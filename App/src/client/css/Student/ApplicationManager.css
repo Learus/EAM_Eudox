@@ -1,0 +1,9 @@
+.Filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 70%;
+}
+
+.SearchButton, .SearchImg {
+    width: 50%;
+}

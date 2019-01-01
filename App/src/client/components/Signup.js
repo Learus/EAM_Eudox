@@ -451,7 +451,7 @@ export default class Signup extends Component {
     }
 }
 
-function FormTextInput(props)  {
+export function FormTextInput(props)  {
     return(
         <label>
             <p>{props.label}</p>

@@ -1,5 +1,6 @@
 import Header from "./Header";
 import React from "react";
+import ApplicationManager from "./Student/ApplicationManager";
 
 export default {
     Student: {
@@ -13,7 +14,7 @@ export default {
         Quicks: [0, 1],
         Default: 3,
         Components: [
-            () => {return <h1>Test0</h1>},
+            () => {return <ApplicationManager/>},
             () => {return <h1>Test1</h1>},
             () => {return <h1>Test2</h1>},
             () => {return <h1>Test3</h1>},

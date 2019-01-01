@@ -64,39 +64,18 @@ app.post('/api/Login', function (req, res) {
 app.post('/api/Signup', require('./signup'))
 
 
-app.post('/api/getUniversities', function (req, res) {
+app.post('/api/getUniversities', require('./university').getUniversities)
 
+app.post('/api/getDepartments', require('./university').getDepartments)
 
-    const query = "Select * From University";
+app.post('/api/getSemesters', require('./university').getSemesters)
 
-    sql.query(query, function (err, rows, fields) {
-        if (err) throw err;
+app.post('/api/getCourses', require('./university').getCourses)
 
-        if (rows.length === 0) {
-            res.send({error: true, message: "Empty set"})
-        }
-        else {
-            res.send({error: false, message: "OK", data: rows});
-        }
-    })
-})
+app.post('/api/getCourses/Semesters', require('./university').getCoursesBySemester)
 
-app.post('/api/getDepartments', function (req, res) {
-
-    const uni = req.body.university;
-
-    const query = "Select * From University_Department Where University_Id = " + uni;
-
-    sql.query(query, function (err, rows, fields) {
-        if (err) throw err;
-
-        if (rows.length === 0) {
-            res.send({error: true, message: "Empty set"})
-        }
-        else {
-            res.send({error: false, message: "OK", data: rows});
-        }
-    })
+app.post('api/getTextbook', function (res, req) {
+    
 })
 
 app.listen(8080, () => console.log('Listening on port 8080!'));
