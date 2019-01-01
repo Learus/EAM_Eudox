@@ -1,13 +1,14 @@
 import Header from "./Header";
 import React from "react";
 import ApplicationManager from "./Student/ApplicationManager";
+import { StudentApplications } from "./StudentActions";
+import { PublisherPublish } from "./PublisherActions";
 
 export default {
     Student: {
         Header: "Φοιτητές",
         Actions: [
             "Δήλωση Συγγραμμάτων",
-            "Ανταλλαγή Συγγραμμάτων",
             "Προβολή Δηλώσεων",
             "Οδηγίες - Βοήθεια"
         ],
@@ -15,9 +16,8 @@ export default {
         Default: 3,
         Components: [
             () => {return <ApplicationManager/>},
-            () => {return <h1>Test1</h1>},
+            () => {return <StudentApplications/>},
             () => {return <h1>Test2</h1>},
-            () => {return <h1>Test3</h1>},
         ],
         Type: "Student"
     },
@@ -30,7 +30,11 @@ export default {
         ],
         Quicks: [0, 1],
         Default: 2,
-        Components: [],
+        Components: [
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+        ],
         Type: "Secretary"
     },
     Publisher: {
@@ -44,7 +48,13 @@ export default {
         ],
         Quicks: [0],
         Default: 4,
-        Components: [],
+        Components: [
+            (state) => {return <PublisherPublish username = {state.user}/>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+        ],
         Type: "Publisher"
     },
     Distributor: {
@@ -57,7 +67,12 @@ export default {
         ],
         Quicks: [0],
         Default: 3,
-        Components: [],
+        Components: [
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <h1>Test0</h1>},
+        ],
         Type: "Distributor"
     }
 }

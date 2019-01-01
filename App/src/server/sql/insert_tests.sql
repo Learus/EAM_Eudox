@@ -112,13 +112,17 @@ Insert into mydb.Textbook_has_Keyword (Textbook_Id, Keyword_Id)
 Values (80000, 90003), (80000, 90004), (80000, 90005), (80001, 90000), (80001, 90001), (80001, 90002);
 
 
-Insert into mydb.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id)
-Values (70000, 80000), (70002, 80001), (70003, 80001);
+Insert into mydb.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies)
+Values (70000, 80000, 500), (70002, 80001, 431), (70003, 80001, 657);
 
 
-Select d.*, t.*
+Select c.*
+From Course as c, University as u, University_Department as d
+Where u.Id = d.University_Id and d.Id = c.University_Department_Id and d.Name = 'Μουσικών Σπουδών';
+
+Select k.*
 From Textbook as t, Distribution_Point as d, Distribution_Point_has_Textbook as dht, Keyword as k, Textbook_has_Keyword as thk
 Where   d.Id = dht.Distribution_Point_id    and
         dht.Textbook_Id = t.Id              and
         k.Id = thk.Keyword_Id               and
-        t.id = thk.Textbook_Id              
+        t.id = thk.Textbook_Id;       

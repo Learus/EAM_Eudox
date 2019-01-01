@@ -132,7 +132,6 @@ export default class Signup extends Component {
                 break;
         }
 
-        console.log(this.state);
     }
 
     //#endregion
@@ -317,11 +316,10 @@ export default class Signup extends Component {
         this.setState({
             spec: newSpec
         })
-        console.log("NewSpec: ", newSpec);
 
-        console.log(wname === '' && wsurname === '' && wstudentid === '' 
-        && wpersonalid === '' && wphone === '' && wstreet === '' 
-        && wnumber === '' && wzipcode === '' && wudp === '');
+        // console.log(wname === '' && wsurname === '' && wstudentid === '' 
+        // && wpersonalid === '' && wphone === '' && wstreet === '' 
+        // && wnumber === '' && wzipcode === '' && wudp === '');
 
         return (wname === '' && wsurname === '' && wstudentid === '' 
                 && wpersonalid === '' && wphone === '' && wstreet === '' 
@@ -333,7 +331,6 @@ export default class Signup extends Component {
     handleSubmit(event) {
         
         if (this.checkBaseMistakes() && this.checkSpecMistakes()) {
-            console.log(this.state);
             axios.post('api/Signup', {
                 base: this.state.base,
                 spec: this.state.spec
@@ -346,8 +343,8 @@ export default class Signup extends Component {
                 else {
                     alert(`Signup successful, Welcome ${this.state.base.type} ${this.state.base.username}`);
                     const meta = Actions[`${this.state.base.type}`];
-                    console.log(res.data);
-                    browserHistory.push(`/actionpage/${this.state.base.username}/${meta.Type}/${meta.Default}`);
+                    sessionStorage.setItem('EudoxusUser', JSON.stringify(res.data.data) );
+                    browserHistory.push(`/actionpage/${meta.Type}/${meta.Default}`);
                 }
             })
             .catch(err => console.log(err));
@@ -612,7 +609,6 @@ class StudentSignupForm extends Component {
                 alert(res.message)
             }
             else {
-                console.log(res.data);
                 this.setState ( {
                     universities: res.data.data,
                     selecteduni: null,
@@ -637,7 +633,6 @@ class StudentSignupForm extends Component {
                 alert(res.message)
             }
             else {
-                console.log(res.data);
                 this.setState ({
                     udp: res.data.data
                 });
@@ -747,7 +742,6 @@ class SecretarySignupForm extends Component {
                 alert(res.message)
             }
             else {
-                console.log(res.data);
                 this.setState ( {
                     universities: res.data.data,
                     selecteduni: null,
@@ -772,7 +766,6 @@ class SecretarySignupForm extends Component {
                 alert(res.message)
             }
             else {
-                console.log(res.data);
                 this.setState ({
                     udp: res.data.data
                 });

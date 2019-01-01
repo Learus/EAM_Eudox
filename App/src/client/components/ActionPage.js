@@ -60,7 +60,7 @@ export default class ActionPage extends Component {
             <div className = 'Container'>
                 <Header user={this.state.user}/>
                 <ActionList meta={this.state.meta} active={this.state.active} activeChanger={this.changeActive}/>
-                <Main meta={this.state.meta} active={this.state.active}/>
+                <Main meta={this.state.meta} active={this.state.active} state={this.state}/>
             </div>
         );
     }
@@ -70,7 +70,7 @@ function Main(props) {
     if (props.meta.Components[props.active])
         return (
             <div className="Main">
-                {props.meta.Components[props.active]()}
+                {props.meta.Components[props.active](props.state)}
             </div>
         )
 
@@ -81,7 +81,7 @@ function ActionList(props) {
 
     const actions = props.meta.Actions.map( (action, index) => {
         return (
-            <li 
+            <button 
             key={action} 
             onClick={ () => {
                 browserHistory.push(`/actionpage/${props.meta.Type}/${index}`);
@@ -89,23 +89,16 @@ function ActionList(props) {
             } }
             className = { (index.toString() === props.active ? "ActionButton Active " : "ActionButton " ) + props.meta.Type}
             >
-
-                <Link 
-                to={`/actionpage/${props.meta.Type}/${index}`} 
-                className="ActionLink"
-                >
-                    {action}
-                </Link>
-
-            </li>
+                {action}
+            </button>
         )
     })
 
     return(
         <div className={"ActionContainer " + props.meta.Type}>
-            <ul>
+            <div>
                 {actions}
-            </ul>
+            </div>
         </div>
     );
 }
