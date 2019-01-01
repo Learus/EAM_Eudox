@@ -102,7 +102,7 @@ app.post('/api/getDepartments', function (req, res) {
 app.post('/api/getStudentApplications', function(req, res) {
     const username = req.body.username;
 
-    const query = "Select * From User Where Username = " + username;
+    const query = "Select Textbook_Application.* From User, Textbook_Application Where User.Username='" + username + "' Order By Textbook_Application.Date Desc";
     console.log(query);
     sql.query(query, function(err, rows, fields) {
         if (err) throw err;

@@ -1,9 +1,9 @@
-h1 {
+.StudentApplications > h1 {
     font-family: Arial, Helvetica, sans-serif;
     color: rgb(54,143,226);
 }
 
-.line {
+.StudentApplications > .line {
     background-color: rgb(54,143,226);
 
     height: 2px;
@@ -15,11 +15,19 @@ h1 {
     margin-right: 20px;
 }
 
-
 .StudentApplicationList {
-    float: left;
-    margin-left: 40px;
+    margin-top: 20px;
+    margin-left: 180px;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+    margin-right: 180px;
 }
 
 .StudentApplicationList > h2 {
@@ -27,9 +35,46 @@ h1 {
     background-color: rgb(54,143,226);
     font-weight: normal;
     color: white;
-    width: 400px;
+    width: 420px;
     height: 30px;
     padding: 10px;
     padding-left: 20px;
     text-align: left;
+    margin-bottom: 0px;
+}
+
+.StudentApplicationList > ul {
+
+    margin-top: 1px;
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.StudentApplicationList  li {
+    background-color: rgb(222,222,222);
+    height: 30px;
+    text-align: left;
+    padding: 10px;
+    padding-left: 20px;
+    color: #818181;
+    font-size: 21px;
+    margin-top: 1px;
+}
+
+.StudentApplicationList .odd {
+    background-color: rgb(232, 230, 230)
+}
+
+.StudentApplicationList button {
+    position: relative;
+    top: -10px;
+    left: 10px;
+    padding: 0;
+    
+
+    border: 0;
+    background-color: cornflowerblue;
+    float: right;
+    width: 50px;
+    height: 50px;
 }
