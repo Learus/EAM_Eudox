@@ -103,6 +103,10 @@ Insert into mydb.Textbook (Publisher_Username, Name, Writer, Date_Published, Las
 Values  ('knossos', 'Η Μηχανική και Εγώ', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567890, 1),
         ('kleidarithmos', 'Εισαγωγή στη Γλώσσα C', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654321, 3);
 
+Insert into mydb.Course_has_Textbook (Textbook_Id, Course_Id)
+Values  (80001, 40005),(80001, 40006), (80001, 40007), (80001, 40008), (80001, 40009),
+        (80000, 40005),(80000, 40006), (80000, 40007), (80000, 40008), (80000, 40009);
+
 Alter Table mydb.Keyword AUTO_INCREMENT 90000;
 
 Insert into mydb.Keyword (Word)

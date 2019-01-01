@@ -1,9 +1,79 @@
-.Filters {
+.ApplicationManager {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    width: 70%;
+    grid-template-rows: 0.4fr 0fr 0.4fr 4fr;
+    height: 100%;
 }
 
-.SearchButton, .SearchImg {
+.ApplicationManager > h1 {
+    color: rgb(63, 118, 190);;
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    text-align: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.ApplicationManager > .line {
+    background-color: rgb(63, 118, 190);
+
+    height: 2px;
+    width: auto;
+
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.Textbooks {
+    /* background-color: rgb(63, 118, 190);; */
+}
+
+.Filters {
+    /* background-color: black; */
+    margin-left: 20px;
+    display: grid;
+    grid-template-columns: 6fr 6fr 1fr 6fr 1fr;
+    width: 80%;
+}
+
+.Filters > .SearchBar > select{
+    border-radius: 5px;
+    border: none;
+
+    width : 100%;
+
+    float: left;
+
+    padding: 15px;
+
+    background-color: rgb(241, 241, 241)
+}
+
+.Filters > .SearchBar {
+    margin: 5px;
+}
+
+.Filters > .SearchBar > p {
+    margin: 10px auto;
+
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+
+    color: rgb(63, 118, 190);;
+    text-align: left;
+}
+
+.SearchButton {
+    height: 35%;
+    border-radius: 5px;
+    margin: 100% auto;
+    border: none;
+    outline: none;
+    background-color: rgb(63, 118, 190);
+    cursor: pointer;
+}
+.SearchImg {
     width: 50%;
+    filter: brightness(200%)
 }

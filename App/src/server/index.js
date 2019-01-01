@@ -74,8 +74,49 @@ app.post('/api/getCourses', require('./university').getCourses)
 
 app.post('/api/getCourses/Semesters', require('./university').getCoursesBySemester)
 
-app.post('api/getTextbook', function (res, req) {
-    
+app.post('/api/getTextbooks/Course', function (req, res) {
+    const course = req.body.course;
+
+    const query = ` Select * From Textbook as t, Course_has_Textbook as cht
+                    Where cht.Textbook_id = t.Id and cht.Course_Id = ${course}`
+
+    console.log(query);
+    sql.query(query, function(err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows});
+        }
+    })
+})
+
+app.post('/api/getTextbooks', function (req, res) {
+
+    let query = 
+    `Select t.* 
+     From Textbook as t, Course as c, Course_has_Textbook as cht, University_Department as ud
+     Where  t.Id = cht.Textbook_id and 
+            c.Id = cht.Course_Id and 
+            c.University_Department_Id = ud.Id and
+            ud.Id = ${req.body.udp}`;
+
+    if (req.body.semester) 
+        query += ` and c.Semester = ${req.body.Semester}`;
+
+    console.log(query);
+    sql.query(query, function(err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows});
+        }
+    })
 })
 
 app.post('/api/getStudentApplications', function(req, res) {

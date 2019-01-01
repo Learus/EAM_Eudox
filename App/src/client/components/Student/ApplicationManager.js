@@ -9,6 +9,10 @@ import searchimg from "../../images/search.png"
 export default class ApplicationManager extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            textbooks: [],
+            basket: []
+        }
         autoBind(this);
     }
 
@@ -19,15 +23,35 @@ export default class ApplicationManager extends Component {
             course: filters.selectedcourse,
             semester: filters.selectedsemester
         }
-        console.log("Search")
+        console.log(filters);
+        let path = '/api/getTextbooks'
+        if (filters.course) {
+            path += '/Course'
+        }
 
+        axios.post(path, filters)
+        .then(res => {
+            if (res.data.error) {
+                alert(res.data.message)
+            }
+            else {
+                console.log(res.data);
+                this.setState ({
+                    textbooks: res.data.data
+                });
+            }
+        })
     }
 
     render() {
+
+
         return (
             <div className="ApplicationManager">
+                <h1>Δήλωση Συγγραμμάτων</h1>
+                <div className="line"/>
                 <Filters submit={this.Search}/>
-                
+                <TextbookContainer textbooks={this.state.textbooks}/>
             </div>
         )
     }
@@ -213,7 +237,7 @@ class Filters extends Component {
 
     Dropdown(props) {
         return (
-            <label>
+            <label className="SearchBar">
                 <p>{props.label}</p>
                 <select 
                     type = "dropdown"
@@ -258,10 +282,23 @@ class Filters extends Component {
     }
 }
 
+function TextbookContainer(props) {
+    const textbooks = props.textbooks.map(tb => {
+        return <Textbook data={tb}/>
+    })
+
+    return (
+        <div className = "TextbookContainer">
+            {textbooks}
+        </div>
+    )
+}
+
 function Textbook(props) {
+    
     return (
         <div className="Textbook">
-
+            <h3>{props.data.Name}</h3>
         </div>
     );
 }
