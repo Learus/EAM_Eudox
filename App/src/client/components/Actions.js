@@ -1,23 +1,22 @@
 import Header from "./Header";
 import React from "react";
 import { StudentApplications } from "./StudentActions";
+import { PublisherPublish } from "./PublisherActions";
 
 export default {
     Student: {
         Header: "Φοιτητές",
         Actions: [
             "Δήλωση Συγγραμμάτων",
-            "Ανταλλαγή Συγγραμμάτων",
             "Προβολή Δηλώσεων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0, 2],
+        Quicks: [0, 1],
         Default: 3,
         Components: [
-            (state) => {return <h1>Test0</h1>},
-            (state) => {return <h1>Test1</h1>},
-            (state) => {return <StudentApplications username={state.user} />},
-            (state) => {return <h1>Test3</h1>},
+            () => {return <h1>Test0</h1>},
+            () => {return <StudentApplications/>},
+            () => {return <h1>Test3</h1>},
         ],
         Type: "Student"
     },
@@ -49,7 +48,7 @@ export default {
         Quicks: [0],
         Default: 4,
         Components: [
-            () => {return <h1>Test0</h1>},
+            (state) => {return <PublisherPublish username = {state.user}/>},
             () => {return <h1>Test0</h1>},
             () => {return <h1>Test0</h1>},
             () => {return <h1>Test0</h1>},
