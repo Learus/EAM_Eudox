@@ -101,7 +101,13 @@ Alter Table mydb.Textbook AUTO_INCREMENT 80000;
 
 Insert into mydb.Textbook (Publisher_Username, Name, Writer, Date_Published, Last_Edited, Date_Added, Price, ISBN, Issue_Number)
 Values  ('knossos', 'Η Μηχανική και Εγώ', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567890, 1),
-        ('kleidarithmos', 'Εισαγωγή στη Γλώσσα C', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654321, 3);
+        ('kleidarithmos', 'Εισαγωγή στη Γλώσσα C', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654321, 3),
+        ('kleidarithmos', 'Λογικός Προγραμματισμός', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654322, 5),
+        ('kleidarithmos', 'Δομές Δεδομένων', 'Ιωάννης Σταυριώτης', NOW(), NOW(), NOW(), 28.00, 0987654323, 1),
+        ('kleidarithmos', 'Ευρωπαϊκή Δομή', 'Ναπολέων Μαραβέγιας', NOW(), NOW(), NOW(), 108.80, 0987654324, 35),
+        ('knossos', 'Η Μηχανική και Εσύ', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567891, 1),
+        ('knossos', 'Η Μηχανική και Εμείς', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567892, 1),
+        ('knossos', 'Η Μηχανική και Αυτοί', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567893, 1);
 
 Alter Table mydb.Keyword AUTO_INCREMENT 90000;
 
@@ -115,14 +121,33 @@ Values (80000, 90003), (80000, 90004), (80000, 90005), (80001, 90000), (80001, 9
 Insert into mydb.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies)
 Values (70000, 80000, 500), (70002, 80001, 431), (70003, 80001, 657);
 
+-- Textbook Applications --
 
-Select c.*
-From Course as c, University as u, University_Department as d
-Where u.Id = d.University_Id and d.Id = c.University_Department_Id and d.Name = 'Μουσικών Σπουδών';
+Insert into mydb.Textbook_Application (Date, Is_Current, PIN, Status)
+Values  ('2016-3-11', 0, '0000000000000001', 'Completed'),
+        ('2016-10-11', 0, '0000000000000002', 'Completed'),
+        ('2017-3-11', 0, '0000000000000003', 'Completed'),
+        ('2017-10-11', 0, '0000000000000004', 'Completed'),
+        ('2018-3-11', 0, '0000000000000005', 'Completed'),
+        ('2018-10-11', 1, '0000000000000006', 'Pending');
 
-Select k.*
-From Textbook as t, Distribution_Point as d, Distribution_Point_has_Textbook as dht, Keyword as k, Textbook_has_Keyword as thk
-Where   d.Id = dht.Distribution_Point_id    and
-        dht.Textbook_Id = t.Id              and
-        k.Id = thk.Keyword_Id               and
-        t.id = thk.Textbook_Id;       
+Insert into mydb.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id)
+Values  (1, 80000), (1, 80001),
+        (2, 80002),
+        (3, 80003),
+        (4, 80004),
+        (5, 80005), (5, 80006), (5, 80007);
+
+Insert into mydb.Student_has_Textbook_Application(Textbook_Application_Id, Student_Username)
+Values (1, 'brewknight'), (2, 'brewknight'), (3, 'brewknight'), (4, 'brewknight'), (5, 'brewknight');
+
+-- Select c.*
+-- From Course as c, University as u, University_Department as d
+-- Where u.Id = d.University_Id and d.Id = c.University_Department_Id and d.Name = 'Μουσικών Σπουδών';
+
+-- Select k.*
+-- From Textbook as t, Distribution_Point as d, Distribution_Point_has_Textbook as dht, Keyword as k, Textbook_has_Keyword as thk
+-- Where   d.Id = dht.Distribution_Point_id    and
+--         dht.Textbook_Id = t.Id              and
+--         k.Id = thk.Keyword_Id               and
+--         t.id = thk.Textbook_Id;       

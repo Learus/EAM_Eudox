@@ -30,6 +30,30 @@
     margin-right: 180px;
 }
 
+.right > ul {
+    height: auto;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.right > ul::-webkit-scrollbar {
+    width: 15px;
+}
+
+.right > ul::-webkit-scrollbar-track {
+    background: rgb(231,229,229);
+}
+   
+/* Handle */
+.right > ul::-webkit-scrollbar-thumb {
+    background: rgb(157,157,157); 
+}
+  
+/* Handle on hover */
+.right > ul::-webkit-scrollbar-thumb:hover {
+background: rgb(131, 131, 131); 
+}
+
 .StudentApplicationList > h2 {
 
     background-color: rgb(54,143,226);
@@ -68,7 +92,7 @@
 .StudentApplicationList button {
     position: relative;
     top: -10px;
-    left: 10px;
+    left: 9px;
     padding: 0;
     
 

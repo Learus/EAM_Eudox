@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Link, browserHistory } from "react-router";
+//import MagnifyingGlass from '../images/';
 import '../css/StudentActions.css';
 import autoBind from 'react-autobind';
 import axios from 'axios';
