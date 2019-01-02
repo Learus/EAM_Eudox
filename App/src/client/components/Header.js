@@ -75,7 +75,7 @@ function AccountSnapshot(props) {
             >
 
                 <div>
-                    <button key="profile" onClick={ () => {browserHistory.push("/actionpage")} }>
+                    <button key="profile" onClick={ () => {browserHistory.push("/profile")} }>
                         Το προφίλ μου
                     </button>
 

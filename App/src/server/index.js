@@ -41,6 +41,20 @@ app.post('/api/getUser', function(req, res)  {
 
 });
 
+app.post('/api/getStudent', function(req, res) {
+    console.log(req.body);
+
+    sql.query("Select * From Student Where Username = ?", [req.body.username], function (err, rows, fields) {
+        if(err) throw err;
+
+        if(rows.length === 0) {
+            res.send( {error: true, message: "Something went wrong"} );
+        }
+        else {
+            res.send( {error: false, message: "OK", data: rows[0]} );
+        }
+    });
+})
 
 app.post('/api/Login', function (req, res) {
     let username = req.body.username;
@@ -95,6 +109,22 @@ app.post('/api/getDepartments', function (req, res) {
         }
         else {
             res.send({error: false, message: "OK", data: rows});
+        }
+    })
+})
+
+app.post('/api/getDepartmentData', function (req, res) {
+
+    const query = "Select * From University_Department Where Id = " + req.body.udid;
+
+    sql.query(query, function (err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"})
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows[0]});
         }
     })
 })

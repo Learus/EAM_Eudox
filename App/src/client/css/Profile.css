@@ -1,0 +1,22 @@
+@import './PageInfo.css';
+
+.StudentH1 {
+    color: rgb(54,143,226);
+}
+
+.StudentLine {
+    background-color: rgb(54,143,226);
+}
+
+.StudentPresenter > h3 {
+    color: rgb(128,181,236);
+}
+
+.DataPresenter > h2{
+    color: #818181;
+}
+
+.Wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
