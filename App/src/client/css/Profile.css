@@ -1,5 +1,10 @@
 @import './PageInfo.css';
 
+.PageInfo {
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
 .StudentH1 {
     color: rgb(54,143,226);
 }
@@ -9,14 +14,11 @@
 }
 
 .StudentPresenter > h3 {
+    text-align: left;
     color: rgb(128,181,236);
 }
 
 .DataPresenter > h2{
+    text-align: left;
     color: #818181;
-}
-
-.Wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
 }

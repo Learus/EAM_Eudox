@@ -146,4 +146,33 @@ app.post('/api/getStudentApplications', function(req, res) {
     })
 })
 
+app.post('/api/updateUser', function(req, res) {
+    const username = req.body.username;
+    let query = "Update User Set ";
+
+    if(req.body.password)
+    {
+        query += ("Password='" + req.body.password + "'");
+    }
+
+    if(req.body.Email)
+    {
+        query += ("Email='" + req.body.Email +"'");
+    }
+
+    console.log(query);
+
+    sql.query(query, function(err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"})
+        }
+        else {
+            res.send({error: false, message: "OK"});
+        }
+    })
+
+})
+
 app.listen(8080, () => console.log('Listening on port 8080!'));
