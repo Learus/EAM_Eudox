@@ -19,7 +19,7 @@ export default class Profile extends Component {
     }
 
     signalLoggedStatus() {
-
+        this.updateUser();
     }
 
     updateUser() {
@@ -39,6 +39,8 @@ export default class Profile extends Component {
                     }
             });
         }
+        else
+            this.setState( {user: null} );
     }
 
     hMailChange(event) {
@@ -117,7 +119,7 @@ export default class Profile extends Component {
         let lineClass = "line ";
         let h1Class = "";
         
-        console.log(this.state);
+        //console.log(this.state);
 
         if(this.state.user)
         {
@@ -128,6 +130,7 @@ export default class Profile extends Component {
             return(
                 <div>
                     <Header signalLoggedStatus={this.signalLoggedStatus}/>
+                    
                     <div className="PageInfo">
     
                         <h1 className={h1Class}>Τα στοιχεία μου</h1>
@@ -200,7 +203,7 @@ export default class Profile extends Component {
         
         return(
             <div>
-                <Header/>
+                <Header signalLoggedStatus={this.signalLoggedStatus}/>
                 <div className="PageInfo">
 
                     <h1 className={h1Class}>Τα στοιχεία μου</h1>
