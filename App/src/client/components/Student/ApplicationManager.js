@@ -7,6 +7,7 @@ import searchimg from "../../images/search.png"
 
 
 export default class ApplicationManager extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -84,7 +85,6 @@ export default class ApplicationManager extends Component {
         let Semesters = {};
 
         for (let i = 0; i < Textbooks.length; i++) {
-            console.log(Textbooks[i]);
             const semesterKey = `${Textbooks[i].c.Semester}`;
             const courseKey = `${Textbooks[i].c.Id}`;
 
@@ -94,22 +94,37 @@ export default class ApplicationManager extends Component {
 
             if (!Semesters[semesterKey].hasOwnProperty(Textbooks[i].c.Id)) {
                 Semesters[semesterKey][courseKey] = {
-                    courses: [],
+                    textbooks: [],
                     name: Textbooks[i].c.Id
                 };
             }
 
-            Semesters[semesterKey][courseKey].courses.push(Textbook[i]);
+            Semesters[semesterKey][courseKey].textbooks.push(Textbooks[i]);
         }
+        console.log("Semesters", Semesters);
         
         const SemesterKeys = Object.keys(Semesters);
         let retVal = [];
 
         for (let i = 0; i < SemesterKeys.length; i++) {
             let key = SemesterKeys[i];
-            retVal.push(Semesters[key]);
+            
+
+            const CourseKeys = Object.keys(Semesters[key]);
+            let sems = {
+                name: key,
+                courses: []
+            };
+
+            for (let j = 0; j < CourseKeys.length; j++) {
+                let key2 = CourseKeys[j];
+                console.log(Semesters[key][key2]);
+                sems.courses.push(Semesters[key][key2]);
+            }
+            
+            retVal.push(sems);
         }
-        
+        console.log(retVal);
         return retVal;
     }
 
@@ -121,7 +136,6 @@ export default class ApplicationManager extends Component {
     }
 
     render() {
-
 
         return (
             <div className="ApplicationManager">
@@ -364,36 +378,131 @@ class Filters extends Component {
     }
 }
 
-function TextbookContainer(props) {
-    let last_id = -1;
-    let last_semester = -1;
-    const textbooks = props.textbooks.map(tb => {
-        // if id has changed display header
-        const course = last_id !== tb.c.Id ? <h3 className="CourseHeader">{tb.c.Name}</h3> : null;
-        last_id = tb.c.Id;
+class TextbookContainer extends Component {
 
-        const semester = last_semester !== tb.c.Semester ? <h2 className="SemesterHeader">{tb.c.Semester}ο Εξάμηνο</h2> : null;
-        last_semester = tb.c.Semester;
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let last_id = -1;
+        let last_semester = -1;
+
+        // const textbooks = this.props.textbooks.map(tb => {
+        //     // if id has changed display header
+        //     const course = last_id !== tb.c.Id ? <h3 className="CourseHeader">{tb.c.Name}</h3> : null;
+        //     last_id = tb.c.Id;
+
+        //     const semester = last_semester !== tb.c.Semester ? <h2 className="SemesterHeader">{tb.c.Semester}ο Εξάμηνο</h2> : null;
+        //     last_semester = tb.c.Semester;
+
+        //     return (
+        //         <div key={`${tb.c.Id}${tb.t.Id}`}>
+        //             {semester}
+        //             {course}
+        //             <Textbook 
+        //                 data={tb} 
+        //                 adder={this.props.adder}
+        //                 remover={this.props.remover}
+        //                 isChosen={this.props.isChosen}
+        //                 key={`${tb.c.Id}${tb.t.Id}`}/>
+        //         </div>
+        //     )
+        // })
+
+        let stuff = this.props.textbooks.map(sem => {
+            return <SemesterDropdown    options={sem.courses} 
+                                        name={sem.name}
+                                        type="Semester"
+                                        adder={this.props.adder}
+                                        remover={this.props.remover}
+                                        isChosen={this.props.isChosen}
+                                        key={sem.name}/>
+        })
 
         return (
-            <div key={`${tb.c.Id}${tb.t.Id}`}>
-                {semester}
-                {course}
-                <Textbook 
-                    data={tb} 
-                    adder={props.adder}
-                    remover={props.remover}
-                    isChosen={props.isChosen}
-                    key={`${tb.c.Id}${tb.t.Id}`}/>
+            <div className = "TextbookContainer">
+                
+                {stuff}
             </div>
         )
-    })
+    }
+}
 
-    return (
-        <div className = "TextbookContainer">
-            {textbooks}
-        </div>
-    )
+
+
+class SemesterDropdown extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {open: false};
+        autoBind(this);
+    }
+
+    onClick() {
+        this.setState({open: !this.state.open});
+    }
+
+    render() {
+        let options;
+        if (this.state.open) {
+
+            options = this.props.options.map(option => {
+                console.log('sem', option)
+                return <CourseDropdown 
+                        options={option.textbooks} 
+                        name={option.name} 
+                        type="Course"
+                        adder={this.props.adder}
+                        remover={this.props.remover}
+                        isChosen={this.props.isChosen}
+                        key={option.name}/>
+            })
+
+        }
+
+        return (
+            <div className="SemesterDropdown">
+                <button onClick={this.onClick}>{this.props.name}</button>
+                {this.state.open ? options : null}
+            </div>
+        )
+    }
+}
+
+class CourseDropdown extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {open: false};
+        autoBind(this);
+    }
+
+    onClick() {
+        this.setState({open: !this.state.open});
+    }
+
+    render() {
+        let options;
+        if (this.state.open) {
+
+            options = this.props.options.map(option => {
+                console.log(option);
+                return <Textbook 
+                        data={option} 
+                        adder={this.props.adder}
+                        remover={this.props.remover}
+                        isChosen={this.props.isChosen}
+                        key={`${option.c.Id}${option.t.Id}`}/>
+            })
+
+        }
+
+        return (
+            <div className="CourseDropdown">
+                <button onClick={this.onClick}>{this.props.name}</button>
+                {this.state.open ? options : null}
+            </div>
+        )
+    }
 }
 
 function Textbook(props) {  
