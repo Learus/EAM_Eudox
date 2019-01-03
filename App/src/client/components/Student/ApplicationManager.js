@@ -11,7 +11,8 @@ export default class ApplicationManager extends Component {
         super(props);
         this.state = {
             textbooks: [],
-            basket: []
+            basket: [],
+            textbooksBySemester: []
         }
         autoBind(this);
     }
@@ -23,7 +24,7 @@ export default class ApplicationManager extends Component {
             course: filters.selectedcourse,
             semester: filters.selectedsemester
         }
-        console.log(filters);
+
         let path = '/api/getTextbooks'
         if (filters.course) {
             path += '/Course'
@@ -35,12 +36,88 @@ export default class ApplicationManager extends Component {
                 alert(res.data.message)
             }
             else {
-                console.log(res.data);
+                // console.log('parsed', this.parseTextbooks(res.data.data));
                 this.setState ({
-                    textbooks: res.data.data
+                    textbooks: res.data.data,
+                    textbooksBySemester: this.parseTextbooks(res.data.data)
                 });
             }
         })
+    }
+
+    Add(textbook) {
+        let newBasket = this.state.basket;
+        let replaced = false;
+        for (let i = 0; i < newBasket.length; i++) {
+            if (textbook.c.Id === newBasket[i].c.Id) {
+                newBasket[i] = textbook;
+                replaced = true;
+                break;
+            }
+        }
+
+        if (!replaced) {
+            newBasket = newBasket.concat([textbook]);
+        }
+
+        this.setState({
+            basket: newBasket
+        })
+
+    }
+
+    Remove(textbook) {
+        let newBasket = [];
+        for (let i = 0; i < this.state.basket.length; i++) {
+            if (textbook.c.Id === this.state.basket[i].c.Id) {
+                continue;
+            }
+            newBasket.push(this.state.basket[i]);
+        }
+
+        this.setState({
+            basket: newBasket
+        })
+    }
+
+    parseTextbooks(Textbooks) {
+        let Semesters = {};
+
+        for (let i = 0; i < Textbooks.length; i++) {
+            console.log(Textbooks[i]);
+            const semesterKey = `${Textbooks[i].c.Semester}`;
+            const courseKey = `${Textbooks[i].c.Id}`;
+
+            if (!Semesters.hasOwnProperty(Textbooks[i].c.Semester)) {
+                Semesters[semesterKey] = {};
+            }
+
+            if (!Semesters[semesterKey].hasOwnProperty(Textbooks[i].c.Id)) {
+                Semesters[semesterKey][courseKey] = {
+                    courses: [],
+                    name: Textbooks[i].c.Id
+                };
+            }
+
+            Semesters[semesterKey][courseKey].courses.push(Textbook[i]);
+        }
+        
+        const SemesterKeys = Object.keys(Semesters);
+        let retVal = [];
+
+        for (let i = 0; i < SemesterKeys.length; i++) {
+            let key = SemesterKeys[i];
+            retVal.push(Semesters[key]);
+        }
+        
+        return retVal;
+    }
+
+    isChosen(textbook) {
+        if (this.state.basket.includes(textbook)) {
+            return true;
+        }
+        return false;
     }
 
     render() {
@@ -51,7 +128,11 @@ export default class ApplicationManager extends Component {
                 <h1>Δήλωση Συγγραμμάτων</h1>
                 <div className="line"/>
                 <Filters submit={this.Search}/>
-                <TextbookContainer textbooks={this.state.textbooks}/>
+                <TextbookContainer 
+                    textbooks={this.state.textbooksBySemester} 
+                    adder={this.Add}
+                    remover={this.Remove}
+                    isChosen={this.isChosen}/>
             </div>
         )
     }
@@ -192,6 +273,7 @@ class Filters extends Component {
             }
             else {
                 // console.log(res.data);
+
                 this.setState({
                     courses: res.data.data
                 })
@@ -283,8 +365,28 @@ class Filters extends Component {
 }
 
 function TextbookContainer(props) {
+    let last_id = -1;
+    let last_semester = -1;
     const textbooks = props.textbooks.map(tb => {
-        return <Textbook data={tb}/>
+        // if id has changed display header
+        const course = last_id !== tb.c.Id ? <h3 className="CourseHeader">{tb.c.Name}</h3> : null;
+        last_id = tb.c.Id;
+
+        const semester = last_semester !== tb.c.Semester ? <h2 className="SemesterHeader">{tb.c.Semester}ο Εξάμηνο</h2> : null;
+        last_semester = tb.c.Semester;
+
+        return (
+            <div key={`${tb.c.Id}${tb.t.Id}`}>
+                {semester}
+                {course}
+                <Textbook 
+                    data={tb} 
+                    adder={props.adder}
+                    remover={props.remover}
+                    isChosen={props.isChosen}
+                    key={`${tb.c.Id}${tb.t.Id}`}/>
+            </div>
+        )
     })
 
     return (
@@ -294,11 +396,28 @@ function TextbookContainer(props) {
     )
 }
 
-function Textbook(props) {
-    
+function Textbook(props) {  
+    let className = "Textbook";
+    let chosen = false;
+    if (props.isChosen(props.data)) {
+        className += " Chosen";
+        chosen = true;
+    }
     return (
-        <div className="Textbook">
-            <h3>{props.data.Name}</h3>
+        <div className={className}>
+            <h3>{props.data.t.Name}</h3>
+            <p>{props.data.t.Writer}</p>
+            <p>{props.data.t.Date_Published}</p>
+            <p>{"ISBN: " + props.data.t.ISBN}</p>
+            <p>{props.data.p.Name}</p>
+            {chosen ? 
+            <button className="RemoveButton" onClick={() => { props.remover(props.data)}}>
+                Διαγραφή
+            </button>
+            :
+            <button className="AddButton" onClick={() => { props.adder(props.data)}}>
+                Επιλογή
+            </button>}
         </div>
     );
 }

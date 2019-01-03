@@ -77,11 +77,19 @@ app.post('/api/getCourses/Semesters', require('./university').getCoursesBySemest
 app.post('/api/getTextbooks/Course', function (req, res) {
     const course = req.body.course;
 
-    const query = ` Select * From Textbook as t, Course_has_Textbook as cht
-                    Where cht.Textbook_id = t.Id and cht.Course_Id = ${course}`
+    const query = ` Select t.*, p.*, c.Id, c.Name, c.Semester
+                    From Textbook as t, Publisher as p, Course_has_Textbook as cht, Course as c
+                    Where   cht.Textbook_id = t.Id and 
+                            c.Id = ${course} and 
+                            cht.Course_Id = c.Id and
+                            p.Username = t.Publisher_Username`
+    const options = {
+        sql: query,
+        nestTables: true
+    }
 
     console.log(query);
-    sql.query(query, function(err, rows, fields) {
+    sql.query(options, function(err, rows, fields) {
         if (err) throw err;
 
         if (rows.length === 0) {
@@ -96,18 +104,26 @@ app.post('/api/getTextbooks/Course', function (req, res) {
 app.post('/api/getTextbooks', function (req, res) {
 
     let query = 
-    `Select t.* 
-     From Textbook as t, Course as c, Course_has_Textbook as cht, University_Department as ud
+    `Select t.*, p.*, c.Id, c.Name, c.Semester
+     From Textbook as t, Course as c, Course_has_Textbook as cht, University_Department as ud, Publisher as p
      Where  t.Id = cht.Textbook_id and 
             c.Id = cht.Course_Id and 
             c.University_Department_Id = ud.Id and
-            ud.Id = ${req.body.udp}`;
+            ud.Id = ${req.body.udp} and
+            p.Username = t.Publisher_Username`;
 
     if (req.body.semester) 
-        query += ` and c.Semester = ${req.body.Semester}`;
+        query += ` and c.Semester = ${req.body.semester}`;
+
+    query += ' Order by c.Semester ASC, c.Id ASC'
+
+    const options = {
+        sql: query,
+        nestTables: true
+    }
 
     console.log(query);
-    sql.query(query, function(err, rows, fields) {
+    sql.query(options, function(err, rows, fields) {
         if (err) throw err;
 
         if (rows.length === 0) {
