@@ -33,6 +33,8 @@ export default class Signup extends Component {
         autoBind(this);
     }
 
+    signalLoggedStatus() {}
+
     //#region Base Handlers
 
     handleUsernameChange(event) {
@@ -415,9 +417,11 @@ export default class Signup extends Component {
     }
 
     render() {
+        if(sessionStorage.getItem('EudoxusUser'))
+            browserHistory.push('/');
         return (
             <div className="Signup">
-                <Header/>
+                <Header signalLoggedStatus={this.signalLoggedStatus}/>
 
                 <h1>Εγγραφή</h1>
 

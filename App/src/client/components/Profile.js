@@ -18,6 +18,10 @@ export default class Profile extends Component {
         this.updateUser();
     }
 
+    signalLoggedStatus() {
+
+    }
+
     updateUser() {
         let username;
         let user = sessionStorage.getItem('EudoxusUser');
@@ -123,7 +127,7 @@ export default class Profile extends Component {
 
             return(
                 <div>
-                    <Header/>
+                    <Header signalLoggedStatus={this.signalLoggedStatus}/>
                     <div className="PageInfo">
     
                         <h1 className={h1Class}>Τα στοιχεία μου</h1>
