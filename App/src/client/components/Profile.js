@@ -229,6 +229,15 @@ function SpecificUserDetails(props) {
     }
 }
 
+function DataPresenter(props) {
+    return(
+        <div className={props.className}>
+            <h3>{props.header}</h3>
+            <h2>{props.data}</h2>
+        </div>
+    );
+}
+
 class StudentSpecificDetails extends Component {
 
     constructor(props) {
@@ -246,8 +255,8 @@ class StudentSpecificDetails extends Component {
     }
 
     componentDidMount() {
-        axios.post('/api/getStudent',
-        { username: this.state.user.Username }
+        axios.post('/api/getTypeData',
+        { username: this.state.user.Username, type: this.state.user.Type }
         ).then( res => {
             if (res.data.error) {
                 alert(res.message)
@@ -313,30 +322,56 @@ class StudentSpecificDetails extends Component {
     }
 }
 
-function DataPresenter(props) {
-    return(
-        <div className={props.className}>
-            <h3>{props.header}</h3>
-            <h2>{props.data}</h2>
-        </div>
-    );
-}
-
-
 class PublisherSpecificDetails extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { user: props.user };
+        this.state = { 
+            user: props.user,
+            name: "",
+            phone: null,
+            address: "",
+            zipcode: "",
+            style: props.style
+         };
+    }
+
+    componentDidMount() {
+
+        axios.post('/api/getTypeData', { username: this.state.user.Username, type: this.state.user.Type }).then( res => {
+            if (res.data.error) {
+                alert(res.message)
+            }
+            else {
+
+                axios.post('/api/getAddress', { id: res.data.data.Address_Id }).then( res2 => {
+                    if (res2.data.error) {
+                        alert(res.message)
+                    }
+                    else {
+                        this.setState( {
+                            name: res.data.data.Name,
+                            phone: res.data.data.Phone,
+                            address: `${res2.data.data.Street_Name} ${res2.data.data.Street_Number}, ${res2.data.data.City}`,
+                            zipcode: res2.data.data.ZipCode
+                        } );
+                    }
+                });
+        }
+
+        });
     }
 
     render() {
+
+        console.log(this.state.user);
+
         return(
-            <div>
+            <div style={this.state.style}>
                 
                 <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Όνομα - Επώνυμο"
-                                data={this.state.name + " " + this.state.surname}/>
+                                header="Όνομα Εκδοτικού Οίκου"
+                                data={this.state.name}/>
 
                 <DataPresenter  className="DataPresenter PublisherPresenter"
                                 header="Τηλέφωνο Επικοινωνίας"
@@ -344,18 +379,13 @@ class PublisherSpecificDetails extends Component {
 
                 
                 <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Αναγνωριστικός Αριθμός Φοιτητή"
-                                data={this.state.sid}/>
+                                header="Διεύθυνση"
+                                data={this.state.address}/>
 
 
                 <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Αριθμός Ταυτότητας"
-                                data={this.state.pid}/>
-
-
-                <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Τμήμα"
-                                data={this.state.department_name}/>
+                                header="Ταχυδρομικός Κώδικας"
+                                data={this.state.zipcode}/>
 
             </div>
         );
