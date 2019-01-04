@@ -55,7 +55,7 @@ class StudentApplicationList extends Component {
                     let index = 0;
                     this.setState({
                         list: res.data.data.map( (item) => {
-                            
+                            console.log(item);
                             if( (!this.state.showCurrent && !item.Is_Current)  || (item.Is_Current && this.state.showCurrent)  ) {
 
                                 let dateTime = item.Date.split('T');

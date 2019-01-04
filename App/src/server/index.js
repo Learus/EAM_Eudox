@@ -125,18 +125,22 @@ app.post('/api/getDepartmentData', function (req, res) {
 })
 
 app.post('/api/getStudentApplications', function(req, res) {
-    const username = req.body.username;
 
-    const query = "Select Textbook_Application.* From User, Textbook_Application Where User.Username='" + username + "' Order By Textbook_Application.Date Desc";
-    console.log(query);
-    sql.query(query, function(err, rows, fields) {
+    sql.query(  "Select Textbook_Application.* From Textbook_Application Where Textbook_Application.Id in \
+                (Select Textbook_Application_Id \
+                From Student_has_Textbook_Application \
+                Where Student_Username= ?) Order By Date Desc",
+                [req.body.username],
+                function(err, applications, fields) {
+
         if (err) throw err;
 
-        if (rows.length === 0) {
+        if (applications.length === 0) {
             res.send({error: true, message: "Empty set"})
         }
         else {
-            res.send({error: false, message: "OK", data: rows});
+            
+            res.send({error: false, message: "OK", data: applications});
         }
     })
 })
