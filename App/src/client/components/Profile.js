@@ -10,7 +10,7 @@ export default class Profile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { user: null }
+        this.state = { user: null, savedNewMail: "", savedNewMail2: "", savedNewPassword: "", savedNewPassword2: "" }
         autobind(this);
     }
 
@@ -53,20 +53,28 @@ export default class Profile extends Component {
 
     hMailSubmit() {
         if( this.state.savedNewMail === this.state.savedNewMail2)
-        {
-            axios.post('/api/updateUser',
-            { 
-                username: this.state.user.Username,
-                Email: this.state.savedNewMail 
-            }).then( res => {
-                if (res.data.error) {
-                    alert(res.message)
-                }
-                else {
-                    this.setState( { savedNewMail: "", savedNewMail2: "" } );
-                    this.updateUser();
-                }
-            });
+        {   
+            if( this.state.savedNewMail != "" )
+            {
+
+                axios.post('/api/updateUser',
+                { 
+                    username: this.state.user.Username,
+                    email: this.state.savedNewMail 
+                }).then( res => {
+                    if (res.data.error) {
+                        alert(res.message)
+                    }
+                    else {
+                        this.setState( { savedNewMail: "", savedNewMail2: "" } );
+                        this.updateUser();
+                    }
+                });
+            }
+            else
+            {
+                alert("Σφάλμα: Πρέπει να εισάγετε μια διεύθυνση E-mail πρώτα.");
+            }
         }
         else
         {
@@ -90,20 +98,28 @@ export default class Profile extends Component {
 
         if( this.state.savedCurrentPassword === this.state.user.Password &&
             this.state.savedNewPassword === this.state.savedNewPassword2 ) {
+            
+            if(this.state.savedNewPassword != "")
+            {
 
-            axios.post('/api/updateUser',
-            { 
-                username: this.state.user.Username,
-                password: this.state.savedNewPassword 
-            }).then( res => {
-                if (res.data.error) {
-                    alert(res.message)
-                }
-                else {
-                    this.setState( { savedNewPassword: "", savedNewPassword2: "", savedCurrentPassword: "" } );
-                    this.updateUser();
-                }
-            });
+                axios.post('/api/updateUser',
+                { 
+                    username: this.state.user.Username,
+                    password: this.state.savedNewPassword 
+                }).then( res => {
+                    if (res.data.error) {
+                        alert(res.message)
+                    }
+                    else {
+                        this.setState( { savedNewPassword: "", savedNewPassword2: "", savedCurrentPassword: "" } );
+                        this.updateUser();
+                    }
+                });
+            }
+            else
+            {
+                alert("Σφάλμα: Πρέπει να εισάγετε έναν νέο κωδικό πρώτα.");
+            }
         }
         else
         {
@@ -364,7 +380,7 @@ class PublisherSpecificDetails extends Component {
 
     render() {
 
-        console.log(this.state.user);
+        //console.log(this.state.user);
 
         return(
             <div style={this.state.style}>
