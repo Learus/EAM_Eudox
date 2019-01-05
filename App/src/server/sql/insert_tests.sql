@@ -21,6 +21,8 @@ Values  (30000, 'Συνοπτική Ιστορία της Ευρωπαϊκής �
         (30001, 'Δομές Δεδομένων και Τεχνικές Προγραμματισμού',     2, 'Εμμανουήλ',     'Κουμπαράκης'),
         (30001, 'Προγραμματισμός Συστήματος',                       6, 'Μέμα',          'Ρουσσοπούλου'),
         (30001, 'Λογική Σχεδίαση',                                  1, 'Αντώνιος',      'Πασχάλης'),
+        (30001, 'Εισαγωγή στον Προγραμματισμό',                     1, 'Παναγιώτης',    'Σταματόπουλος'),
+        (30001, 'Δομή και Θεσμοί της Ευρωπαϊκής Ένωσης',            7, 'Γκουστάβο',     'Τολίδης'),
         (30002, 'Μηχανική 1 (Στατική)',                             1, 'Βασιλική',      'Βαδαλουκά'),
         (30002, 'Εισαγωγή στον Αντικειμενοστραφή Προγραμματισμό',   1, 'Ιωάννης',       'Γάσπαρης'),
         (30002, 'Θερμοδυναμική',                                    3, 'Αλεξόπουλος',   'Θεόδωρος'),
@@ -101,11 +103,28 @@ Alter Table mydb.Textbook AUTO_INCREMENT 80000;
 
 Insert into mydb.Textbook (Publisher_Username, Name, Writer, Date_Published, Last_Edited, Date_Added, Price, ISBN, Issue_Number)
 Values  ('knossos', 'Η Μηχανική και Εγώ', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567890, 1),
-        ('kleidarithmos', 'Εισαγωγή στη Γλώσσα C', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654321, 3);
+        ('kleidarithmos', 'Εισαγωγή στη Γλώσσα C', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654321, 3),
+        ('kleidarithmos', 'Λογικός Προγραμματισμός', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 0987654322, 5),
+        ('kleidarithmos', 'Δομές Δεδομένων', 'Ιωάννης Σταυριώτης', NOW(), NOW(), NOW(), 28.00, 0987654323, 1),
+        ('kleidarithmos', 'Ευρωπαϊκή Δομή', 'Ναπολέων Μαραβέγιας', NOW(), NOW(), NOW(), 108.80, 0987654324, 35),
+        ('kleidarithmos', 'Εισαγωγή στην Ευχρηστία Υπολογιστών και Εμπειρία Χρήστη', 'Μιράντα Παππαδοπούλου', NOW(), NOW(), NOW(), 78.80, 0987654325, 1),
+        ('kleidarithmos', 'C++ 11', 'Bjarne Stroustroup', NOW(), NOW(), NOW(), 118.00, 0987654326, 9),
+        ('knossos', 'C++ 17', 'Bjarne Stroustroup', NOW(), NOW(), NOW(), 120.00, 0987654327, 3),
+        ('kleidarithmos', 'Το Μαγικό Σχολικό στους Χάρτες Καρνό', 'Πολυπλέκτιος Τρισήμονος', NOW(), NOW(), NOW(), 10.00, 0987654328, 1),
+        ('kleidarithmos', 'Πολυπλέκτης 3 σε 1: Τί είναι επιτέλους;', 'Πολυπλέκτιος Τρισήμονος', NOW(), NOW(), NOW(), 5.00, 0987654329, 1),
+        ('kleidarithmos', 'Unix Programming', 'Tannenbaum', NOW(), NOW(), NOW(), 50.00, 0987654329, 5),
+        ('knossos', 'Η Μηχανική και Εσύ', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567891, 1),
+        ('knossos', 'Η Μηχανική και Εμείς', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567892, 1),
+        ('knossos', 'Η Μηχανική και Αυτοί', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567893, 1);
 
-Insert into mydb.Course_has_Textbook (Textbook_Id, Course_Id)
-Values  (80001, 40005),(80001, 40006), (80001, 40007), (80001, 40008), (80001, 40009),
-        (80000, 40005),(80000, 40006), (80000, 40007), (80000, 40008), (80000, 40009);
+Insert into mydb.Course_has_Textbook (Course_Id, Textbook_Id)
+Values  (40005, 80006), (40005, 80007), /*Αντικειμενοστραφής*/
+        (40006, 80005), /*ΕΑΜ*/
+        (40007, 80003), /*Δομες*/
+        (40008, 80010), /*Syspro*/
+        (40009, 80008), (40009, 80009), /*Λογικη Σχεδιαση*/
+        (40010, 80001), /*Εισαγωγη στον Προγραμματισμό*/
+        (40011, 80004); /*Δομή και Θεσμοί*/
 
 Alter Table mydb.Keyword AUTO_INCREMENT 90000;
 
@@ -119,14 +138,32 @@ Values (80000, 90003), (80000, 90004), (80000, 90005), (80001, 90000), (80001, 9
 Insert into mydb.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies)
 Values (70000, 80000, 500), (70002, 80001, 431), (70003, 80001, 657);
 
+-- Textbook Applications --
 
-Select c.*
-From Course as c, University as u, University_Department as d
-Where u.Id = d.University_Id and d.Id = c.University_Department_Id and d.Name = 'Μουσικών Σπουδών';
+Insert into mydb.Textbook_Application (Date, Is_Current, PIN, Status)
+Values  ('2016-3-11', 0, '0000000000000001', 'Completed'),
+        ('2016-10-11', 0, '0000000000000002', 'Completed'),
+        ('2017-3-11', 0, '0000000000000003', 'Completed'),
+        ('2017-10-11', 0, '0000000000000004', 'Completed'),
+        ('2018-3-11', 1, '0000000000000005', 'Pending');
 
-Select k.*
-From Textbook as t, Distribution_Point as d, Distribution_Point_has_Textbook as dht, Keyword as k, Textbook_has_Keyword as thk
-Where   d.Id = dht.Distribution_Point_id    and
-        dht.Textbook_Id = t.Id              and
-        k.Id = thk.Keyword_Id               and
-        t.id = thk.Textbook_Id;       
+Insert into mydb.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id)
+Values  (1, 80000), (1, 80001),
+        (2, 80002),
+        (3, 80003),
+        (4, 80004),
+        (5, 80005), (5, 80006), (5, 80007);
+
+Insert into mydb.Student_has_Textbook_Application(Textbook_Application_Id, Student_Username)
+Values (1, 'brewknight'), (2, 'brewknight'), (3, 'brewknight'), (4, 'brewknight'), (5, 'brewknight');
+
+-- Select c.*
+-- From Course as c, University as u, University_Department as d
+-- Where u.Id = d.University_Id and d.Id = c.University_Department_Id and d.Name = 'Μουσικών Σπουδών';
+
+-- Select k.*
+-- From Textbook as t, Distribution_Point as d, Distribution_Point_has_Textbook as dht, Keyword as k, Textbook_has_Keyword as thk
+-- Where   d.Id = dht.Distribution_Point_id    and
+--         dht.Textbook_Id = t.Id              and
+--         k.Id = thk.Keyword_Id               and
+--         t.id = thk.Textbook_Id;       

@@ -35,7 +35,7 @@ function getDepartments(req, res) {
 function getCourses(req, res) {
     const dep = req.body.udp;
 
-    const query = "Select * From Course Where University_Department_id = " + dep;
+    const query = `Select * From Course Where University_Department_id = ${dep} Order By Semester ASC`;
 
     sql.query(query, function (err, rows, fields) {
         if (err) throw err;
@@ -52,7 +52,7 @@ function getCourses(req, res) {
 function getSemesters(req, res) {
     const dep = req.body.udp;
 
-    const query = "Select distinct(Semester) From Course Where University_Department_id = " + dep; + "Order By Semester ASC";
+    const query = `Select distinct(Semester) From Course Where University_Department_id = ${dep} Order By Semester ASC`;
 
     sql.query(query, function (err, rows, fields) {
         if (err) throw err;
@@ -72,7 +72,8 @@ function getCoursesBySemester(req, res) {
 
     const query = ` Select *
                     From Course
-                    Where University_Department_id = ${dep} and Semester = ${sem}`;
+                    Where University_Department_id = ${dep} and Semester = ${sem}
+                    Order By Semester ASC`;
 
     sql.query(query, function (err, rows, fields) {
         if (err) throw err;

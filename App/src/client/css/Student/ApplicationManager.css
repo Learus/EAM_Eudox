@@ -54,7 +54,9 @@
     /* margin-top: 20px; */
     width: calc(60% + 50px);
     margin-left: 40px;
+    padding-top: 10px;
 }
+
 
 .SemesterDropdown > button, .CourseDropdown > button {
     border: none;
@@ -69,6 +71,7 @@
     font-size: 18px;
 
     /* margin: 5px; */
+    text-align: left;
 
     cursor: pointer;
     transition: 200ms;
@@ -79,6 +82,15 @@
 .CourseDropdown > button {
     background-color: rgb(57, 85, 136);
     width: 99.9%;
+    padding-left: 50px;
+}
+
+.SemesterDropdown > button:hover {
+    background-color: rgb(89, 132, 211);
+}
+
+.CourseDropdown > button:hover {
+    background-color: rgb(45, 67, 107);
 }
 
 .CourseDropdown > .Textbooks {
@@ -332,4 +344,5 @@
 
 .ApplyButton.Disabled {
     background-color: rgb(238, 238, 238);
+    cursor: initial;
 }

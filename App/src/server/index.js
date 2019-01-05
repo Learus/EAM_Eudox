@@ -152,4 +152,25 @@ app.post('/api/getStudentApplications', function(req, res) {
     })
 })
 
+app.post('/api/createTextbookApplication', function(req, res) {
+    const appl = req.body.new;
+
+    const query = ` Insert into Textbook_Application (Date, Is_Current, PIN, Status)
+                    Values (NOW(), TRUE, ${randomPIN()}, 'Pending')`;
+    
+    sql.query(query, function(err, rows) {
+        if (err) throw err;
+
+        res.send({error: false, message: "OK"});
+    })
+})
+
 app.listen(8080, () => console.log('Listening on port 8080!'));
+
+function randomPIN() {
+    let result = '';
+    for (let i = 16; i > 0; --i) {
+        result += "0123456789"[Math.floor(Math.random() * 10)];
+    }
+    return result;
+}

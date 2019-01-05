@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import autoBind from 'react-autobind';
 import axios from 'axios';
+import {browserHistory} from 'react-router';
 
 import "../../css/Student/ApplicationManager.css"
 import searchimg from "../../images/search.png"
@@ -11,12 +12,18 @@ export default class ApplicationManager extends Component {
 
     constructor(props) {
         super(props);
+        autoBind(this);
         this.state = {
             textbooks: [],
             basket: [],
-            textbooksBySemester: []
+            textbooksBySemester: [],
+            searchType: null,
+            user: this.getUser()
         }
-        autoBind(this);
+    }
+
+    getUser() {
+        return JSON.parse(sessionStorage.getItem('EudoxusUser'));
     }
 
     Search(filters) {
@@ -27,9 +34,15 @@ export default class ApplicationManager extends Component {
             semester: filters.selectedsemester
         }
 
+        let searchType = null;
+        if (filters.semester && !filters.course) {
+            searchType = "Semester"
+        }
+
         let path = '/api/getTextbooks'
         if (filters.course) {
-            path += '/Course'
+            path += '/Course';
+            searchType = "Course"
         }
 
         axios.post(path, filters)
@@ -38,8 +51,8 @@ export default class ApplicationManager extends Component {
                 alert(res.data.message)
             }
             else {
-                // console.log('parsed', this.parseTextbooks(res.data.data));
                 this.setState ({
+                    searchType: searchType,
                     textbooks: res.data.data,
                     textbooksBySemester: this.parseTextbooks(res.data.data)
                 });
@@ -135,6 +148,35 @@ export default class ApplicationManager extends Component {
         return false;
     }
 
+    Apply() {
+        let path;
+        let body;
+        if (this.props.old) {
+            path = '/api/updateTextbookApplication'
+            body = {
+                old: this.props.old,
+                new: this.state.basket,
+            }
+        }
+        else {
+            path = '/api/createTextbookApplication'
+            body = {
+                new: this.state.basket
+            }
+        }
+        
+        axios.post(path, body)
+        .then(res => {
+            if (res.data.error) {
+                alert(res.message)
+            }
+            else {
+                alert('Η Δήλωσή σας ήταν επιτυχής!');
+                browserHistory.push(`/actionpage/Student/1`)
+            }
+        })
+    }
+
     render() {
         let buttonClassName = this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
 
@@ -144,12 +186,13 @@ export default class ApplicationManager extends Component {
                 <div className="line"/>
                 <Filters submit={this.Search}/>
                 <TextbookContainer 
+                    type={this.state.searchType}
                     textbooks={this.state.textbooksBySemester} 
                     adder={this.Add}
                     remover={this.Remove}
                     isChosen={this.isChosen}/>
                 <Basket data={this.state.basket} Remove={this.Remove}/>
-                <button className={buttonClassName}>
+                <button className={buttonClassName} onClick={this.Apply}>
                     Υποβολή Δήλωσης
                 </button>
             </div>
@@ -337,6 +380,46 @@ class Filters extends Component {
     }
 
     Dropdown(props) {
+
+        let content;
+        if (props.groupBy)
+        {
+            let groups = {};
+            for (let i = 0; i < props.data.length; i++) {
+                const element = props.data[i];
+                
+                if (!groups.hasOwnProperty(element[props.groupBy])) {
+                    groups[`${element[props.groupBy]}`] = [];
+                }
+
+                groups[`${element[props.groupBy]}`].push(element);
+            }
+
+            content = Object.keys(groups).map(key => {
+                const group = groups[key];
+
+                return (
+                    <optgroup key={key} label={key + props.label}>
+                        {
+                            group.map(element => {
+                                // console.log(element);
+                                return <option key = {element.Id} value = {element.Id}>{element.Name}</option>
+                            })
+                        }
+                    </optgroup>
+                )
+            })
+        }
+        else {
+            content = props.data.map(element => {
+
+                return (
+                    <option key = {element.Id} value = {element.Id}>{element.Name}</option>
+                );
+
+            });
+        }
+
         return (
             <label className="SearchBar">
                 <p>{props.label}</p>
@@ -345,13 +428,7 @@ class Filters extends Component {
                     onChange = {props.onChange}
                     >
                     <option value = ''></option>
-                    {
-                        props.data.map(element => {
-                            return (
-                                <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                            );
-                        })
-                    }
+                    {content}
                 </select>
             </label>
         )
@@ -373,8 +450,8 @@ class Filters extends Component {
                 <this.Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities}/>
                 <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp}/>
                 <this.Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
-                <this.Dropdown label="Μάθημα" onChange={this.handleCourse} data={this.state.courses}/>
-                <label class="SearchBar">
+                <this.Dropdown label="Μάθημα" groupBy='Semester' label='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
+                <label className="SearchBar">
                     <p>&nbsp;</p>
                     <button onClick={this.handleSubmit} className="SearchButton">
                         <img src={searchimg} className="SearchImg"/>
@@ -394,24 +471,45 @@ class TextbookContainer extends Component {
     }
 
     render() {
-        let last_id = -1;
-        let last_semester = -1;
-
-
-        let stuff = this.props.textbooks.map(sem => {
-            return <SemesterDropdown    options={sem.courses} 
-                                        name={sem.name}
-                                        type="Semester"
-                                        adder={this.props.adder}
-                                        remover={this.props.remover}
-                                        isChosen={this.props.isChosen}
-                                        key={sem.name}/>
-        })
+        let content;
+        if (this.props.type === "Semester") {
+            console.log(this.props.textbooks);
+            content = this.props.textbooks[0].courses.map( (course, index) => {
+                return <CourseDropdown 
+                    options={course.textbooks} 
+                    name={course.name} 
+                    type="Course"
+                    adder={this.props.adder}
+                    remover={this.props.remover}
+                    isChosen={this.props.isChosen}
+                    key={course.name}/>
+            });
+        }
+        else if (this.props.type === "Course") {
+            content = this.props.textbooks[0].courses[0].textbooks.map(textbook => {
+                return <Textbook 
+                        data={textbook} 
+                        adder={this.props.adder}
+                        remover={this.props.remover}
+                        isChosen={this.props.isChosen}
+                        key={`${textbook.c.Id}${textbook.t.Id}`}/>
+            })
+        }
+        else {
+            content = this.props.textbooks.map(sem => {
+                return <SemesterDropdown    options={sem.courses} 
+                                            name={sem.name}
+                                            type="Semester"
+                                            adder={this.props.adder}
+                                            remover={this.props.remover}
+                                            isChosen={this.props.isChosen}
+                                            key={sem.name}/>
+            });
+        }
 
         return (
             <div className = "TextbookContainer">
-                
-                {stuff}
+                {content}
             </div>
         )
     }
@@ -433,7 +531,7 @@ class SemesterDropdown extends Component {
         let options;
         if (this.state.open) {
 
-            options = this.props.options.map(option => {
+            options = this.props.options.map( (option, index) => {
                 return <CourseDropdown 
                         options={option.textbooks} 
                         name={option.name} 
@@ -525,7 +623,7 @@ class Basket extends Component {
         const items = this.props.data.map( (tb, index) => {
             const even = index % 2 === 0 ? "Even": "Odd"
             return (
-                <div className={`BasketEntry ${even}`}>
+                <div key={tb.c.Id} className={`BasketEntry ${even}`}>
                     <div>
                         <p className="BasketEntryName">{tb.t.Name}</p>
                         <p className="BasketEntryCourse">{tb.c.Name}</p>
