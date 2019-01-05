@@ -1,7 +1,7 @@
 import Header from "./Header";
 import React from "react";
-import { StudentApplications } from "./StudentActions";
-import { PublisherPublish } from "./PublisherActions";
+import { StudentApplications, StudentHelp } from "./StudentActions";
+import { PublisherPublish, PublisherHelp } from "./PublisherActions";
 
 export default {
     Student: {
@@ -16,7 +16,7 @@ export default {
         Components: [
             () => {return <h1>Test0</h1>},
             () => {return <StudentApplications/>},
-            () => {return <h1>Test3</h1>},
+            () => {return <StudentHelp/>},
         ],
         Type: "Student"
     },
@@ -48,11 +48,11 @@ export default {
         Quicks: [0],
         Default: 4,
         Components: [
-            (state) => {return <PublisherPublish username = {state.user}/>},
+            () => {return <PublisherPublish/>},
             () => {return <h1>Test0</h1>},
             () => {return <h1>Test0</h1>},
             () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
+            () => {return <PublisherHelp/>},
         ],
         Type: "Publisher"
     },
