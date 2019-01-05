@@ -6,6 +6,7 @@ import axios from 'axios';
 import autoBind from 'react-autobind';
 import { browserHistory } from 'react-router';
 import Actions from './Actions';
+import {FormTextInput} from './Utilities';
 
 export default class Signup extends Component {
 
@@ -31,6 +32,8 @@ export default class Signup extends Component {
 
         autoBind(this);
     }
+
+    signalLoggedStatus() {}
 
     //#region Base Handlers
 
@@ -414,9 +417,11 @@ export default class Signup extends Component {
     }
 
     render() {
+        if(sessionStorage.getItem('EudoxusUser'))
+            browserHistory.push('/');
         return (
             <div className="Signup">
-                <Header/>
+                <Header signalLoggedStatus={this.signalLoggedStatus}/>
 
                 <h1>Εγγραφή</h1>
 
@@ -446,21 +451,6 @@ export default class Signup extends Component {
             </div>
         );
     }
-}
-
-function FormTextInput(props)  {
-    return(
-        <label>
-            <p>{props.label}</p>
-            <input 
-                title = {props.title}
-                className = {props.className}
-                type = {props.type} 
-                placeholder={props.placeholder}
-                onChange = {props.onChange}
-            />
-        </label>
-    );
 }
 
 

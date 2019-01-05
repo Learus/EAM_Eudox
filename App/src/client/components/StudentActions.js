@@ -12,23 +12,37 @@ export {
 
 function StudentApplications(props) {
 
-    let username;
+    let username = null;
     let user = sessionStorage.getItem('EudoxusUser');
     if(user)
+    {
         username = JSON.parse(sessionStorage.getItem('EudoxusUser')).Username;
-    else
-        username = null;
-    
-    return(
-        <div className="StudentApplications">
-            <h1>Οι Δηλώσεις Μου</h1>
-            <div className = "line"/>
-            <div className = "grid">
-                <StudentApplicationList username={username} title="Τρέχουσα Δήλωση" showCurrent={true} pos="left"/>
-                <StudentApplicationList username={username} title="Προηγούμενες Δηλώσεις" showCurrent={false} pos="right"/>
+
+        return(
+            <div className="StudentApplications">
+                <h1>Οι Δηλώσεις Μου</h1>
+                <div className = "line"/>
+                <div className = "grid">
+                    <StudentApplicationList username={username} title="Τρέχουσα Δήλωση" showCurrent={true} pos="left"/>
+                    <StudentApplicationList username={username} title="Προηγούμενες Δηλώσεις" showCurrent={false} pos="right"/>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
+    else
+    {
+        return(
+            <div className="StudentApplications">
+                <h1>Οι Δηλώσεις Μου</h1>
+                <div className = "line"/>
+
+                <h2>Για να δείτε τις δηλώσεις σας πρέπει να συνδεθείτε στον φοιτητικό σας λογαριασμό.</h2>
+            
+            </div>
+        );
+    }
+
+    
 }
 
 class StudentApplicationList extends Component {
@@ -55,7 +69,7 @@ class StudentApplicationList extends Component {
                     let index = 0;
                     this.setState({
                         list: res.data.data.map( (item) => {
-                            
+                            //console.log(item);
                             if( (!this.state.showCurrent && !item.Is_Current)  || (item.Is_Current && this.state.showCurrent)  ) {
 
                                 let dateTime = item.Date.split('T');

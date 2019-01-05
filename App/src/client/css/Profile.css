@@ -1,0 +1,37 @@
+@import './PageInfo.css';
+
+.PageInfo {
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
+.StudentH1 {
+    color: rgb(54,143,226);
+}
+
+.StudentLine {
+    background-color: rgb(54,143,226);
+}
+
+.StudentPresenter > h3 {
+    text-align: left;
+    color: rgb(128,181,236);
+}
+
+.PublisherH1 {
+    color: #7be2a6;
+}
+
+.PublisherLine {
+    background-color: #7be2a6;
+}
+
+.PublisherPresenter > h3 {
+    text-align: left;
+    color: #71d199;
+}
+
+.DataPresenter > h2{
+    text-align: left;
+    color: #818181;
+}

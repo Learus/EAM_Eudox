@@ -1,0 +1,14 @@
+.PageInfo > h1 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.PageInfo > .line {
+
+    height: 2px;
+    width: auto;
+
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}

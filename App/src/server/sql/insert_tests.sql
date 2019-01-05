@@ -128,8 +128,7 @@ Values  ('2016-3-11', 0, '0000000000000001', 'Completed'),
         ('2016-10-11', 0, '0000000000000002', 'Completed'),
         ('2017-3-11', 0, '0000000000000003', 'Completed'),
         ('2017-10-11', 0, '0000000000000004', 'Completed'),
-        ('2018-3-11', 0, '0000000000000005', 'Completed'),
-        ('2018-10-11', 1, '0000000000000006', 'Pending');
+        ('2018-3-11', 1, '0000000000000005', 'Pending');
 
 Insert into mydb.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id)
 Values  (1, 80000), (1, 80001),

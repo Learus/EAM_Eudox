@@ -56,6 +56,7 @@ export default class ActionPage extends Component {
     }
 
     render() {
+
         return (
             <div className = 'Container'>
                 <Header user={this.state.user}/>
