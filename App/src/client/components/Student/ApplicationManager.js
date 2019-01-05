@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import "../../css/Student/ApplicationManager.css"
 import searchimg from "../../images/search.png"
+import deleteimg from "../../images/trash.png"
 
 
 export default class ApplicationManager extends Component {
@@ -95,13 +96,13 @@ export default class ApplicationManager extends Component {
             if (!Semesters[semesterKey].hasOwnProperty(Textbooks[i].c.Id)) {
                 Semesters[semesterKey][courseKey] = {
                     textbooks: [],
-                    name: Textbooks[i].c.Id
+                    id: Textbooks[i].c.Id,
+                    name: Textbooks[i].c.Name
                 };
             }
 
             Semesters[semesterKey][courseKey].textbooks.push(Textbooks[i]);
         }
-        console.log("Semesters", Semesters);
         
         const SemesterKeys = Object.keys(Semesters);
         let retVal = [];
@@ -118,13 +119,12 @@ export default class ApplicationManager extends Component {
 
             for (let j = 0; j < CourseKeys.length; j++) {
                 let key2 = CourseKeys[j];
-                console.log(Semesters[key][key2]);
                 sems.courses.push(Semesters[key][key2]);
             }
             
             retVal.push(sems);
         }
-        console.log(retVal);
+
         return retVal;
     }
 
@@ -136,6 +136,7 @@ export default class ApplicationManager extends Component {
     }
 
     render() {
+        let buttonClassName = this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
 
         return (
             <div className="ApplicationManager">
@@ -147,6 +148,10 @@ export default class ApplicationManager extends Component {
                     adder={this.Add}
                     remover={this.Remove}
                     isChosen={this.isChosen}/>
+                <Basket data={this.state.basket} Remove={this.Remove}/>
+                <button className={buttonClassName}>
+                    Υποβολή Δήλωσης
+                </button>
             </div>
         )
     }
@@ -369,14 +374,18 @@ class Filters extends Component {
                 <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp}/>
                 <this.Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
                 <this.Dropdown label="Μάθημα" onChange={this.handleCourse} data={this.state.courses}/>
-
-                <button onClick={this.handleSubmit} className="SearchButton">
-                    <img src={searchimg} className="SearchImg"/>
-                </button>
+                <label class="SearchBar">
+                    <p>&nbsp;</p>
+                    <button onClick={this.handleSubmit} className="SearchButton">
+                        <img src={searchimg} className="SearchImg"/>
+                    </button>
+                </label>
             </div>
         )
     }
 }
+
+
 
 class TextbookContainer extends Component {
 
@@ -388,27 +397,6 @@ class TextbookContainer extends Component {
         let last_id = -1;
         let last_semester = -1;
 
-        // const textbooks = this.props.textbooks.map(tb => {
-        //     // if id has changed display header
-        //     const course = last_id !== tb.c.Id ? <h3 className="CourseHeader">{tb.c.Name}</h3> : null;
-        //     last_id = tb.c.Id;
-
-        //     const semester = last_semester !== tb.c.Semester ? <h2 className="SemesterHeader">{tb.c.Semester}ο Εξάμηνο</h2> : null;
-        //     last_semester = tb.c.Semester;
-
-        //     return (
-        //         <div key={`${tb.c.Id}${tb.t.Id}`}>
-        //             {semester}
-        //             {course}
-        //             <Textbook 
-        //                 data={tb} 
-        //                 adder={this.props.adder}
-        //                 remover={this.props.remover}
-        //                 isChosen={this.props.isChosen}
-        //                 key={`${tb.c.Id}${tb.t.Id}`}/>
-        //         </div>
-        //     )
-        // })
 
         let stuff = this.props.textbooks.map(sem => {
             return <SemesterDropdown    options={sem.courses} 
@@ -430,7 +418,6 @@ class TextbookContainer extends Component {
 }
 
 
-
 class SemesterDropdown extends Component {
     constructor(props) {
         super(props);
@@ -447,7 +434,6 @@ class SemesterDropdown extends Component {
         if (this.state.open) {
 
             options = this.props.options.map(option => {
-                console.log('sem', option)
                 return <CourseDropdown 
                         options={option.textbooks} 
                         name={option.name} 
@@ -462,8 +448,8 @@ class SemesterDropdown extends Component {
 
         return (
             <div className="SemesterDropdown">
-                <button onClick={this.onClick}>{this.props.name}</button>
-                {this.state.open ? options : null}
+                <button onClick={this.onClick}>{this.props.name}ο Εξάμηνο &nbsp; &#9660;</button>
+                <div className="Courses">{this.state.open ? options : null}</div>
             </div>
         )
     }
@@ -485,7 +471,6 @@ class CourseDropdown extends Component {
         if (this.state.open) {
 
             options = this.props.options.map(option => {
-                console.log(option);
                 return <Textbook 
                         data={option} 
                         adder={this.props.adder}
@@ -498,8 +483,8 @@ class CourseDropdown extends Component {
 
         return (
             <div className="CourseDropdown">
-                <button onClick={this.onClick}>{this.props.name}</button>
-                {this.state.open ? options : null}
+                <button onClick={this.onClick}>{this.props.name} &nbsp; &#9660;</button>
+                {this.state.open ? <div className="Textbooks"> {options} </div> : null}
             </div>
         )
     }
@@ -515,7 +500,7 @@ function Textbook(props) {
     return (
         <div className={className}>
             <h3>{props.data.t.Name}</h3>
-            <p>{props.data.t.Writer}</p>
+            <p className="Writer">{props.data.t.Writer}</p>
             <p>{props.data.t.Date_Published}</p>
             <p>{"ISBN: " + props.data.t.ISBN}</p>
             <p>{props.data.p.Name}</p>
@@ -529,4 +514,40 @@ function Textbook(props) {
             </button>}
         </div>
     );
+}
+
+class Basket extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const items = this.props.data.map( (tb, index) => {
+            const even = index % 2 === 0 ? "Even": "Odd"
+            return (
+                <div className={`BasketEntry ${even}`}>
+                    <div>
+                        <p className="BasketEntryName">{tb.t.Name}</p>
+                        <p className="BasketEntryCourse">{tb.c.Name}</p>
+                    </div>
+                    <button className="BasketRemoveButton" onClick={() => {this.props.Remove(tb)}}>
+                        <img src={deleteimg}/>
+                    </button>
+                </div>
+            )
+        })
+
+        return (
+            items.length ?
+
+                <div className="Basket">
+                    <h3>Επιλεγμένα Συγγράμματα</h3>
+                    <div className="BasketEntries">
+                        {items}
+                    </div>
+                </div>
+                :
+                null
+        )
+    }
 }
