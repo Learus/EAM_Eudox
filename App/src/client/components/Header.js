@@ -13,6 +13,7 @@ export default class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {user: JSON.parse(sessionStorage.getItem('EudoxusUser')) };
+        this.signalLoggedStatus = props.signalLoggedStatus;
     }
 
     loginHandler() {
@@ -30,7 +31,9 @@ export default class Header extends Component {
                         <br/>
                         Εύδοξος
                     </Link>
-                    <AccountSnapshot user={this.state.user} loginHandler={this.loginHandler.bind(this)}/>
+                    <AccountSnapshot user={this.state.user}
+                                     loginHandler={this.loginHandler.bind(this)}
+                                     signalLoggedStatus={this.signalLoggedStatus}/>
                 </div>
     
                 <div className="header-bottom">
@@ -75,7 +78,7 @@ function AccountSnapshot(props) {
             >
 
                 <div>
-                    <button key="profile" onClick={ () => {browserHistory.push("/actionpage")} }>
+                    <button key="profile" onClick={ () => {browserHistory.push("/profile")} }>
                         Το προφίλ μου
                     </button>
 
@@ -87,7 +90,9 @@ function AccountSnapshot(props) {
                         Βοήθεια
                     </button>
 
-                    <button key="logout" onClick={ () => {sessionStorage.removeItem('EudoxusUser'); props.loginHandler();} }>
+                    <button key="logout" onClick={ () => {  sessionStorage.removeItem('EudoxusUser');
+                                                            props.loginHandler();
+                                                            props.signalLoggedStatus(); } }>
                         Αποσύνδεση
                     </button>
                 </div>
@@ -99,7 +104,7 @@ function AccountSnapshot(props) {
     {
         return(
             <div className="account-empty">
-                <LoginPopup loginHandler={props.loginHandler}/>
+                <LoginPopup loginHandler={props.loginHandler} signalLoggedStatus={props.signalLoggedStatus}/>
                 &nbsp;
                 |
                 &nbsp;

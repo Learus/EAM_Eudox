@@ -6,6 +6,7 @@ import { Link, browserHistory } from "react-router";
 import '../css/Home.css';
 
 import Actions from './Actions';
+import autobind from 'react-autobind';
 
 import stud_logo from '../images/student_logo.png';
 import secr_logo from '../images/secretary_logo.svg';
@@ -13,10 +14,19 @@ import publ_logo from '../images/publisher_logo.png';
 import dist_logo from '../images/distributor_logo.svg';
 
 export default class Home extends Component{
+
+    constructor(props) {
+        super(props);
+
+        autobind(this);
+    }
+
+    signalLoggedStatus() {}
+
     render() {
         return(
             <div>
-                <Header/>
+                <Header signalLoggedStatus={this.signalLoggedStatus}/>
                 <div className="grid-container">
                     <Banner 
                         type='Student'/>

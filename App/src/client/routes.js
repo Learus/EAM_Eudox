@@ -8,7 +8,8 @@ import App from './components/App';
 import Home from './components/Home';
 import Signup from './components/Signup';
 import ActionPage from './components/ActionPage';
-import About from './components/About'
+import About from './components/About';
+import Profile from './components/Profile';
 
 /**
  * All routes go here.
@@ -20,5 +21,6 @@ export default (
     <Route path="/signup" component={Signup}/>
     <Route path="/actionpage/:type/:active" component={ActionPage}/>
     <Route path="/about(/:user)" component={About}/>
+    <Route path="/profile" component={Profile}/>
   </Route>
 );

@@ -4,16 +4,24 @@ import {Link, browserHistory} from 'react-router';
 import axios from "axios"
 import '../css/Login.css'
 import Actions from './Actions';
+import autobind from 'react-autobind';
 
 export class LoginPopup extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.signalLoggedStatus = props.signalLoggedStatus;
+    }
+
     render() {
         return (
             <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
                 { close => (
                     this.props.hasOwnProperty('loginHandler') ?
-                    <LoginForm loginHandler={this.props.loginHandler} Close={close}/>
+                    <LoginForm loginHandler={this.props.loginHandler} Close={close} signalLoggedStatus={this.signalLoggedStatus}/>
                     :
-                    <LoginForm Close={close}/>
+                    <LoginForm Close={close} signalLoggedStatus={this.signalLoggedStatus}/>
                 )}
             </Popup>
         );
@@ -25,10 +33,8 @@ export class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {username: '', password: '', wrong: false};
-            
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.signalLoggedStatus = props.signalLoggedStatus;
+        autobind(this);
     }
   
     handleUsernameChange(event) {
@@ -62,6 +68,7 @@ export class LoginForm extends React.Component {
                     console.log(this.props);
                     this.props.loginHandler();
                 }
+                this.signalLoggedStatus();
                 // browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
             }
         })
