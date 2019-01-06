@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import ActionPage from './components/ActionPage';
 import About from './components/About';
 import Profile from './components/Profile';
+import NotFound from './components/NotFound';
 
 /**
  * All routes go here.
@@ -20,7 +21,8 @@ export default (
     <IndexRoute component={Home}/>
     <Route path="/signup" component={Signup}/>
     <Route path="/actionpage/:type/:active" component={ActionPage}/>
-    <Route path="/about(/:user)" component={About}/>
+    {/* <Route path="/about(/:user)" component={About}/> */}
     <Route path="/profile" component={Profile}/>
+    <Route path="*" exact={true} component={NotFound}/>
   </Route>
 );

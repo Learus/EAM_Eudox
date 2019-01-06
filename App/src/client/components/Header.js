@@ -8,18 +8,21 @@ import logo from '../images/logo.svg';
 
 import {LoginPopup} from './Login';
 import Popup from 'reactjs-popup';
+import autoBind from 'react-autobind';
 
 export default class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {user: JSON.parse(sessionStorage.getItem('EudoxusUser')) };
-        this.signalLoggedStatus = props.signalLoggedStatus;
+        autoBind(this);
     }
 
     loginHandler() {
+        console.log("Κλήθηκα")
         this.setState({
             user: JSON.parse(sessionStorage.getItem('EudoxusUser')) 
         });
+        this.props.signalLoggedStatus();
     }
 
     render() {
@@ -32,8 +35,7 @@ export default class Header extends Component {
                         Εύδοξος
                     </Link>
                     <AccountSnapshot user={this.state.user}
-                                     loginHandler={this.loginHandler.bind(this)}
-                                     signalLoggedStatus={this.signalLoggedStatus}/>
+                                     loginHandler={this.loginHandler}/>
                 </div>
     
                 <div className="header-bottom">
@@ -91,8 +93,7 @@ function AccountSnapshot(props) {
                     </button>
 
                     <button key="logout" onClick={ () => {  sessionStorage.removeItem('EudoxusUser');
-                                                            props.loginHandler();
-                                                            props.signalLoggedStatus(); } }>
+                                                            props.loginHandler();} }>
                         Αποσύνδεση
                     </button>
                 </div>
@@ -104,7 +105,7 @@ function AccountSnapshot(props) {
     {
         return(
             <div className="account-empty">
-                <LoginPopup loginHandler={props.loginHandler} signalLoggedStatus={props.signalLoggedStatus}/>
+                <LoginPopup loginHandler={props.loginHandler}/>
                 &nbsp;
                 |
                 &nbsp;

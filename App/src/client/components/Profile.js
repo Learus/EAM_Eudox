@@ -10,7 +10,15 @@ export default class Profile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { user: null, savedNewMail: "", savedNewMail2: "", savedNewPassword: "", savedNewPassword2: "" }
+        this.state = { 
+            user: null, 
+            savedNewMail: "", 
+            savedNewMail2: "", 
+            savedNewPassword: "", 
+            savedNewPassword2: "",
+            wrongEmail: "",
+            wrongPassword: "",
+            wrongCurrentPassword: "" }
         autobind(this);
     }
 
@@ -23,21 +31,12 @@ export default class Profile extends Component {
     }
 
     updateUser() {
-        let username;
         let user = sessionStorage.getItem('EudoxusUser');
         if(user) {
-            username = JSON.parse(sessionStorage.getItem('EudoxusUser')).Username;
 
-            axios.post('/api/getUser', {
-                        username: username
-                }).then( res => {
-                    if (res.data.error) {
-                        alert(res.message)
-                    }
-                    else {
-                        this.setState( { user: res.data.data } );
-                    }
-            });
+            this.setState({
+                user: JSON.parse(user)
+            })
         }
         else
             this.setState( {user: null} );
@@ -66,19 +65,29 @@ export default class Profile extends Component {
                         alert(res.message)
                     }
                     else {
-                        this.setState( { savedNewMail: "", savedNewMail2: "" } );
-                        this.updateUser();
+                        
+                        let user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
+
+                        user.Email = this.state.savedNewMail;
+                        sessionStorage.setItem('EudoxusUser', JSON.stringify(user) );
+                        this.setState( { savedNewMail: "", savedNewMail2: "", user: user, wrongEmail: "" } );
                     }
                 });
             }
             else
             {
                 alert("Σφάλμα: Πρέπει να εισάγετε μια διεύθυνση E-mail πρώτα.");
+                this.setState({
+                    wrongEmail: "Σφάλμα: Πρέπει να εισάγετε μια διεύθυνση E-mail πρώτα."
+                })
             }
         }
         else
         {
             alert("Σφάλμα: Οι διευθύνσεις E-mail που έχετε εισάγει δεν ταιριάζουν.");
+            this.setState({
+                wrongEmail: "Σφάλμα: Οι διευθύνσεις E-mail που έχετε εισάγει δεν ταιριάζουν."
+            })
         }
     }
 
@@ -99,7 +108,7 @@ export default class Profile extends Component {
         if( this.state.savedCurrentPassword === this.state.user.Password &&
             this.state.savedNewPassword === this.state.savedNewPassword2 ) {
             
-            if(this.state.savedNewPassword != "")
+            if(this.state.savedNewPassword !== "")
             {
 
                 axios.post('/api/updateUser',
@@ -111,7 +120,7 @@ export default class Profile extends Component {
                         alert(res.message)
                     }
                     else {
-                        this.setState( { savedNewPassword: "", savedNewPassword2: "", savedCurrentPassword: "" } );
+                        this.setState( { savedNewPassword: "", savedNewPassword2: "", savedCurrentPassword: "", wrongPassword: "" } );
                         this.updateUser();
                     }
                 });
@@ -119,14 +128,27 @@ export default class Profile extends Component {
             else
             {
                 alert("Σφάλμα: Πρέπει να εισάγετε έναν νέο κωδικό πρώτα.");
+                this.setState({
+                    wrongPassword: res.message
+                })
             }
         }
         else
         {
-            if(this.state.savedCurrentPassword != this.state.user.Password)
+            if(this.state.savedCurrentPassword !== this.state.user.Password) {
                 alert("Σφάλμα: Ο τρέχων κωδικός που έχετε εισάγει είναι εσφαλμένος.");
-            else
+                this.setState({
+                    wrongCurrentPassword: "Σφάλμα: Ο τρέχων κωδικός που έχετε εισάγει είναι εσφαλμένος."
+                })
+            }
+            else {
                 alert("Σφάλμα: Οι νέοι κωδικοί που έχετε εισάγει δεν ταιριάζουν.");
+                this.setState({
+                    wrongPassword: "Σφάλμα: Οι νέοι κωδικοί που έχετε εισάγει δεν ταιριάζουν."
+                })
+            }
+
+            
         }
     }
 
@@ -135,82 +157,95 @@ export default class Profile extends Component {
         let lineClass = "line ";
         let h1Class = "";
         
-        //console.log(this.state);
+        // console.log(this.state);
 
         if(this.state.user)
         {
-            lineClass += this.state.user.Type + "Line";
-            h1Class += this.state.user.Type + "H1";
+            lineClass += this.state.user.Type + " Line";
+            h1Class += this.state.user.Type + " H1";
             let presenterClass = "DataPresenter " + this.state.user.Type + "Presenter";
-
             return(
                 <div>
                     <Header signalLoggedStatus={this.signalLoggedStatus}/>
                     
-                    <div className="PageInfo">
+                    <div className="Profile">
     
                         <h1 className={h1Class}>Τα στοιχεία μου</h1>
     
-                        <div className={lineClass}/>
+                        {/* <div className={lineClass}/> */}
     
                         <div style={{float: 'left', marginLeft: '100px'}}>
                             <DataPresenter  className={presenterClass}
                                             header="Όνομα Χρήστη"
                                             data={this.state.user.Username}/>
                             
-                            <br/>
+                            
 
                             <DataPresenter  className={presenterClass}
                                             header="E-mail"
                                             data={this.state.user.Email}/>
                             
+                            <br/>
+                        </div>
+
+                        <SpecificUserDetails user={this.state.user} style={{float: 'left', marginLeft: '100px'}}/>
+
+                        <div style={{float: 'left', marginLeft: '100px'}}>
                             <DataPresenter  className={presenterClass}
                                             header="Αλλαγή E-mail"
                                             data=""/>
 
-                            <FormTextInput  title="Νεο E-mail"
-                                            className=""
+                            <FormTextInput  label="Νέο E-mail"
+                                            title={this.state.wrongEmail}
+                                            className={this.state.wrongEmail.length !== 0 ? "ProfileInput wrong" : "ProfileInput"}
+                                            labelClass={this.state.user.Type}
                                             type="Text"
-                                            placeHolder="Νεο E-mail"
+                                            placeholder="Νεο E-mail"
                                             onChange={this.hMailChange}/>
 
-                            <FormTextInput  title="Επιβεβαίωση Νέου E-mail"
-                                            className=""
+                            <FormTextInput  label="Επιβεβαίωση Νέου E-mail"
+                                            title={this.state.wrongEmail}
+                                            className={this.state.wrongEmail.length !== 0 ? "ProfileInput wrong" : "ProfileInput"}
+                                            labelClass={this.state.user.Type}
                                             type="Text"
-                                            placeHolder="Επιβεβαίωση Νέου E-mail"
+                                            placeholder="Επιβεβαίωση Νέου E-mail"
                                             onChange={this.hMailChange2}/>
 
-                            <button onClick={this.hMailSubmit}>Επιβεβαίωση</button>
-
-
-                            <DataPresenter  className={presenterClass}
-                                            header="Αλλαγή Κωδικού Πρόσβασης"
-                                            data=""/>
-                            
-                            <FormTextInput  title="Τρέχων Κωδικός Πρόσβασης"
-                                            className=""
-                                            type="Text"
-                                            placeHolder="Τρέχων Κωδικός Πρόσβασης"
-                                            onChange={this.hCurrentPassword}/>
-
-                            <FormTextInput  title="Νεος Κωδικός Πρόσβασης"
-                                            className=""
-                                            type="Text"
-                                            placeHolder="Νεος Κωδικός Πρόσβασης"
-                                            onChange={this.hNewPassword}/>
-
-                            <FormTextInput  title="Επιβεβαίωση Νεου Κωδικού Πρόσβασης"
-                                            className=""
-                                            type="Text"
-                                            placeHolder="Επιβεβαίωση Νεου Κωδικού Πρόσβασης"
-                                            onChange={this.hNewPassword2}/>
-                            
-                            <button onClick={this.hPasswordSubmit}>Επιβεβαίωση</button>
-
+                            <button className={this.state.user.Type} onClick={this.hMailSubmit}>Επιβεβαίωση</button>
 
                         </div>
 
-                        <SpecificUserDetails user={this.state.user} style={{float: 'right', marginRight: '100px'}}/>
+                        <div style={{float: 'left', marginLeft: '100px'}}>
+                            <DataPresenter  className={presenterClass}
+                                            header="Αλλαγή Κωδικού Πρόσβασης"
+                                            data=""/>
+
+                            <FormTextInput  label="Παλιός Κωδικός Πρόσβασης"
+                                            title="Παλιός Κωδικός Πρόσβασης"
+                                            className={this.state.wrongCurrentPassword.length !== 0 ? "ProfileInput wrong" : "ProfileInput"}
+                                            labelClass={this.state.user.Type}
+                                            type="Text"
+                                            placeholder="Παλιός Κωδικός Πρόσβασης"
+                                            onChange={this.hCurrentPassword}/>
+                            
+                            <FormTextInput  label="Νέος Κωδικός Πρόσβασης"
+                                            title="Νεος Κωδικός Πρόσβασης"
+                                            className={this.state.wrongPassword.length !== 0 ? "ProfileInput wrong" : "ProfileInput"}
+                                            labelClass={this.state.user.Type}
+                                            type="password"
+                                            placeholder="Νεος Κωδικός Πρόσβασης"
+                                            onChange={this.hNewPassword}/>
+
+                            <FormTextInput  label="Επιβεβαίωση Νεου Κωδικού Πρόσβασης"    
+                                            title="Επιβεβαίωση Νεου Κωδικού Πρόσβασης"
+                                            className={this.state.wrongPassword.length !== 0 ? "ProfileInput wrong" : "ProfileInput"}
+                                            labelClass={this.state.user.Type}
+                                            type="password"
+                                            placeholder="Επιβεβαίωση Νεου Κωδικού Πρόσβασης"
+                                            onChange={this.hNewPassword2}/>
+                            
+                            <button className={this.state.user.Type} onClick={this.hPasswordSubmit}>Επιβεβαίωση</button>
+                        </div>
 
                     </div>
                 </div>
@@ -220,13 +255,13 @@ export default class Profile extends Component {
         return(
             <div>
                 <Header signalLoggedStatus={this.signalLoggedStatus}/>
-                <div className="PageInfo">
+                <div className="Profile">
 
-                    <h1 className={h1Class}>Τα στοιχεία μου</h1>
+                    <h1 className="H1">Τα στοιχεία μου</h1>
 
-                    <div className={lineClass}/>
+                    <div className="Line"/>
 
-                    <h2>Για να δείτε τα στοιχεία σας πρέπει να είστε συνδεδεμένος στον λογαριασμό σας</h2>
+                    <h2>Για να δείτε τα στοιχεία σας πρέπει να είστε συνδεδεμένος στον λογαριασμό σας.</h2>
 
                 </div>
             </div>
@@ -242,6 +277,7 @@ function SpecificUserDetails(props) {
         case 'Publisher': return(<PublisherSpecificDetails user={props.user} style={props.style}/>); break;
         case 'Secretary': return(<SecretarySpecificDetails user={props.user} style={props.style}/>); break;
         case 'Distributor': return(<DistributorSpecificDetails user={props.user} style={props.style}/>); break;
+        case 'PublDist': return(<PublisherSpecificDetails user={props.user} style={props.style}/>);;
     }
 }
 
@@ -309,25 +345,25 @@ class StudentSpecificDetails extends Component {
                 <DataPresenter  className="DataPresenter StudentPresenter"
                                 header="Όνομα - Επώνυμο"
                                 data={this.state.name + " " + this.state.surname}/>
-                <br/>
+                
 
                 <DataPresenter  className="DataPresenter StudentPresenter"
                                 header="Τηλέφωνο Επικοινωνίας"
                                 data={this.state.phone}/>
 
-                <br/>   
+                   
                 
                 <DataPresenter  className="DataPresenter StudentPresenter"
                                 header="Αναγνωριστικός Αριθμός Φοιτητή"
                                 data={this.state.sid}/>
 
-                <br/>
+                
 
                 <DataPresenter  className="DataPresenter StudentPresenter"
                                 header="Αριθμός Ταυτότητας"
                                 data={this.state.pid}/>
 
-                <br/>
+                
 
                 <DataPresenter  className="DataPresenter StudentPresenter"
                                 header="Τμήμα"
@@ -354,7 +390,7 @@ class PublisherSpecificDetails extends Component {
 
     componentDidMount() {
 
-        axios.post('/api/getTypeData', { username: this.state.user.Username, type: this.state.user.Type }).then( res => {
+        axios.post('/api/getTypeData', { username: this.state.user.Username, type: "Publisher" }).then( res => {
             if (res.data.error) {
                 alert(res.message)
             }
@@ -379,8 +415,6 @@ class PublisherSpecificDetails extends Component {
     }
 
     render() {
-
-        //console.log(this.state.user);
 
         return(
             <div style={this.state.style}>

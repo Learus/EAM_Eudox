@@ -151,15 +151,15 @@ app.post('/api/updateUser', function(req, res) {
 
     if(req.body.password)
     {
-        query += ("Password='" + req.body.password + "'");
+        query += (`Password = '${req.body.password}'`);
     }
 
     if(req.body.email)
     {
-        query += ("Email='" + req.body.email +"'");
+        query += (`Email = '${req.body.email}'`);
     }
 
-    query += " Where Username='" + req.body.username + "'";
+    query += ` Where Username = '${req.body.username}'`;
 
     console.log(query);
 

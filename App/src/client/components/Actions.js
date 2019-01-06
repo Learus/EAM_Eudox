@@ -2,6 +2,8 @@ import Header from "./Header";
 import React from "react";
 import { StudentApplications, StudentHelp } from "./StudentActions";
 import { PublisherPublish, PublisherHelp } from "./PublisherActions";
+import { NotFoundSmall } from "./NotFound";
+// const NotFound = NotFoundSmall;
 
 export default {
     Student: {
@@ -30,9 +32,9 @@ export default {
         Quicks: [0, 1],
         Default: 2,
         Components: [
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
         ],
         Type: "Secretary"
     },
@@ -49,9 +51,9 @@ export default {
         Default: 4,
         Components: [
             () => {return <PublisherPublish/>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
             () => {return <PublisherHelp/>},
         ],
         Type: "Publisher"
@@ -67,10 +69,10 @@ export default {
         Quicks: [0],
         Default: 3,
         Components: [
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
         ],
         Type: "Distributor"
     }

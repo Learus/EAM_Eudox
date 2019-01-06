@@ -1,15 +1,40 @@
 @import './PageInfo.css';
 
-.PageInfo {
-    margin-left: 400px;
-    margin-right: 400px;
+.Profile {
+    /* margin-left: 400px; */
+    /* margin-right: 400px; */
+    height: 100%;
 }
 
-.StudentH1 {
+.Profile > div {
+    width: 300px;
+}
+
+.H1 {
+    font-weight: normal;
+
+    text-align: left;
+
+    margin: 40px 60px;
+
+    color: cornflowerblue;
+}
+
+.Profile > h2 {
+    font-weight: normal;
+
+    text-align: left;
+
+    margin: 40px 60px;
+
+    color: gray;
+}
+
+.Student.H1 {
     color: rgb(54,143,226);
 }
 
-.StudentLine {
+.Student.Line {
     background-color: rgb(54,143,226);
 }
 
@@ -18,20 +43,109 @@
     color: rgb(128,181,236);
 }
 
-.PublisherH1 {
-    color: #7be2a6;
+.Publisher.H1, .PublDist.H1 {
+    color: rgb(47, 175, 103)
 }
 
-.PublisherLine {
-    background-color: #7be2a6;
+.Publisher.Line, .PublDist.Line {
+    background-color: rgb(47, 175, 103)
 }
 
-.PublisherPresenter > h3 {
+.PublisherPresenter > h3, .PublDistPresenter > h3 {
     text-align: left;
-    color: #71d199;
+    color: rgb(47, 175, 103)
+}
+
+.DataPresenter {
+    margin-bottom: 20px;
+}
+
+.DataPresenter > h3 {
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
 }
 
 .DataPresenter > h2{
+    font-size: 20px;
     text-align: left;
     color: #818181;
+    font-weight: normal;
+}
+
+.line {
+    height: 2px;
+    width: auto;
+
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.ProfileInput {
+    border-radius: 5px;
+    border: none;
+
+    width : 80%;
+
+    /* float: left; */
+
+    padding: 15px;
+
+    background-color: rgb(241, 241, 241);
+    margin: 2px;
+
+    color: #818181;
+}
+
+.ProfileInput.wrong {
+    border: 1px solid rgb(248, 97, 97);
+}
+
+p.Publisher, p.PublDist {
+    color: rgb(35, 129, 76);
+}
+
+p.Student {
+    color: rgb(98, 138, 180);
+}
+
+.Profile > div > label > p {
+    margin: 10px 25px;
+
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+
+    text-align: left;
+}
+
+.Profile > div > button {
+    font-size: 15px;
+    padding: 15px;
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 5px;
+    margin-top: 15px;
+    box-shadow: 0px 2px 5px black;
+    transition: 200ms;
+    cursor: pointer;
+}
+
+
+button.Publisher:hover, button.PublDist:hover {
+    background-color: rgb(35, 128, 75);
+}
+
+button.Publisher, button.PublDist {
+    background-color: rgb(47, 175, 103);
+}
+
+button.Student {
+    background-color: rgb(128,181,236);
+}
+
+button.Student:hover {
+    background-color: rgb(105, 148, 194);
 }

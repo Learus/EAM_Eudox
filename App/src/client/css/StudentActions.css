@@ -1,9 +1,8 @@
-.StudentApplications > h1 {
-    font-family: Ubuntu, Helvetica, sans-serif;
+.StudentHelp > h1 {
     color: rgb(54,143,226);
 }
 
-.StudentApplications > .line {
+.StudentHelp > .line {
     background-color: rgb(54,143,226);
 
     height: 2px;
@@ -15,16 +14,14 @@
     margin-right: 20px;
 }
 
-.StudentApplications > ul {
-    font-family: Ubuntu, Helvetica, sans-serif;
+.StudentHelp > ul {
     font-size: 20px;
-    margin-left: 300px;
-    margin-right: 300px;
 }
 
-.StudentApplications > ul > li {
+.StudentHelp > ul > li {
     text-align: left;
-    margin-top: 40px;
+    margin: 40px 60px;
+    color: gray
 }
 
 #Link {
@@ -69,6 +66,13 @@
 /* Handle on hover */
 .right > ul::-webkit-scrollbar-thumb:hover {
 background: rgb(131, 131, 131); 
+}
+
+.StudentApplications > h2 {
+    text-align: left;
+    color: gray;
+    font-weight: normal;
+    margin: 40px 60px;
 }
 
 .StudentApplicationList > h2 {

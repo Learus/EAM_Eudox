@@ -71,7 +71,7 @@ function PublisherPublish(props) {
 
 function PublisherHelp(props) {
     return (
-        <div className="PublisherPublish">
+        <div className="PublisherHelp">
             <h1>Οδηγίες - Βοήθεια</h1>
             <div className="line" />
 

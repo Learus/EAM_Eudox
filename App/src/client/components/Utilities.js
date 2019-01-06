@@ -7,7 +7,7 @@ export {
 function FormTextInput(props)  {
     return(
         <label>
-            <p>{props.label}</p>
+            <p className={props.labelClass}>{props.label}</p>
             <input 
                 title = {props.title}
                 className = {props.className}

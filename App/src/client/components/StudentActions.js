@@ -14,10 +14,11 @@ export {
 function StudentApplications(props) {
 
     let username = null;
-    let user = sessionStorage.getItem('EudoxusUser');
-    if(user)
+    let user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
+
+    if(user && user.Type === 'Student')
     {
-        username = JSON.parse(sessionStorage.getItem('EudoxusUser')).Username;
+        username = user.Username;
 
         return(
             <div className="StudentApplications">
@@ -37,7 +38,7 @@ function StudentApplications(props) {
                 <h1>Οι Δηλώσεις Μου</h1>
                 <div className = "line"/>
 
-                <h2>Για να δείτε τις δηλώσεις σας πρέπει να συνδεθείτε στον φοιτητικό σας λογαριασμό.</h2>
+                <h2>Για να δείτε τις δηλώσεις σας πρέπει να συνδεθείτε σε φοιτητικό λογαριασμό.</h2>
             
             </div>
         );
@@ -126,7 +127,7 @@ class StudentApplicationList extends Component {
 
 function StudentHelp(props) {
     return(
-        <div className="StudentApplications">
+        <div className="StudentHelp">
             <h1>Οδηγίες - Βοήθεια</h1>
             <div className="line"/>
 

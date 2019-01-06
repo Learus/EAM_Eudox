@@ -10,8 +10,6 @@ export class LoginPopup extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.signalLoggedStatus = props.signalLoggedStatus;
     }
 
     render() {
@@ -19,9 +17,9 @@ export class LoginPopup extends React.Component {
             <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
                 { close => (
                     this.props.hasOwnProperty('loginHandler') ?
-                    <LoginForm loginHandler={this.props.loginHandler} Close={close} signalLoggedStatus={this.signalLoggedStatus}/>
+                    <LoginForm loginHandler={this.props.loginHandler} Close={close}/>
                     :
-                    <LoginForm Close={close} signalLoggedStatus={this.signalLoggedStatus}/>
+                    <LoginForm Close={close}/>
                 )}
             </Popup>
         );
@@ -68,7 +66,6 @@ export class LoginForm extends React.Component {
                     console.log(this.props);
                     this.props.loginHandler();
                 }
-                this.signalLoggedStatus();
                 // browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
             }
         })

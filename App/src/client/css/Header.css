@@ -90,7 +90,7 @@
 
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
     font-size: 25px;
-    color: #4b8ee6;
+    color: gray;
 
     cursor: pointer;
 }
@@ -104,13 +104,13 @@
     height: 0;
 
     border-top: 0;
-    border-bottom: 12px solid #4b8ee6;
+    border-bottom: 12px solid gray;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
 }
 
 .account_button_downward {
-    border-top: 12px solid #4b8ee6;
+    border-top: 12px solid gray;
     border-bottom: 0;
 }
 

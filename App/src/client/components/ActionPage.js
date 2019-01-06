@@ -38,6 +38,11 @@ export default class ActionPage extends Component {
         autoBind(this);
     }
 
+    signalLoggedStatus() {
+        console.log("Και εγώ κλήθηκα")
+        this.forceUpdate();
+    }
+
     shouldComponentUpdate(nextProps) {
         if (nextProps.location !== this.props.location) {
             this.setState({
@@ -59,7 +64,7 @@ export default class ActionPage extends Component {
 
         return (
             <div className = 'Container'>
-                <Header user={this.state.user}/>
+                <Header user={this.state.user} signalLoggedStatus={this.signalLoggedStatus}/>
                 <ActionList meta={this.state.meta} active={this.state.active} activeChanger={this.changeActive}/>
                 <Main meta={this.state.meta} active={this.state.active} state={this.state}/>
             </div>

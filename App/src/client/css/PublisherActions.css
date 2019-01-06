@@ -1,10 +1,9 @@
-.PublisherPublish > h1 {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    color: rgb(58,212,124);
+.PublisherHelp > h1, .PublisherPublish > h1 {
+    color: rgb(47, 175, 103) !important;
 }
 
-.PublisherPublish > .line {
-    background-color: rgb(58,212,124);
+.PublisherHelp > .line, .PublisherPublish > .line {
+    background-color: rgb(47, 175, 103) !important;
 
     height: 2px;
     width: auto;
@@ -15,28 +14,15 @@
     margin-right: 20px;
 }
 
-.PublisherPublish > h1 {
-
-    font-family: Ubuntu, Helvetica, sans-serif;
-    font-weight: normal;
-
-    text-align: center;
-
-    margin: 40px 60px;
-
-    color: rgb(58,212,124);
-}
-
-.PublisherPublish > ul {
-    font-family: Ubuntu, Helvetica, sans-serif;
+.PublisherHelp > ul {
     font-size: 20px;
-    margin-left: 300px;
-    margin-right: 300px;
 }
 
-.PublisherPublish > ul > li {
+
+.PublisherHelp > ul > li {
     text-align: left;
-    margin-top: 40px;
+    margin: 40px 60px;
+    color: gray
 }
 
 .PublisherPublishChoices {
@@ -99,7 +85,7 @@
     font-size: 18px;
 
 
-    color: rgb(58,212,124);
+    color: rgb(47, 175, 103);
     text-align: left;
 }
 
