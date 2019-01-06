@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
-export {
-    FormTextInput
-}
-
-function FormTextInput(props)  {
+export default function FormTextInput(props)  {
     return(
         <label>
             <p className={props.labelClass}>{props.label}</p>

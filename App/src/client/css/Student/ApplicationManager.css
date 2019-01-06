@@ -174,8 +174,16 @@
     background-color: #FA3A5B;
 }
 
+.Textbook > button.RemoveButton:hover {
+    background-color: rgb(207, 47, 74);
+}
+
 .Textbook > button.AddButton {
     background-color: cornflowerblue;
+}
+
+.Textbook > button.AddButton:hover {
+    background-color: rgb(81, 119, 190);
 }
 
 .Filters {

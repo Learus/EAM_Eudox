@@ -142,8 +142,11 @@ export default class ApplicationManager extends Component {
     }
 
     isChosen(textbook) {
-        if (this.state.basket.includes(textbook)) {
-            return true;
+        console.log(textbook);
+        for (let i = 0; i < this.state.basket.length; i++) {
+            if (textbook.c.Id === this.state.basket[i].c.Id && textbook.t.Id === this.state.basket[i].t.Id) {
+                return true;
+            }
         }
         return false;
     }

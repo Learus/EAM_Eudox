@@ -139,7 +139,8 @@ function MenuOption(props) {
         <Popup 
             className = "SubMenuPopup"
             trigger = { open => (
-                <button className={open ? "MenuOptionButton Open" : "MenuOptionButton Closed"}>
+                <button onClick={() => {browserHistory.push(`/actionpage/${props.type}/${meta.Actions.length - 1}`)}} 
+                className={open ? "MenuOptionButton Open" : "MenuOptionButton Closed"}>
                     {meta.Header}
                 </button>
             )}

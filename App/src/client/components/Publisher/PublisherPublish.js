@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../css/PublisherActions.css';
+import '../../css/Publisher/PublisherPublish.css';
 import { Link, browserHistory } from "react-router";
 import axios from 'axios';
 

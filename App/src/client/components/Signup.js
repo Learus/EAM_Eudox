@@ -6,7 +6,7 @@ import axios from 'axios';
 import autoBind from 'react-autobind';
 import { browserHistory } from 'react-router';
 import Actions from './Actions';
-import {FormTextInput} from './Utilities';
+import FormTextInput from './Utilities';
 
 export default class Signup extends Component {
 

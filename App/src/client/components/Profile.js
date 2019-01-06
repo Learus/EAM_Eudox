@@ -4,7 +4,7 @@ import Header from './Header'
 import autobind from 'react-autobind';
 import axios from 'axios';
 import '../css/Profile.css';
-import {FormTextInput} from './Utilities';
+import FormTextInput from './Utilities';
 
 export default class Profile extends Component {
 

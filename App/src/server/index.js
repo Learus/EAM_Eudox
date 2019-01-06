@@ -146,8 +146,8 @@ app.post('/api/getTextbooks', function (req, res) {
         else {
             res.send({error: false, message: "OK", data: rows});
         }
-    })
-}
+    });
+})
 
 app.post('/api/getDepartmentData', function (req, res) {
 
