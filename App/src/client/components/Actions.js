@@ -1,9 +1,14 @@
 import Header from "./Header";
 import React from "react";
-import { StudentApplications, StudentHelp } from "./StudentActions";
-import { PublisherPublish, PublisherHelp } from "./PublisherActions";
+
+import StudentApplications from "./Student/ApplicationPresenter";
+import StudentHelp from "./Student/StudentHelp"
+
+import PublisherPublish from "./Publisher/PublisherPublish";
+import PublisherHelp from "./Publisher/PublisherHelp";
+
 import { NotFoundSmall } from "./NotFound";
-// const NotFound = NotFoundSmall;
+
 
 export default {
     Student: {

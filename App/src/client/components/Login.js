@@ -6,24 +6,18 @@ import '../css/Login.css'
 import Actions from './Actions';
 import autobind from 'react-autobind';
 
-export class LoginPopup extends React.Component {
+export function LoginPopup(props) {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
-                { close => (
-                    this.props.hasOwnProperty('loginHandler') ?
-                    <LoginForm loginHandler={this.props.loginHandler} Close={close}/>
-                    :
-                    <LoginForm Close={close}/>
-                )}
-            </Popup>
-        );
-    }
+    return (
+        <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
+            { close => (
+                props.hasOwnProperty('loginHandler') ?
+                <LoginForm loginHandler={props.loginHandler} Close={close}/>
+                :
+                <LoginForm Close={close}/>
+            )}
+        </Popup>
+    );
 }
 
 export class LoginForm extends React.Component {
@@ -31,7 +25,6 @@ export class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {username: '', password: '', wrong: false};
-        this.signalLoggedStatus = props.signalLoggedStatus;
         autobind(this);
     }
   
@@ -57,8 +50,6 @@ export class LoginForm extends React.Component {
                 })
             }
             else {
-                alert("Login successful, Welcome " + res.data.data.Type);
-                const meta = Actions[`${res.data.data.Type}`];
                 this.props.Close();
                 sessionStorage.setItem('EudoxusUser', JSON.stringify(res.data.data) );
 
@@ -66,7 +57,6 @@ export class LoginForm extends React.Component {
                     console.log(this.props);
                     this.props.loginHandler();
                 }
-                // browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
             }
         })
         .catch(err => console.log(err));

@@ -17,29 +17,11 @@ export default class ActionPage extends Component {
             meta: Actions[`${this.props.params.type}`],
             active: this.props.params.active
         };
-        
-        if (this.props.params.user) {
-            axios.post('/api/getUser', {
-                username: this.props.params.user
-            })
-            .then(res => {
-                if (res.data.error) {
-                    console.error(res.data.message);
-                }
-                else {
-                    this.setState({
-                        user: res.data.data
-                    })
-                }
-            })
-            .catch(err => console.error(err))
-        }
 
         autoBind(this);
     }
 
     signalLoggedStatus() {
-        console.log("Και εγώ κλήθηκα")
         this.forceUpdate();
     }
 
@@ -64,9 +46,9 @@ export default class ActionPage extends Component {
 
         return (
             <div className = 'Container'>
-                <Header user={this.state.user} signalLoggedStatus={this.signalLoggedStatus}/>
+                <Header signalLoggedStatus={this.signalLoggedStatus}/>
                 <ActionList meta={this.state.meta} active={this.state.active} activeChanger={this.changeActive}/>
-                <Main meta={this.state.meta} active={this.state.active} state={this.state}/>
+                <Main meta={this.state.meta} active={this.state.active}/>
             </div>
         );
     }
@@ -76,7 +58,7 @@ function Main(props) {
     if (props.meta.Components[props.active])
         return (
             <div className="Main">
-                {props.meta.Components[props.active](props.state)}
+                {props.meta.Components[props.active]()}
             </div>
         )
 

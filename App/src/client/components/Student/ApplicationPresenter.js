@@ -1,17 +1,11 @@
 import React, {Component} from 'react';
 import { Link, browserHistory } from "react-router";
-//import MagnifyingGlass from '../images/';
-import '../css/StudentActions.css';
+
+import '../../css/Student/ApplicationPresenter.css';
 import autoBind from 'react-autobind';
 import axios from 'axios';
 
-export {
-    StudentApplications,
-    StudentHelp
-};
-
-
-function StudentApplications(props) {
+export default function StudentApplications(props) {
 
     let username = null;
     let user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
@@ -123,25 +117,4 @@ class StudentApplicationList extends Component {
             </div>
         );
     }
-}
-
-function StudentHelp(props) {
-    return(
-        <div className="StudentHelp">
-            <h1>Οδηγίες - Βοήθεια</h1>
-            <div className="line"/>
-
-            <ul>
-                <li>
-                    Ως Φοιτητής δικαιούστε ένα σύγγραμμα ανά μάθημα που παρακολουθείτε.<br/>
-                    <Link to='/actionpage/Student/0' id="Link">Ξεκινήστε τη δήλωσή σας</Link> 
-                </li>
-
-                <li>
-                    Εάν έχετε λογαριασμό, μπορείτε να <Link to='/actionpage/Student/1' id='Link'>προβάλλετε</Link> τις προηγούμενες, καθώς και την τρέχουσα, δηλώσεις σας.
-                </li>
-            </ul>
-
-        </div>
-    );
 }

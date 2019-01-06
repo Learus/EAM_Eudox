@@ -22,7 +22,11 @@ export default class Header extends Component {
         this.setState({
             user: JSON.parse(sessionStorage.getItem('EudoxusUser')) 
         });
-        this.props.signalLoggedStatus();
+        this.signalLoggedStatus();
+    }
+
+    signalLoggedStatus() {
+        if (this.props.signalLoggedStatus) this.props.signalLoggedStatus();
     }
 
     render() {
