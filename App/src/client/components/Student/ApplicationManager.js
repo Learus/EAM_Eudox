@@ -399,7 +399,7 @@ class Filters extends Component {
                 const group = groups[key];
 
                 return (
-                    <optgroup key={key} label={key + props.label}>
+                    <optgroup key={key} label={key + props.groupLabel}>
                         {
                             group.map(element => {
                                 // console.log(element);
@@ -450,7 +450,7 @@ class Filters extends Component {
                 <this.Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities}/>
                 <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp}/>
                 <this.Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
-                <this.Dropdown label="Μάθημα" groupBy='Semester' label='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
+                <this.Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
                 <label className="SearchBar">
                     <p>&nbsp;</p>
                     <button onClick={this.handleSubmit} className="SearchButton">
