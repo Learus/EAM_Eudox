@@ -3,6 +3,7 @@ import React from "react";
 
 import StudentApplications from "./Student/ApplicationPresenter";
 import StudentHelp from "./Student/StudentHelp"
+import ApplicationManager from "./Student/ApplicationManager";
 
 import PublisherPublish from "./Publisher/PublisherPublish";
 import PublisherHelp from "./Publisher/PublisherHelp";
@@ -21,7 +22,7 @@ export default {
         Quicks: [0, 1],
         Default: 3,
         Components: [
-            () => {return <h1>Test0</h1>},
+            () => {return <ApplicationManager/>},
             () => {return <StudentApplications/>},
             () => {return <StudentHelp/>},
         ],
