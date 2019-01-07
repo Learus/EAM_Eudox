@@ -141,6 +141,10 @@
     color: #4b8ee6;
     text-decoration: none;
     cursor: pointer;
+    font-size: 25px;
+    border: none;
+    outline: none;
+    background: inherit;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////////////////*/

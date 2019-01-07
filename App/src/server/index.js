@@ -78,16 +78,18 @@ app.post('/api/Login', function (req, res) {
 
 app.post('/api/Signup', require('./signup'))
 
-
 app.post('/api/getUniversities', require('./university').getUniversities)
-
 app.post('/api/getDepartments', require('./university').getDepartments)
-
 app.post('/api/getSemesters', require('./university').getSemesters)
-
 app.post('/api/getCourses', require('./university').getCourses)
-
 app.post('/api/getCourses/Semesters', require('./university').getCoursesBySemester)
+app.post('/api/getDepartmentData', require('./university').getDepartmentData)
+app.post('/api/getUserUniversityData', require('./university').getUserUniversityData);
+
+app.post('/api/getStudentApplications', require('./application').getStudentApplications)
+app.post('/api/getTextbookApplication', require('./application').getTextbookApplication)
+app.post('/api/createTextbookApplication', require('./application').createTextbookApplication)
+
 
 app.post('/api/getTextbooks/Course', function (req, res) {
     const course = req.body.course;
@@ -149,40 +151,6 @@ app.post('/api/getTextbooks', function (req, res) {
     });
 })
 
-app.post('/api/getDepartmentData', function (req, res) {
-
-    sql.query("Select * From University_Department Where Id = ?", [req.body.udid],function (err, rows, fields) {
-        if (err) throw err;
-
-        if (rows.length === 0) {
-            res.send({error: true, message: "Empty set"});
-        }
-        else {
-            res.send({error: false, message: "OK", data: rows[0]});
-        }
-    })
-})
-
-app.post('/api/getStudentApplications', function(req, res) {
-
-    sql.query(  "Select Textbook_Application.* From Textbook_Application Where Textbook_Application.Id in \
-                (Select Textbook_Application_Id \
-                From Student_has_Textbook_Application \
-                Where Student_Username= ?) Order By Date Desc",
-                [req.body.username],
-                function(err, applications, fields) {
-
-        if (err) throw err;
-
-        if (applications.length === 0) {
-            res.send({error: true, message: "Empty set"})
-        }
-        else {
-            
-            res.send({error: false, message: "OK", data: applications});
-        }
-    })
-})
 
 app.post('/api/updateUser', function(req, res) {
 
@@ -229,25 +197,9 @@ app.post('/api/getAddress', function(req, res) {
     });
 })
 
-app.post('/api/createTextbookApplication', function(req, res) {
-    const appl = req.body.new;
 
-    const query = ` Insert into Textbook_Application (Date, Is_Current, PIN, Status)
-                    Values (NOW(), TRUE, ${randomPIN()}, 'Pending')`;
-    
-    sql.query(query, function(err, rows) {
-        if (err) throw err;
 
-        res.send({error: false, message: "OK"});
-    })
-})
+
 
 app.listen(8080, () => console.log('Listening on port 8080!'));
 
-function randomPIN() {
-    let result = '';
-    for (let i = 16; i > 0; --i) {
-        result += "0123456789"[Math.floor(Math.random() * 10)];
-    }
-    return result;
-}

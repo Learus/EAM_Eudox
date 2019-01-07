@@ -10,6 +10,7 @@ export default class ActionPage extends Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props.params);
         
         this.state = { 
             user: null,
@@ -32,6 +33,7 @@ export default class ActionPage extends Component {
                 meta: Actions[`${nextProps.params.type}`],
                 active: nextProps.params.active
             });
+            // return true;
         }
         return true;
     }
@@ -48,7 +50,7 @@ export default class ActionPage extends Component {
             <div className = 'Container'>
                 <Header signalLoggedStatus={this.signalLoggedStatus}/>
                 <ActionList meta={this.state.meta} active={this.state.active} activeChanger={this.changeActive}/>
-                <Main meta={this.state.meta} active={this.state.active}/>
+                <Main id={this.props.params.id} meta={this.state.meta} active={this.state.active}/>
             </div>
         );
     }
@@ -58,7 +60,7 @@ function Main(props) {
     if (props.meta.Components[props.active])
         return (
             <div className="Main">
-                {props.meta.Components[props.active]()}
+                {props.meta.Components[props.active]( {id: props.id} )}
             </div>
         )
 

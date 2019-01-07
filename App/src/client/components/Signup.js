@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {LoginPopup} from './Login';
+import LoginPopup from './Login';
 import Header from './Header';
 import '../css/Signup.css';
 import axios from 'axios';
@@ -262,13 +262,13 @@ export default class Signup extends Component {
 
         // console.log(wuser, wemail, wpass, wrepass, wtype);
         // console.log(wuser === '' || wemail === '' || wpass === '' || wrepass === '' || wtype === '');
-        console.log(wuser === '' && wemail === '' && wpass === '' && wrepass === '' && wtype === '');
+        // console.log(wuser === '' && wemail === '' && wpass === '' && wrepass === '' && wtype === '');
         return (wuser === '' && wemail === '' && wpass === '' && wrepass === '' && wtype === '');
         
     }
 
     checkSpecMistakes() {
-        console.log(this.state);
+        // console.log(this.state);
         let wname = '';
         let wsurname = '';
         let wstudentid = '';
@@ -330,11 +330,17 @@ export default class Signup extends Component {
         
     }
 
+    parseRedirect() {
+        if (this.props.params.redirect === "StudentTextbookApplication") {
+            return '/actionpage/Student/0';
+        }
+        return '/'
+    }
 
     handleSubmit(event) {
         
         if (this.checkBaseMistakes() && this.checkSpecMistakes()) {
-            axios.post('api/Signup', {
+            axios.post('/api/Signup', {
                 base: this.state.base,
                 spec: this.state.spec
             })
@@ -347,7 +353,8 @@ export default class Signup extends Component {
                     alert(`Signup successful, Welcome ${this.state.base.type} ${this.state.base.username}`);
                     const meta = Actions[`${this.state.base.type}`];
                     sessionStorage.setItem('EudoxusUser', JSON.stringify(res.data.data) );
-                    browserHistory.push(`/actionpage/${meta.Type}/${meta.Default}`);
+
+                    browserHistory.push(this.parseRedirect());
                 }
             })
             .catch(err => console.log(err));
@@ -592,7 +599,7 @@ class StudentSignupForm extends Component {
             udp: []
         };
 
-        axios.post('api/getUniversities')
+        axios.post('/api/getUniversities')
         .then(res => {
             if (res.data.error) {
                 alert(res.message)
@@ -614,7 +621,7 @@ class StudentSignupForm extends Component {
             selecteduni: event.target.value
         });
 
-        axios.post('api/getDepartments', {
+        axios.post('/api/getDepartments', {
             university: event.target.value
         })
         .then(res => {

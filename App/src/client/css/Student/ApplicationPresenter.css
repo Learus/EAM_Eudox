@@ -1,23 +1,16 @@
 
 .StudentApplicationList {
-    margin-top: 20px;
-    margin-left: 180px;
-    font-family: Ubuntu, Helvetica, sans-serif;
-}
-
-.left {
+    margin: 40px 60px;
     float: left;
-}
-
-.right {
-    float: right;
-    margin-right: 180px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px black;
+    width: 420px;
+    /* height: 100%; */
 }
 
 .right > ul {
-    height: auto;
     max-height: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .right > ul::-webkit-scrollbar {
@@ -35,61 +28,62 @@
   
 /* Handle on hover */
 .right > ul::-webkit-scrollbar-thumb:hover {
-background: rgb(131, 131, 131); 
-}
-
-.StudentApplications > h2 {
-    text-align: left;
-    color: gray;
-    font-weight: normal;
-    margin: 40px 60px;
+    background: rgb(131, 131, 131); 
 }
 
 .StudentApplicationList > h2 {
-
+    border-radius: 5px;
     background-color: rgb(54,143,226);
     font-weight: normal;
     color: white;
-    width: 420px;
+
     height: 30px;
-    padding: 10px;
-    padding-left: 20px;
+    font-size: 20px;
+    padding: 15px;
+    /* padding-left: 20px; */
+
     text-align: left;
-    margin-bottom: 0px;
+    margin: 0 auto;
 }
 
-.StudentApplicationList > ul {
-
-    margin-top: 1px;
+.StudentApplicationList > div {
+    border-radius: 5px;
+    margin: 0 auto;
     padding-left: 0;
     list-style-type: none;
 }
 
-.StudentApplicationList  li {
+.StudentApplicationList > div > div {
+    position: relative;
     background-color: rgb(222,222,222);
-    height: 30px;
+    /* height: 30px; */
     text-align: left;
-    padding: 10px;
-    padding-left: 20px;
+    padding: 15px;
+
     color: #818181;
-    font-size: 21px;
-    margin-top: 1px;
+    font-size: auto;
+    margin: 0 auto;
 }
 
 .StudentApplicationList .odd {
     background-color: rgb(232, 230, 230)
 }
 
-.StudentApplicationList button {
-    position: relative;
-    top: -10px;
-    left: 9px;
-    padding: 0;
+.StudentApplicationList > div > div > button {
+    border-radius: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 15px;
     
-
-    border: 0;
+    border: none;
+    outline: none;
     background-color: cornflowerblue;
-    float: right;
     width: 50px;
-    height: 50px;
+    height: 100%;
 }
+
+.StudentApplicationList > div > div > button:hover {
+    background-color: rgb(72, 108, 177);
+}
+

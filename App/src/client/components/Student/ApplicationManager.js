@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import autoBind from 'react-autobind';
 import axios from 'axios';
 import {browserHistory} from 'react-router';
+import LoginPopup from '../Login';
+import {LoginForm} from '../Login';
 
 import "../../css/Student/ApplicationManager.css"
 import searchimg from "../../images/search.png"
@@ -18,12 +20,55 @@ export default class ApplicationManager extends Component {
             basket: [],
             textbooksBySemester: [],
             searchType: null,
-            user: this.getUser()
+            user: null
         }
+    }
+
+    componentDidMount() {
+        if (this.props.id) {
+            const user = this.getUser();
+            console.log("HI")
+            axios.post("/api/getTextbookApplication", {id: this.props.id, username: user ? user.Username : null})
+            .then(res => {
+                if (res.data.error) {
+                    browserHistory.push(`/actionpage/Student/0`);
+                }
+                else {
+                    this.setState({
+                        basket: res.data.data,
+                        user: user
+                    })
+                }
+            })
+            .catch(err => console.error(err));
+        }
+        else {
+            let application = sessionStorage.getItem("PendingTextbookApplication");
+            if (application) {
+                application = JSON.parse(application);
+                this.setState({
+                    basket: application
+                })
+            }
+        }
+    }
+
+    shouldComponentUpdate() {
+        if (this.props.id && !this.getUser()) {
+            this.setState({
+                basket: []
+            })
+            browserHistory.push(`/actionpage/Student/0`);
+        }
+        return true;
     }
 
     getUser() {
         return JSON.parse(sessionStorage.getItem('EudoxusUser'));
+    }
+
+    loginHandler() {
+
     }
 
     Search(filters) {
@@ -61,10 +106,17 @@ export default class ApplicationManager extends Component {
     }
 
     Add(textbook) {
+        console.log(textbook)
         let newBasket = this.state.basket;
         let replaced = false;
         for (let i = 0; i < newBasket.length; i++) {
             if (textbook.c.Id === newBasket[i].c.Id) {
+                console.log(newBasket[i])
+                if (newBasket[i].taht)
+                    if (newBasket[i].taht.Taken) {
+                        alert("Έχετε παραλάβει σύγγραμμα για αυτό το μάθημα.");
+                        return;
+                    }
                 newBasket[i] = textbook;
                 replaced = true;
                 break;
@@ -152,42 +204,59 @@ export default class ApplicationManager extends Component {
     }
 
     Apply() {
-        let path;
-        let body;
-        if (this.props.old) {
-            path = '/api/updateTextbookApplication'
-            body = {
-                old: this.props.old,
-                new: this.state.basket,
-            }
+        const user = this.state.user ? this.state.user : this.getUser();
+        if (user && user.Type !== "Student") {
+            alert("Δεν δικαιούστε να κάνετε δήλωση. Παρακαλώ συνδεθείτε σε έναν φοιτητικό λογαριασμό")
+            return;
         }
-        else {
-            path = '/api/createTextbookApplication'
-            body = {
-                new: this.state.basket
-            }
+
+        const body = {
+            new: this.state.basket,
+            old: this.props.id ? this.props.id : null,
+            user: this.getUser().Username
         }
-        
-        axios.post(path, body)
+    
+        axios.post('/api/createTextbookApplication', body)
         .then(res => {
             if (res.data.error) {
-                alert(res.message)
+                alert(res.data.message)
             }
             else {
                 alert('Η Δήλωσή σας ήταν επιτυχής!');
+                sessionStorage.removeItem("PendingTextbookApplication");
                 browserHistory.push(`/actionpage/Student/1`)
             }
         })
     }
 
+    saveData() {
+        console.log("savedata")
+        sessionStorage.setItem("PendingTextbookApplication", JSON.stringify(this.state.basket))
+    }
+    
     render() {
-        let buttonClassName = this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
+        const user = this.state.user ? this.state.user : this.getUser();
+        
+        const buttonClassName = this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
+        const disabled = this.state.basket.length === 0 ? true : false;
+
+        const buttonContent = user ? 
+            <button className={buttonClassName} onClick={this.Apply} disabled={disabled}>
+                Υποβολή Δήλωσης
+            </button> 
+            : 
+            <LoginPopup signupRedirect={'StudentTextbookApplication'} 
+                        className={buttonClassName} 
+                        loginHandler={this.Apply} 
+                        content="Υποβολή Δήλωσης"
+                        saveData={this.saveData}
+                        disabled={disabled}/>
 
         return (
             <div className="ApplicationManager">
                 <h1>Δήλωση Συγγραμμάτων</h1>
                 <div className="line"/>
-                <Filters submit={this.Search}/>
+                <Filters user={user} submit={this.Search}/>
                 <TextbookContainer 
                     type={this.state.searchType}
                     textbooks={this.state.textbooksBySemester} 
@@ -195,9 +264,7 @@ export default class ApplicationManager extends Component {
                     remover={this.Remove}
                     isChosen={this.isChosen}/>
                 <Basket data={this.state.basket} Remove={this.Remove}/>
-                <button className={buttonClassName} onClick={this.Apply}>
-                    Υποβολή Δήλωσης
-                </button>
+                {buttonContent}
             </div>
         )
     }
@@ -222,13 +289,16 @@ class Filters extends Component {
             selectedsemester: null
         };
 
+        autoBind(this);
+    }
+
+    componentDidMount() {
         axios.post('/api/getUniversities')
         .then(res => {
             if (res.data.error) {
-                alert(res.message)
+                alert(res.data.message)
             }
             else {
-                // console.log(res.data);
                 this.setState ( {
                     universities: res.data.data,
                     selecteduni: null,
@@ -237,7 +307,15 @@ class Filters extends Component {
             }
         })
 
-        autoBind(this);
+        if (this.props.user) {
+            axios.post('/api/getUserUniversityData', {user: this.props.user.Username})
+            .then(res => {
+                this.setState({
+                    selecteduni: res.data.data.uid,
+                    selectedudp: res.data.data.udpid
+                })
+            })
+        }
     }
 
     getDepartments(event) {
@@ -266,7 +344,7 @@ class Filters extends Component {
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message)
+                alert(res.data.message)
             }
             else {
                 // console.log(res.data);
@@ -300,7 +378,7 @@ class Filters extends Component {
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message);
+                alert(res.data.message);
             }
             else {
                 // console.log("Semesters" , res.data);
@@ -334,7 +412,7 @@ class Filters extends Component {
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message);
+                alert(res.data.message);
             }
             else {
                 // console.log(res.data);
@@ -364,7 +442,7 @@ class Filters extends Component {
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message);
+                alert(res.data.message);
             }
             else {
                 // console.log(res.data);
@@ -415,11 +493,9 @@ class Filters extends Component {
         }
         else {
             content = props.data.map(element => {
-
                 return (
                     <option key = {element.Id} value = {element.Id}>{element.Name}</option>
                 );
-
             });
         }
 
@@ -429,6 +505,7 @@ class Filters extends Component {
                 <select 
                     type = "dropdown"
                     onChange = {props.onChange}
+                    defaultValue={props.selected}
                     >
                     <option value = ''></option>
                     {content}
@@ -448,15 +525,17 @@ class Filters extends Component {
 
 
     render() {
+        const disabled = this.state.selectedudp ? false : true;
+        const buttonClassName = this.state.selectedudp ? "SearchButton" : "SearchButton Disabled"
         return (
             <div className="Filters">
-                <this.Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities}/>
-                <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp}/>
+                <this.Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities} selected={this.state.selecteduni}/>
+                <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp} selected={this.state.selectedudp}/>
                 <this.Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
                 <this.Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
                 <label className="SearchBar">
                     <p>&nbsp;</p>
-                    <button onClick={this.handleSubmit} className="SearchButton">
+                    <button onClick={this.handleSubmit} className={buttonClassName} disabled={disabled}>
                         <img src={searchimg} className="SearchImg"/>
                     </button>
                 </label>

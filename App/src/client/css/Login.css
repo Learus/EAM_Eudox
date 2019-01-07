@@ -95,8 +95,10 @@
     color: gray;
 }
 
-.Link {
+.LoginForm > span > .Link {
     color: #4b8ee6;
+    font-size: 15px;/*  */
     text-decoration: none;
     cursor: pointer;
+    
 }
