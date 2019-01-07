@@ -192,6 +192,7 @@
     display: grid;
     grid-template-columns: 6fr 6fr 1fr 6fr 1fr;
     width: 80%;
+    
 }
 
 .Filters > .SearchBar > select{
@@ -204,7 +205,8 @@
 
     padding: 15px;
 
-    background-color: rgb(241, 241, 241)
+    background-color: rgb(241, 241, 241);
+    color: rgb(75, 75, 75);
 }
 
 .Filters > .SearchBar {
@@ -237,6 +239,12 @@
     outline: none;
     background-color: rgb(63, 118, 190);
     cursor: pointer;
+    transition: 200ms;
+}
+
+.SearchButton.Disabled {
+    background-color: rgb(238, 238, 238);
+    cursor: initial;
 }
 
 .SearchImg {
@@ -253,7 +261,9 @@
     display: grid;
     grid-template-columns: 350px;
     text-align: left;
-    max-height: 200px;
+    /* max-height: 200px; */
+
+    box-shadow: 1px 1px 10px;
 }
 
 .Basket > h3 {

@@ -22,7 +22,7 @@ export default {
         Quicks: [0, 1],
         Default: 3,
         Components: [
-            () => {return <ApplicationManager/>},
+            (props) => {return <ApplicationManager id={props.id}/>},
             () => {return <StudentApplications/>},
             () => {return <StudentHelp/>},
         ],

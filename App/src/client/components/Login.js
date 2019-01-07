@@ -6,18 +6,22 @@ import '../css/Login.css'
 import Actions from './Actions';
 import autobind from 'react-autobind';
 
-export function LoginPopup(props) {
-
-    return (
-        <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
-            { close => (
-                props.hasOwnProperty('loginHandler') ?
-                <LoginForm loginHandler={props.loginHandler} Close={close}/>
-                :
-                <LoginForm Close={close}/>
-            )}
-        </Popup>
-    );
+export default function LoginPopup(props) {
+    let className = (props.className ? props.className : "Link");
+    let content = (props.content ? props.content : "Σύνδεση")
+    if (props.disabled)
+        return <button className={className} disabled>{content}</button>
+    else
+        return (
+        <Popup className='LoginPopup' trigger={<button className={className}>{content}</button>} modal>
+                { close => (
+                    props.hasOwnProperty('loginHandler') ?
+                    <LoginForm saveData={props.saveData} signupRedirect={props.signupRedirect} loginHandler={props.loginHandler} Close={close}/>
+                    :
+                    <LoginForm signupRedirect={props.signupRedirect} Close={close}/>
+                )}
+            </Popup>
+        )
 }
 
 export class LoginForm extends React.Component {
@@ -54,7 +58,6 @@ export class LoginForm extends React.Component {
                 sessionStorage.setItem('EudoxusUser', JSON.stringify(res.data.data) );
 
                 if (this.props.hasOwnProperty('loginHandler')) {
-                    console.log(this.props);
                     this.props.loginHandler();
                 }
             }
@@ -66,6 +69,7 @@ export class LoginForm extends React.Component {
     }
   
     render() {
+        const signupPath = this.props.signupRedirect ? `/signup/${this.props.signupRedirect}` : '/signup'
         return (
             <form className='LoginForm' onSubmit={this.handleSubmit}>
 
@@ -96,7 +100,7 @@ export class LoginForm extends React.Component {
 
                 <span>
                     Νέος χρήστης; &nbsp;
-                    <Link to="/signup" className="Link">Γίνε μέλος.</Link>
+                    <Link to={signupPath} onClick={this.props.saveData} className="Link">Γίνε μέλος.</Link>
                 </span>
                 
             </form>

@@ -32,6 +32,29 @@ function getDepartments(req, res) {
     })
 }
 
+function getUserUniversityData(req, res) {
+    sql.query(`Select u.Id as uid, d.Id as udpid From Student as s, University as u, University_Department as d
+                Where u.Id = d.University_Id and s.Username = ? and s.University_Department_Id = d.Id`, [req.body.user], function(err, rows) {
+
+        if (err) throw err;
+
+        res.send({error: false, message: "OK", data: rows[0]})
+    })
+}
+
+function getDepartmentData(req, res) {
+    sql.query("Select * From University_Department Where Id = ?", [req.body.udid],function (err, rows, fields) {
+        if (err) throw err;
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows[0]});
+        }
+    })
+}
+
 function getCourses(req, res) {
     const dep = req.body.udp;
 
@@ -89,8 +112,10 @@ function getCoursesBySemester(req, res) {
 
 module.exports = {
     getDepartments: getDepartments,
+    getDepartmentData: getDepartmentData,
     getUniversities: getUniversities,
     getCoursesBySemester: getCoursesBySemester,
     getSemesters: getSemesters,
+    getUserUniversityData: getUserUniversityData,
     getCourses: getCourses
 }

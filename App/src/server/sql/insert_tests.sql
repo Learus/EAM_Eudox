@@ -147,12 +147,12 @@ Values  ('2016-3-11', 0, '0000000000000001', 'Completed'),
         ('2017-10-11', 0, '0000000000000004', 'Completed'),
         ('2018-3-11', 1, '0000000000000005', 'Pending');
 
-Insert into mydb.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id)
-Values  (1, 80000), (1, 80001),
-        (2, 80002),
-        (3, 80003),
-        (4, 80004),
-        (5, 80005), (5, 80006), (5, 80007);
+Insert into mydb.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id, Taken)
+Values  (1, 80000, TRUE), (1, 80001, TRUE),
+        (2, 80002, TRUE),
+        (3, 80003, TRUE),
+        (4, 80004, TRUE),
+        (5, 80005, TRUE), (5, 80006, TRUE), (5, 80008, FALSE);
 
 Insert into mydb.Student_has_Textbook_Application(Textbook_Application_Id, Student_Username)
 Values (1, 'brewknight'), (2, 'brewknight'), (3, 'brewknight'), (4, 'brewknight'), (5, 'brewknight');

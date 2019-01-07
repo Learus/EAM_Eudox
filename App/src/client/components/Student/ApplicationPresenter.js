@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Link, browserHistory } from "react-router";
 
 import '../../css/Student/ApplicationPresenter.css';
+import searchimg from '../../images/search.png'
 import autoBind from 'react-autobind';
 import axios from 'axios';
 
@@ -18,10 +19,10 @@ export default function StudentApplications(props) {
             <div className="StudentApplications">
                 <h1>Οι Δηλώσεις Μου</h1>
                 <div className = "line"/>
-                <div className = "grid">
-                    <StudentApplicationList username={username} title="Τρέχουσα Δήλωση" showCurrent={true} pos="left"/>
-                    <StudentApplicationList username={username} title="Προηγούμενες Δηλώσεις" showCurrent={false} pos="right"/>
-                </div>
+
+                <StudentApplicationList username={username} title="Τρέχουσα Δήλωση" showCurrent={true} pos="left"/>
+                <StudentApplicationList username={username} title="Προηγούμενες Δηλώσεις" showCurrent={false} pos="right"/>
+
             </div>
         );
     }
@@ -86,12 +87,12 @@ class StudentApplicationList extends Component {
                                 index++;
 
                                 return (
-                                    <li key={item.Id} className={background}>
+                                    <div key={item.Id} className={background}>
                                         {string}
-                                        <button key={item.Id} onClick={this.handleOpenApplication}>
-                                            <img /*src="../images/magnifying_glass.svg"*//>
+                                        <button className="SearchButton" key={item.Id} onClick={this.handleOpenApplication}>
+                                            <img className="SearchImg" src={searchimg}/>
                                         </button>
-                                    </li>
+                                    </div>
                                 );
                             }
                         })
@@ -111,9 +112,9 @@ class StudentApplicationList extends Component {
         return(
             <div className={"StudentApplicationList " + this.state.pos}>
                 <h2>{this.state.title}</h2>
-                <ul>
+                <div>
                     {this.state.list != null ? this.state.list : ''}
-                </ul>
+                </div>
             </div>
         );
     }

@@ -6,7 +6,7 @@ import Actions from './Actions';
 
 import logo from '../images/logo.svg';
 
-import {LoginPopup} from './Login';
+import LoginPopup from './Login';
 import Popup from 'reactjs-popup';
 import autoBind from 'react-autobind';
 
@@ -18,7 +18,6 @@ export default class Header extends Component {
     }
 
     loginHandler() {
-        console.log("Κλήθηκα")
         this.setState({
             user: JSON.parse(sessionStorage.getItem('EudoxusUser')) 
         });
