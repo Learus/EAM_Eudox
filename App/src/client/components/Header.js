@@ -80,6 +80,7 @@ function AccountSnapshot(props) {
                         }
                     </Link>
                 )}
+                position="bottom right"
             >
 
                 <div>

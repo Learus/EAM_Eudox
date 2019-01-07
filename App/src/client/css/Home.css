@@ -1,9 +1,9 @@
 /*@import "./Banner.css";*/
 
 .grid-container {
-    display: grid;
+    /* display: grid; */
     background-color: white;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; */
     margin: 0 auto;
     grid-column-gap: 50px;
     padding: 30px;
@@ -16,6 +16,8 @@
     width: 330px;
     text-align: center;
     filter: drop-shadow(10px 10px 4px gray);
+    float: left;
+    margin: 20px 20px;
 }
 
 .BannerBelow {
