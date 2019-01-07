@@ -136,7 +136,11 @@ Values (80000, 90003), (80000, 90004), (80000, 90005), (80001, 90000), (80001, 9
 
 
 Insert into mydb.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies)
-Values (70000, 80000, 500), (70002, 80001, 431), (70003, 80001, 657);
+Values  (70000, 80000, 500), (70002, 80001, 431), 
+        (70001, 80002, 300), (70001, 80003, 300), (70000, 80004, 300),
+        (70002, 80005, 300), (70001, 80006, 300),
+        (70000, 80007, 300), (70002, 80008, 300), (70003, 80009, 300),
+        (70001, 80010, 300), (70000, 80011, 500), (70000, 80012, 500), (70000, 80013, 500);
 
 -- Textbook Applications --
 
@@ -145,7 +149,11 @@ Values  ('2016-3-11', 0, '0000000000000001', 'Completed'),
         ('2016-10-11', 0, '0000000000000002', 'Completed'),
         ('2017-3-11', 0, '0000000000000003', 'Completed'),
         ('2017-10-11', 0, '0000000000000004', 'Completed'),
-        ('2018-3-11', 1, '0000000000000005', 'Pending');
+        ('2010-3-10', 1, '0000000000000005', 'Pending'),
+        ('2011-3-10', 0, '0000000000000005', 'Completed'),
+        ('2012-3-10', 0, '0000000000000005', 'Completed'),
+        ('2013-3-10', 0, '0000000000000005', 'Completed'),
+        ('2014-3-10', 0, '0000000000000005', 'Completed');
 
 Insert into mydb.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id, Taken)
 Values  (1, 80000, TRUE), (1, 80001, TRUE),
@@ -155,7 +163,8 @@ Values  (1, 80000, TRUE), (1, 80001, TRUE),
         (5, 80005, TRUE), (5, 80006, TRUE), (5, 80008, FALSE);
 
 Insert into mydb.Student_has_Textbook_Application(Textbook_Application_Id, Student_Username)
-Values (1, 'brewknight'), (2, 'brewknight'), (3, 'brewknight'), (4, 'brewknight'), (5, 'brewknight');
+Values (1, 'brewknight'), (2, 'brewknight'), (3, 'brewknight'), (4, 'brewknight'), (5, 'brewknight'),
+    (6, 'brewknight'),(7, 'brewknight'), (8, 'brewknight'), (9, 'brewknight');
 
 -- Select c.*
 -- From Course as c, University as u, University_Department as d
