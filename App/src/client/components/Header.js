@@ -50,7 +50,7 @@ export default class Header extends Component {
     
                     <MenuOption type="Distributor"/>
 
-                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/about')}>
+                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/search')}>
                         <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Αναζήτηση Συγγραμμάτων</Link>
                     </button>
     

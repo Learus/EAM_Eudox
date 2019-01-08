@@ -466,59 +466,7 @@ class Filters extends Component {
         })
     }
 
-    Dropdown(props) {
 
-        let content;
-        if (props.groupBy)
-        {
-            let groups = {};
-            for (let i = 0; i < props.data.length; i++) {
-                const element = props.data[i];
-                
-                if (!groups.hasOwnProperty(element[props.groupBy])) {
-                    groups[`${element[props.groupBy]}`] = [];
-                }
-
-                groups[`${element[props.groupBy]}`].push(element);
-            }
-
-            content = Object.keys(groups).map(key => {
-                const group = groups[key];
-
-                return (
-                    <optgroup key={key} label={key + props.groupLabel}>
-                        {
-                            group.map(element => {
-                                // console.log(element);
-                                return <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                            })
-                        }
-                    </optgroup>
-                )
-            })
-        }
-        else {
-            content = props.data.map(element => {
-                return (
-                    <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                );
-            });
-        }
-
-        return (
-            <label className="SearchBar">
-                <p>{props.label}</p>
-                <select 
-                    type = "dropdown"
-                    onChange = {props.onChange}
-                    defaultValue={props.selected}
-                    >
-                    <option value = ''></option>
-                    {content}
-                </select>
-            </label>
-        )
-    }
 
     handleSubmit() {
        
@@ -535,10 +483,10 @@ class Filters extends Component {
         const buttonClassName = this.state.selectedudp ? "SearchButton" : "SearchButton Disabled"
         return (
             <div className="Filters">
-                <this.Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities} selected={this.state.selecteduni}/>
-                <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp} selected={this.state.selectedudp}/>
-                <this.Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
-                <this.Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
+                <Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities} selected={this.state.selecteduni}/>
+                <Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp} selected={this.state.selectedudp}/>
+                <Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
+                <Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
                 <label className="SearchBar">
                     <p>&nbsp;</p>
                     <button onClick={this.handleSubmit} className={buttonClassName} disabled={disabled}>
@@ -550,7 +498,59 @@ class Filters extends Component {
     }
 }
 
+export function Dropdown(props) {
 
+    let content;
+    if (props.groupBy)
+    {
+        let groups = {};
+        for (let i = 0; i < props.data.length; i++) {
+            const element = props.data[i];
+            
+            if (!groups.hasOwnProperty(element[props.groupBy])) {
+                groups[`${element[props.groupBy]}`] = [];
+            }
+
+            groups[`${element[props.groupBy]}`].push(element);
+        }
+
+        content = Object.keys(groups).map(key => {
+            const group = groups[key];
+
+            return (
+                <optgroup key={key} label={key + props.groupLabel}>
+                    {
+                        group.map(element => {
+                            // console.log(element);
+                            return <option key = {element.Id} value = {element.Id}>{element.Name}</option>
+                        })
+                    }
+                </optgroup>
+            )
+        })
+    }
+    else {
+        content = props.data.map(element => {
+            return (
+                <option key = {element.Id} value = {element.Id}>{element.Name}</option>
+            );
+        });
+    }
+
+    return (
+        <label className="SearchBar">
+            <p>{props.label}</p>
+            <select 
+                type = "dropdown"
+                onChange = {props.onChange}
+                defaultValue={props.selected}
+                >
+                <option value = ''></option>
+                {content}
+            </select>
+        </label>
+    )
+}
 
 class TextbookContainer extends Component {
 
