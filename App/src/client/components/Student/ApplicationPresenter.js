@@ -43,14 +43,16 @@ export default function StudentApplications(props) {
 
 function TextbookPopup(props) {
     const tb = props.data;
-
+    const elig = tb.taht.Taken ? "Ineligible" : "Eligible";
+    const title = tb.taht.Taken ? "Το σύγγραμμα αυτό έχει ήδη παρθεί ή η προθεσμία έχει λήξει" : null
     return (
         <Popup 
             className = "TextbookPopup"
             trigger = { open => (
-                <div className={open ? `TextbookPopupButton Open ${props.className}` : `TextbookPopupButton Closed ${props.className}`}>
+                <div title={title} className={open ? `TextbookPopupButton Open ${props.className}` : `TextbookPopupButton Closed ${props.className}`}>
                     <p className="ApplicationPopupEntryName">{tb.t.Name}</p>
-                    <p className="ApplicationPopupEntryCourse">{tb.c.Name}</p>
+                    <p className="ApplicationPopupEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
+                    <div className={elig}/>
                 </div>
             )}
             closeOnDocumentClick
@@ -66,7 +68,7 @@ function TextbookPopup(props) {
                 <div className="Info Content">  
                     <h4>Στοιχεία</h4>  
                     <p>{tb.t.Writer}</p>
-                    <p>{tb.t.Date_Published}</p>
+                    <p>{tb.t.Date_Published.split('-')[0]}</p>
                     <p>ISBN: {tb.t.ISBN}</p>
                     <p>{tb.p.Name}</p>
                 </div>
@@ -104,7 +106,7 @@ class ApplicationPopup extends Component {
         })
         .then(res => {
             if (res.data.error) {
-                console.error(res.data.message);
+                console.log(res.data.message);
             }
             else {
                 this.setState({
@@ -115,31 +117,34 @@ class ApplicationPopup extends Component {
     }
 
     render() {
-        console.log(this.props.position);
         const textbooks = this.state.textbooks.map( (tb, index) => {
             const even = index % 2 === 0 ? "Even": "Odd"
             return <TextbookPopup key={tb.c.Id} className={`ApplicationPopupEntry ${even}`} data={tb} />
         })
 
-        return (
-            <Popup 
-                className = "ApplicationPopup"
-                trigger = { open => (
-                    <button onClick={this.props.onClick} 
-                            className={open ? `ApplicationPopupButton Open ${this.props.className}` : `ApplicationPopupButton Closed ${this.props.className}`}>
-                        {this.props.label}
-                    </button>
-                )}
-                closeOnDocumentClick
-                on="hover"
-                position="right center"
-                arrow={true}
-            >
-                <div>
-                    {textbooks}
-                </div>
-            </Popup>
-        )
+        // if (textbooks.length !== 0)
+            return (
+                <Popup 
+                    className = "ApplicationPopup"
+                    trigger = { open => (
+                        <button onClick={this.props.onClick} 
+                                className={open ? `ApplicationPopupButton Open ${this.props.className}` : `ApplicationPopupButton Closed ${this.props.className}`}
+                                title={this.props.title}>
+                            {this.props.label}
+                        </button>
+                    )}
+                    closeOnDocumentClick
+                    on="hover"
+                    position="right center"
+                    arrow={true}
+                >
+                    <div>
+                        {textbooks}
+                    </div>
+    
+                </Popup>
+            )
+        // return null;
     }
 }
 
@@ -147,18 +152,17 @@ class StudentApplicationList extends Component {
 
     constructor(props) {
         super(props);
-        
         this.state = {
-            list: null,
-            title: props.title,
-            showCurrent: props.showCurrent,
-            pos: props.pos
-        };
+            list: []
+        }
+        autoBind(this);
+    }
 
-        if(props.username)
+    componentDidMount() {
+        if(this.props.username)
         {
             axios.post('/api/getStudentApplications', {
-                username: props.username
+                username: this.props.username
             }).then( res => {
                 if (res.data.error) {
                     console.error(res.data.message);
@@ -167,8 +171,7 @@ class StudentApplicationList extends Component {
                     let index = 0;
                     this.setState({
                         list: res.data.data.map( (item) => {
-                            console.log(item.Date);
-                            if( (!this.state.showCurrent && !item.Is_Current)  || (item.Is_Current && this.state.showCurrent)  ) {
+                            if( (!this.props.showCurrent && !item.Is_Current)  || (item.Is_Current && this.props.showCurrent)  ) {
 
                                 let dateTime = item.Date.split('T');
 
@@ -189,12 +192,13 @@ class StudentApplicationList extends Component {
 
                                 return (
                                     <ApplicationPopup 
-                                        user={props.username} 
+                                        user={this.props.username} 
                                         data={item} key={item.Id} 
                                         className={background} 
-                                        label={string} 
-                                        onClick={this.handleOpenApplication}
-                                        position={props.pos} />
+                                        label={string}
+                                        title={this.props.showCurrent ? "Πατήστε για τροποποίηση" : null} 
+                                        onClick= { this.props.showCurrent ? () => {browserHistory.push(`/actionpage/Student/0/${item.Id}`)} : null }
+                                        position={this.props.pos} />
                                 );
                             }
                         })
@@ -202,18 +206,12 @@ class StudentApplicationList extends Component {
                 }
             });
         }
-
-        autoBind(this);
-    }
-
-    handleOpenApplication() {
-
     }
 
     render() {
         return(
-            <div className={"StudentApplicationList " + this.state.pos}>
-                <h2>{this.state.title}</h2>
+            <div className={"StudentApplicationList " + this.props.pos}>
+                <h2>{this.props.title}</h2>
                 <div>
                     {this.state.list != null ? this.state.list : ''}
                 </div>

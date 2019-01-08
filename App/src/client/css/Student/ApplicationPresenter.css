@@ -1,4 +1,11 @@
 
+.StudentApplications > h2 {
+    margin: 40px 60px;
+    color: gray;
+    font-weight: normal;
+    text-align: left;
+}
+
 .StudentApplicationList {
     margin: 40px 60px;
     border-radius: 5px;
@@ -57,12 +64,12 @@
     background-color: rgb(184, 184, 184);
 }
 
+
 .ApplicationPopupEntry {
     margin: 0;
     position: relative;
-    padding: 10px;
+    padding: 20px;
     text-align: left;
-    
 }
 
 .ApplicationPopupEntry > p {
@@ -76,11 +83,12 @@
 }
 
 .ApplicationPopupEntryCourse {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .ApplicationPopupEntryName {
-    font-size: 14px;
+    font-size: 16px;
+    color: rgb(70, 70, 70);
 }
 
 .ApplicationPopupEntry.Odd {
@@ -91,24 +99,32 @@
 
     padding: 0 !important;
     border-radius: 5px;
-
+    width: 400px !important;
     box-shadow: 1px 1px 5px !important;
 }
 
 .TextbookPopupButton {
     cursor: pointer;
     transition: 200ms;
+    position: relative;
 }
 
 .TextbookPopupButton:hover, .TextbookPopupButton.Open {
     background-color: rgb(184, 184, 184); 
 }
 
-.TextbookPopup {
-    width: 400px !important;
-    background-color: rgb(238, 238, 238) !important;
-    /* padding: 15px !important; */
+.TextbookPopupButton > .Eligible {
+    background-color: rgb(29, 180, 97);
+    height: 5px;
+}
 
+.TextbookPopupButton > .Ineligible {
+    background-color: rgb(216, 62, 62);
+    height: 5px;
+}
+
+.TextbookPopup {
+    background-color: rgb(238, 238, 238) !important;
     color: rgb(83, 83, 83);
 }
 

@@ -18,6 +18,8 @@
     text-align: center;
     color: white;
 
+    padding: 15px;
+
     background-color: inherit;
 
     border: none;
@@ -151,7 +153,7 @@
 
 .home-img {
     float: left;
-
+    text-align: center;
     color: rgb(106, 162, 235);
     text-decoration: none;
     font-family: Ubuntu, Arial, Helvetica, sans-serif;

@@ -1,32 +1,100 @@
 /*@import "./Banner.css";*/
+.Home {
+    height: 100vh;
+    /* width: 100vw; */
+}
+
+.Home > main {
+    height: 80.9%;
+    width: 100%;
+    position: relative;
+}
+
+.AnnouncementTable {
+    float: left;
+    position: relative;
+
+    margin-right: 40px;
+    margin-top: 50px;
+
+    width: calc(21% - 40px);
+    box-shadow: 1px 1px 10px;
+}
+
+.AnnouncementTable > h2 {
+    position: fixed;
+
+    width: inherit;
+    text-align: center;
+
+    border-radius: 3px;
+    background-color: rgb(112, 112, 112);
+    color: white;
+    padding: 20px 0px;
+    font-weight: normal;
+    margin: 0;
+    
+    font-size: 20px;
+}
+
+.AnnouncementTable > .Announcements {
+    max-height: 610px;
+    margin-top: 60px;
+    overflow-y: auto;
+}
+
+.AnnouncementTable > .Announcements > .Announcement {
+    margin-top: 0;
+    padding: 10px;
+    background-color: rgb(241, 241, 241);
+}
+
+.AnnouncementTable> .Announcements > .Announcement.Odd {
+    background-color: rgb(206, 206, 206);
+}
+
+.Announcement > h3 {
+    font-size: 16px;
+    color: rgb(66, 66, 66);
+    font-weight: normal;
+}
+
+.Announcement > p {
+    font-size: 12px;
+    color: rgb(88, 88, 88);
+}
 
 .grid-container {
-    /* display: grid; */
     background-color: white;
-    /* grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; */
     margin: 0 auto;
     grid-column-gap: 50px;
     padding: 30px;
     text-align: center;
-    /*grid-template-areas: 'stud-banner secr-banner publ-banner dist-banner';*/
+    float: left;
+    width: calc(79% - 60px);
+
 }
 
 .Banner {
     height: 450px;
-    width: 330px;
+    width: 320px;
     text-align: center;
-    filter: drop-shadow(10px 10px 4px gray);
+    filter: drop-shadow(1px 1px 5px black);
     float: left;
     margin: 20px 20px;
 }
 
 .BannerBelow {
+    top: 43px;
     width: 0;
     height: 0;
-    /* display: inline-block; */
     position: relative;
     border-bottom: 85px solid transparent;
-    /* position: relative; */
+
+    border-left-width: 160px;
+    border-left-style: solid;
+    border-right-width: 160px;
+    border-right-style: solid;
 }
 
 .Banner > ul {
@@ -36,19 +104,16 @@
     height: 35%;
 }
 
-.PublisherBanner > ul, .DistributorBanner > ul {
-    height: 20%;
-}
-
 .Banner > ul > li {
     margin: 1px;
     cursor: pointer;
 
     text-decoration: none;
 
-    padding: 20px;
+    padding: 20px 10px;
 
     transition: 200ms;
+    white-space: nowrap;
 }
 
 .BannerLink {
@@ -71,7 +136,6 @@
 
 .Banner > h1 {
     color: white;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
     font-weight: normal;
 }
 
@@ -92,9 +156,8 @@
 }
 
 .StudentBannerBelow {
-    top: 43px;
-    border-left: 165px solid #4B8EE6;
-    border-right: 165px solid #4B8EE6;
+    border-left-color: #4B8EE6;
+    border-right-color: #4B8EE6;
 }
 
 /*/////////////////////////////////////////////////////////////////////////////*/
@@ -115,9 +178,8 @@
 }
 
 .SecretaryBannerBelow {
-    top: 43px;
-    border-left: 165px solid #FA3A5B;
-    border-right: 165px solid #FA3A5B;
+    border-left-color: #FA3A5B;
+    border-right-color: #FA3A5B;
 }
 
 /*/////////////////////////////////////////////////////////////////////////////*/
@@ -125,7 +187,7 @@
 .PublisherBanner {
     background-color: #00C748;
     grid-column: 3 / 4;
-    height: 393px;
+    /* height: 393px; */
 }
 
 .PublisherBanner > ul > li {
@@ -139,9 +201,8 @@
 }
 
 .PublisherBannerBelow {
-    top: 65px;
-    border-left: 165px solid #00C748;
-    border-right: 165px solid #00C748;
+    border-left-color: #00C748;
+    border-right-color: #00C748;
 }
 
 /*/////////////////////////////////////////////////////////////////////////////*/
@@ -149,7 +210,7 @@
 .DistributorBanner {
     background-color: #FF9933;
     grid-column: 5/6;
-    height: 393px;
+    /* height: 393px; */
 }
 
 .DistributorBanner > ul > li {
@@ -163,7 +224,7 @@
 }
 
 .DistributorBannerBelow{
-    top: 65px;
-    border-left: 165px solid #FF9933;
-    border-right: 165px solid #FF9933;
+    border-left-color: #FF9933;
+    border-right-color: #FF9933;
 }
+

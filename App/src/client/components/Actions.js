@@ -19,8 +19,8 @@ export default {
             "Προβολή Δηλώσεων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0, 1],
-        Default: 3,
+        Quicks: [0, 1, 2],
+        Default: 2,
         Components: [
             (props) => {return <ApplicationManager id={props.id}/>},
             () => {return <StudentApplications/>},
@@ -35,7 +35,7 @@ export default {
             "Αντιστοίχιση Συγραμμάτων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0, 1],
+        Quicks: [0, 1, 2],
         Default: 2,
         Components: [
             () => {return <NotFoundSmall/>},
@@ -53,7 +53,7 @@ export default {
             "Προβολή Αιτήσεων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0],
+        Quicks: [0, 2, 4],
         Default: 4,
         Components: [
             () => {return <PublisherPublish/>},
@@ -70,9 +70,9 @@ export default {
             "Παράδοση Συγγραμμάτων",
             "Προβολή Συγγραμμάτων",
             "Προβολή Αιτήσεων",
-            "Οδηγίες Βοήθεια"
+            "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0],
+        Quicks: [0, 1, 3],
         Default: 3,
         Components: [
             () => {return <NotFoundSmall/>},

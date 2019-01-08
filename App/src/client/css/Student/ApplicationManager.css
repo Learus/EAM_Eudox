@@ -290,7 +290,6 @@
     margin: 0;
     position: relative;
     padding: 10px;
-    
 }
 
 .BasketEntry > div > p {
@@ -331,7 +330,12 @@
     transition: 200ms;
 }
 
-.BasketRemoveButton:hover {
+.BasketRemoveButton.Disabled {
+    background-color: gray;
+    cursor: initial;
+}
+
+.BasketRemoveButton:not([disabled]):hover {
     background-color: rgb(211, 48, 75);
 }
 
