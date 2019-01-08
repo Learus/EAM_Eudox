@@ -55,7 +55,7 @@ function insertStudent(base, spec, responsecb, response) {
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Student Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Student Application. Please try again.", trace: err})
             return;
         }
 
@@ -72,7 +72,7 @@ function insertPublisher(base, spec, responsecb, response) {
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Publisher Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Publisher Application. Please try again.", trace: err})
             return;
         }
 
@@ -88,7 +88,7 @@ function insertSecretary(base, spec, responsecb, response) {
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Secretary Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Secretary Application. Please try again.", trace: err})
             return;
         }
 
@@ -105,7 +105,7 @@ function insertDistribution_Point(base, spec, responsecb, response) {
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Distribution_Point Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Distribution_Point Application. Please try again.", trace: err})
             return;
         }
 
