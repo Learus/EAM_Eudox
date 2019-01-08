@@ -175,13 +175,17 @@ export default class Profile extends Component {
                         {/* <div className={lineClass}/> */}
     
                         <div style={{float: 'left', marginLeft: '100px'}}>
+
                             <DataPresenter  className={presenterClass}
+                                            header="Γενικά Στοιχεία"/>
+
+                            <DataPresenter  className={presenterClass + " subPresenter"}
                                             header="Όνομα Χρήστη"
                                             data={this.state.user.Username}/>
                             
                             
 
-                            <DataPresenter  className={presenterClass}
+                            <DataPresenter  className={presenterClass + " subPresenter"}
                                             header="E-mail"
                                             data={this.state.user.Email}/>
                             
@@ -302,8 +306,14 @@ class StudentSpecificDetails extends Component {
             sid: "",
             pid: "",
             department_name: "",
-            style: props.style
+            style: props.style,
+            editing: false,
+            wrongPhone: "",
+            wrongSid: "",
+            wrongPid: ""
         };
+
+        autobind(this);
     }
 
     componentDidMount() {
@@ -338,39 +348,168 @@ class StudentSpecificDetails extends Component {
         })
     }
 
+    hEdit() {
+
+        let dontPost = false;
+        if(this.state.editing)
+        {
+
+            if(this.state.phone.length !== 10)
+            {
+                this.setState( {wrongPhone: "Ο αριθμός τηλεφώνου είναι δεκαψήφιος."} )
+                dontPost = true;
+            }
+            else
+                this.setState({wrongPhone: ""})
+
+            if(this.state.sid.length !== 12)
+            {
+                this.setState({ wrongSid: "Ο αριθμός φοιτητικής ταυτότητας είναι δωδεκαψήφιος." })
+                dontPost = true;
+            }
+            else
+                this.setState({wrongSid: ""})
+            
+            if(this.state.pid.length !== 8)
+            {
+                this.setState({ wrongPid: "Ο αριθμός ταυτότητας είναι οκταψήφιος." })
+                dontPost = true;
+            }
+            else
+                this.setState({wrongPid: ""})
+
+            if(dontPost) return;
+
+            if( !(this.state.oldPhone === this.state.phone &&
+                this.state.oldSid === this.state.sid &&
+                this.state.oldPid === this.state.pid) ) {
+
+                    axios.post('/api/updateStudentDetails', {
+                        sid: this.state.sid,
+                        pid: this.state.pid,
+                        phone: this.state.phone,
+                        username: this.state.user.Username
+                    })
+
+                }
+
+
+
+        }
+        else
+        {
+            this.setState({
+                oldPhone: this.state.phone,
+                oldSid: this.state.sid,
+                oldPid: this.state.pid
+            });
+        }
+
+        this.setState( { editing: !this.state.editing } );
+    }
+
+    hPhoneChange(event) {
+        this.setState( {phone: event.target.value} );
+    }
+
+    hSidChange(event) {
+        this.setState( {sid: event.target.value} );
+    }
+
+    hPidChange(event) {
+        this.setState( {pid: event.target.value} );
+    }
+
     render() {
-        return(
-            <div style={this.state.style}>
-                
-                <DataPresenter  className="DataPresenter StudentPresenter"
-                                header="Όνομα - Επώνυμο"
-                                data={this.state.name + " " + this.state.surname}/>
-                
+        if(!this.state.editing)
+            return(
+                <div style={this.state.style}>
 
-                <DataPresenter  className="DataPresenter StudentPresenter"
-                                header="Τηλέφωνο Επικοινωνίας"
-                                data={this.state.phone}/>
+                    <DataPresenter  className="DataPresenter StudentPresenter"
+                                    header="Ειδικά Στοιχεία"/>
+                    
+                    <DataPresenter  className="DataPresenter StudentPresenter subPresenter"
+                                    header="Όνομα - Επώνυμο"
+                                    data={this.state.name + " " + this.state.surname}/>
+                    
 
-                   
-                
-                <DataPresenter  className="DataPresenter StudentPresenter"
-                                header="Αναγνωριστικός Αριθμός Φοιτητή"
-                                data={this.state.sid}/>
+                    <DataPresenter  className="DataPresenter StudentPresenter subPresenter"
+                                    header="Τηλέφωνο Επικοινωνίας"
+                                    data={this.state.phone}/>
 
-                
+                    
+                    
+                    <DataPresenter  className="DataPresenter StudentPresenter subPresenter"
+                                    header="Αριθμός Φοιτητικής Ταυτότητας"
+                                    data={this.state.sid}/>
 
-                <DataPresenter  className="DataPresenter StudentPresenter"
-                                header="Αριθμός Ταυτότητας"
-                                data={this.state.pid}/>
+                    
 
-                
+                    <DataPresenter  className="DataPresenter StudentPresenter subPresenter"
+                                    header="Αριθμός Ταυτότητας"
+                                    data={this.state.pid}/>
 
-                <DataPresenter  className="DataPresenter StudentPresenter"
-                                header="Τμήμα"
-                                data={this.state.department_name}/>
+                    
 
-            </div>
-        );
+                    <DataPresenter  className="DataPresenter StudentPresenter subPresenter"
+                                    header="Τμήμα"
+                                    data={this.state.department_name}/>
+
+                    <button className={`${this.state.user.Type} StudentEdit`} onClick={this.hEdit}>Επεξεργασία</button>
+
+                </div>
+            );
+        else
+            return(
+                <div style={this.state.style}>
+
+                    <DataPresenter  className="DataPresenter StudentPresenter"
+                                    header="Ειδικά Στοιχεία"/>
+                    
+                    <DataPresenter  className="DataPresenter StudentPresenter subPresenter"
+                                    header="Όνομα - Επώνυμο"
+                                    data={this.state.name + " " + this.state.surname}/>
+                    
+
+                    <FormTextInput  label="Τηλέφωνο Επικοινωνίας"
+                                    title={this.state.wrongPhone}
+                                    className={ this.state.wrongPhone ? "ProfileInput wrong" : "ProfileInput" }
+                                    labelClass={this.state.user.Type}
+                                    type="Number"
+                                    placeholder="Τηλέφωνο Επικοινωνίας"
+                                    onChange={this.hPhoneChange}
+                                    value={this.state.phone}/>
+
+                    
+                    
+                    <FormTextInput  label="Αριθμός Φοιτητικής Ταυτότητας"
+                                    title={this.state.wrongSid}
+                                    className= { this.state.wrongSid ? "ProfileInput wrong" : "ProfileInput" }
+                                    labelClass={this.state.user.Type}
+                                    type="Number"
+                                    placeholder="Αριθμός Φοιτητικής Ταυτότητας"
+                                    onChange={this.hSidChange}
+                                    value={this.state.sid}/>
+
+                    
+
+                    <FormTextInput  label="Αριθμός Ταυτότητας"
+                                    title={this.state.wrongPid}
+                                    className={ this.state.wrongPid ? "ProfileInput wrong" : "ProfileInput"}
+                                    labelClass={this.state.user.Type}
+                                    type="Text"
+                                    placeholder="Αριθμός Ταυτότητας"
+                                    onChange={this.hPidChange}
+                                    value={this.state.pid}/>
+
+
+                    <DataPresenter  className="DataPresenter StudentPresenter subPresenter"
+                                    header="Τμήμα"
+                                    data={this.state.department_name}/>
+
+                    <button className={`${this.state.user.Type} PublisherEdit`} onClick={this.hEdit}>Επιβεβαίωση</button>
+                </div>
+            );   
     }
 }
 
@@ -382,10 +521,17 @@ class PublisherSpecificDetails extends Component {
             user: props.user,
             name: "",
             phone: null,
-            address: "",
+            city: "",
+            street: "",
+            street_number: "",
             zipcode: "",
-            style: props.style
+            style: props.style,
+            editing: false,
+            wrongPhone: "",
+            wrongZipcode: ""
          };
+
+         autobind(this);
     }
 
     componentDidMount() {
@@ -404,7 +550,9 @@ class PublisherSpecificDetails extends Component {
                         this.setState( {
                             name: res.data.data.Name,
                             phone: res.data.data.Phone,
-                            address: `${res2.data.data.Street_Name} ${res2.data.data.Street_Number}, ${res2.data.data.City}`,
+                            street: res2.data.data.Street_Name,
+                            street_number: res2.data.data.Street_Number,
+                            city: res2.data.data.City,
                             zipcode: res2.data.data.ZipCode
                         } );
                     }
@@ -414,31 +562,186 @@ class PublisherSpecificDetails extends Component {
         });
     }
 
+    hEdit() {
+        let dontpost = false;
+        if(this.state.editing)
+        {
+            if(this.state.zipcode.length > 11 || this.state.zipcode.length < 5)
+            {
+                console.log(this.state.zipcode)
+                this.setState( {
+                    wrongZipcode: "Λανθασμένος Τ.Κ."
+                } );
+                dontpost = true;
+            }
+            else
+                this.setState( { wrongZipcode: "" } );
+
+            if(this.state.phone.length !== 10)
+            {
+                this.setState( {
+                    wrongPhone: "Το τηλεφωνο πρέπει να έχει 10 αριθμούς."
+                } );
+                dontpost = true;
+            }
+            else
+                this.setState( { wrongPhone: "" } );
+
+            if (dontpost) return;
+            
+            if( !( this.state.name === this.state.oldName &&  this.state.phone === this.state.oldPhone &&
+                this.state.street === this.state.oldStreet && this.state.street_number === this.state.oldStreetNumber &&
+                this.state.city === this.state.oldCity && this.state.zipcode === this.state.oldZipcode ) )
+            {
+                axios.post('/api/updatePublisherDetails',
+                {
+                    username: this.state.user.Username,
+                    name: this.state.name,
+                    phone: this.state.phone,
+                    street: this.state.street,
+                    street_number: this.state.street_number,
+                    city: this.state.city,
+                    zipcode: this.state.zipcode
+                })
+            }
+        }
+        else
+        {
+            this.setState({
+                oldName: this.state.name,
+                oldPhone: this.state.phone,
+                oldStreet: this.state.street,
+                oldStreetNumber: this.state.street_number,
+                oldCity: this.state.city,
+                oldZipcode: this.state.zipcode
+            });
+        }
+
+        this.setState({
+            editing: !this.state.editing,
+            wrongPhone: "",
+            wrongZipcode: "",
+        });
+    }
+
+    hPublisherNameChange(event) {
+        this.setState({name: event.target.value});
+    }
+
+    hPhoneChange(event) {
+        this.setState({phone: event.target.value});
+    }
+
+    hCityChange(event) {
+        this.setState({city: event.target.value});
+    }
+
+    hStreetChange(event) {
+        this.setState({street: event.target.value});
+    }
+
+    hStreetNumberChange(event) {
+        this.setState({street_number: event.target.value});
+    }
+
+    hZipChange(event) {
+        this.setState( {zipcode: event.target.value} );
+    }
+
     render() {
+        if(!this.state.editing)
+            return(
+                <div style={this.state.style}>
+                    
+                    <DataPresenter  className="DataPresenter PublisherPresenter"
+                                    header="Ειδικά Στοιχεία"/>
 
-        return(
-            <div style={this.state.style}>
-                
-                <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Όνομα Εκδοτικού Οίκου"
-                                data={this.state.name}/>
+                    <DataPresenter  className="DataPresenter PublisherPresenter subPresenter"
+                                    header="Όνομα Εκδοτικού Οίκου"
+                                    data={this.state.name}/>
 
-                <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Τηλέφωνο Επικοινωνίας"
-                                data={this.state.phone}/>
+                    <DataPresenter  className="DataPresenter PublisherPresenter subPresenter"
+                                    header="Τηλέφωνο Επικοινωνίας"
+                                    data={this.state.phone}/>
 
-                
-                <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Διεύθυνση"
-                                data={this.state.address}/>
+                    
+                    <DataPresenter  className="DataPresenter PublisherPresenter subPresenter"
+                                    header="Διεύθυνση"
+                                    data={`${this.state.street} ${this.state.street_number}, ${this.state.city}`}/>
 
 
-                <DataPresenter  className="DataPresenter PublisherPresenter"
-                                header="Ταχυδρομικός Κώδικας"
-                                data={this.state.zipcode}/>
+                    <DataPresenter  className="DataPresenter PublisherPresenter subPresenter"
+                                    header="Ταχυδρομικός Κώδικας"
+                                    data={this.state.zipcode}/>
 
-            </div>
-        );
+                    <button className={`${this.state.user.Type} PublisherEdit`} onClick={this.hEdit}>Επεξεργασία</button>
+                </div>
+            );
+        else
+            return(
+                <div style={this.state.style}>
+                    
+                    <DataPresenter  className="DataPresenter PublisherPresenter"
+                                    header="Ειδικά Στοιχεία"/>
+
+                    <FormTextInput  label="Όνομα Εκδοτικού Οίκου"
+                                    title="Όνομα Εκδοτικού Οίκου"
+                                    className="ProfileInput"
+                                    labelClass={this.state.user.Type}
+                                    type="Text"
+                                    placeholder="Όνομα Εκδοτικού Οίκου"
+                                    onChange={this.hPublisherNameChange}
+                                    value={this.state.name}/>
+
+                    <FormTextInput  label="Τηλέφωνο Επικοινωνίας"
+                                    title={this.state.wrongPhone}
+                                    className={this.state.wrongPhone ? "ProfileInput wrong" : "ProfileInput" }
+                                    labelClass={this.state.user.Type}
+                                    type="Number"
+                                    placeholder="Τηλέφωνο Επικοινωνίας"
+                                    onChange={this.hPhoneChange}
+                                    value={this.state.phone}/>
+
+                    <FormTextInput  label="Οδός"
+                                    title="Οδός"
+                                    className="ProfileInput"
+                                    labelClass={this.state.user.Type}
+                                    type="Text"
+                                    placeholder="Οδός"
+                                    onChange={this.hStreetChange}
+                                    value={this.state.street}/>
+                    
+                    <FormTextInput  label="Αριθμός"
+                                    title="Αριθμός"
+                                    className="ProfileInput"
+                                    labelClass={this.state.user.Type}
+                                    type="Number"
+                                    placeholder="Αριθμός"
+                                    onChange={this.hStreetNumberChange}
+                                    value={this.state.street_number}/>
+
+
+                    <FormTextInput  label="Πόλη"
+                                    title="Πόλη"
+                                    className="ProfileInput"
+                                    labelClass={this.state.user.Type}
+                                    type="Text"
+                                    placeholder="Πόλη"
+                                    onChange={this.hCityChange}
+                                    value={this.state.city}/>
+                    
+                    <FormTextInput  label="Ταχυδρομικός Κώδικας"
+                                    title={this.state.wrongZipcode}
+                                    className={this.state.wrongZipcode ? "ProfileInput wrong" : "ProfileInput" }
+                                    labelClass={this.state.user.Type}
+                                    type="Number"
+                                    placeholder="Ταχυδρομικός Κώδικας"
+                                    onChange={this.hZipChange}
+                                    value={this.state.zipcode}/>
+
+                    <button className={`${this.state.user.Type} PublisherEdit`} onClick={this.hEdit}>Επιβεβαίωση</button>
+                </div>
+            );
     }
 }
 

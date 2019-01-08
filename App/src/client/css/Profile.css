@@ -31,16 +31,16 @@
 }
 
 .Student.H1 {
-    color: rgb(54,143,226);
+    color: cornflowerblue;
 }
 
 .Student.Line {
-    background-color: rgb(54,143,226);
+    background-color: cornflowerblue;
 }
 
 .StudentPresenter > h3 {
     text-align: left;
-    color: rgb(128,181,236);
+    color: cornflowerblue;
 }
 
 .Publisher.H1, .PublDist.H1 {
@@ -61,16 +61,27 @@
 }
 
 .DataPresenter > h3 {
-    font-size: 16px;
+    font-size: 22px;
     font-weight: normal;
     text-align: left;
 }
 
 .DataPresenter > h2{
-    font-size: 20px;
+    font-size: 22px;
     text-align: left;
     color: #818181;
     font-weight: normal;
+}
+
+.subPresenter > h3 {
+    margin: 10px 25px;
+
+    font-size: 14px;
+}
+
+.subPresenter > h2 {
+    margin: 10px 25px;
+    font-size: 19px;
 }
 
 .line {
@@ -111,27 +122,36 @@ p.Student {
     color: rgb(98, 138, 180);
 }
 
+.subPresenter.StudentPresenter > h3 {
+    color: rgb(98, 138, 180);
+}
+
 .Profile > div > label > p {
     margin: 10px 25px;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 14px;
 
     text-align: left;
 }
 
-.Profile > div > button {
+.Profile > div > button, .PublisherEdit, .StudentEdit {
     font-size: 15px;
     padding: 15px;
     border: none;
     outline: none;
     color: white;
     border-radius: 5px;
-    margin-top: 15px;
+    /* margin-top: 15px 2px */
+    margin: 20px 17px;
     box-shadow: 0px 2px 5px black;
     transition: 200ms;
     cursor: pointer;
+    float: left;
 }
+
+/* .PublisherEdit {
+    margin-left: 0px !important;
+} */
 
 
 button.Publisher:hover, button.PublDist:hover {
@@ -143,9 +163,9 @@ button.Publisher, button.PublDist {
 }
 
 button.Student {
-    background-color: rgb(128,181,236);
+    background-color: cornflowerblue;
 }
 
 button.Student:hover {
-    background-color: rgb(105, 148, 194);
+    background-color: rgb(79, 116, 184);
 }

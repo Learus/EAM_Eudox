@@ -172,16 +172,103 @@ app.post('/api/updateUser', function(req, res) {
 
     sql.query(query, function(err, rows, fields) {
         if (err) throw err;
-
-        if (rows.length === 0) {
-            res.send({error: true, message: "Empty set"})
-        }
-        else {
-            res.send({error: false, message: "OK"});
-        }
+        else res.send({error: false, message: "OK"});
     })
 
 })
+
+app.post('/api/updateStudentDetails', function(req, res) {
+    console.log(req.body);
+
+    sql.query("Update Student Set Student_Id= ?, Personal_Id= ?, Phone= ? Where Username= ?",
+        [req.body.sid, req.body.pid, req.body.phone, req.body.username],
+        function(err) {
+            if(err) throw err;
+        });
+})
+
+app.post('/api/updatePublisherDetails', function(req, res) {
+
+    let oldAddressId = null;
+    let deleteOldAddress = false;
+
+    console.log(req.body);
+
+    sql.query("Select Address_Id From Publisher Where Username= ?", [req.body.username], function(err, rows, fields) {
+        if(err) throw err;
+        
+        oldAddressId = rows[0].Address_Id;
+
+        sql.query(  "Select 1 From Publisher as p, Distribution_Point as dp, Address as a \
+                    Where p.Username != ? AND ( p.Address_Id= a.Id OR dp.Address_Id= a.Id) and a.Id = ?", 
+                    [req.body.username, oldAddressId], function(err, rows1, fields) {
+                
+                if(err) throw err;
+                    
+                if(rows1.length === 0)
+                    deleteOldAddress = true;
+
+        });
+
+        sql.query("Select Id From Address Where City= ? AND Zipcode= ? AND Street_Name= ? AND Street_Number= ?",
+            [req.body.city, req.body.zipcode, req.body.street, req.body.street_number], function(err, addressIds) {
+                if(err) throw err;
+                
+                if(addressIds.length === 0)
+                {
+                    sql.query(  "Insert into mydb.Address (City, ZipCode, Street_Name, Street_Number) \
+                                Values  (?, ?, ?, ?)",
+                                [req.body.city, req.body.zipcode, req.body.street, req.body.street_number],
+                                function(err) { 
+                                    if (err) throw err;
+                                    
+                                    sql.query(  "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES \
+                                                WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Address'",
+                                                function(err, autoIncId) {
+                                                    if(err) throw err;
+                                                    console.log("if", autoIncId[0].AUTO_INCREMENT - 1);
+                                                    updatePublisher(res, req, {
+                                                        delete: deleteOldAddress,
+                                                        oldAddressId: deleteOldAddress ? oldAddressId : null,
+                                                        newAddressId: autoIncId[0].AUTO_INCREMENT - 1
+                                                    })
+                                                })
+                                });
+                }
+                else
+                {
+                    console.log("else", addressIds[0].Id)
+                    updatePublisher(res, req, {
+                        delete: deleteOldAddress,
+                        oldAddressId: deleteOldAddress ? oldAddressId : null,
+                        newAddressId: addressIds[0].Id
+                    })
+                }
+            })
+    });
+})
+
+function updatePublisher(res, req, options) {
+    console.log(options);
+    sql.query   ("Update Publisher Set Name= ?, Phone= ?, Address_Id= ? Where Username= ?",
+                [req.body.name, req.body.phone, options.newAddressId, req.body.username],
+                function(err, rows, fields) {
+                    console.log("updatepub")
+                    if(err) throw err;
+
+                    if(options.delete)
+                    {
+                        sql.query("Delete FROM Address Where Id = ?", [options.oldAddressId], function( err ) {
+                            console.log("delete")
+                            if(err) throw err;
+                            res.send( {error: false, message: "OK" } );
+                        });
+                    }
+                    else
+                        res.send( {error: false, message: "OK" } );
+
+                });
+}
 
 app.post('/api/getAddress', function(req, res) {
 
