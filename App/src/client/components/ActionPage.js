@@ -5,12 +5,12 @@ import Actions from './Actions';
 import {Link, browserHistory} from 'react-router';
 import autoBind from 'react-autobind';
 import axios from 'axios';
+import { NotFoundSmall } from './NotFound';
 
 export default class ActionPage extends Component {
 
     constructor(props) {
         super(props);
-        console.log(this.props.params);
         
         this.state = { 
             user: null,
@@ -19,6 +19,9 @@ export default class ActionPage extends Component {
             active: this.props.params.active
         };
 
+        if (!this.props.params.active) {
+            browserHistory.push(`/actionpage/${this.props.params.type}/${Actions[`${this.props.params.type}`].Default}`)
+        }
         autoBind(this);
     }
 
@@ -57,14 +60,16 @@ export default class ActionPage extends Component {
 }
 
 function Main(props) {
-    if (props.meta.Components[props.active])
+    console.log(props)
+    if(props.meta.Components[props.active])
         return (
             <div className="Main">
                 {props.meta.Components[props.active]( {id: props.id} )}
             </div>
         )
 
-    return (null);
+
+    return (<NotFoundSmall/>);
 }
 
 function ActionList(props) {

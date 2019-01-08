@@ -1,0 +1,67 @@
+.SearchPage {
+    display: grid;
+    grid-template-areas: "Header Header Header Header Header Header Header Header Header"
+                         "SideBar SideBar Main Main Main Main Main Main Main";
+    grid-template-rows: 1fr 9fr;
+    grid-template-columns: repeat(9, 1fr);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.Header {
+    grid-area: Header;
+}
+
+.SearchCategoryButton {
+    padding: 10px;
+    color: white;
+    font-size: 16px;
+    /* text-align: left; */
+
+    background-color: rgb(64, 110, 196);
+
+    border: none;
+    outline: none;
+    width: 33.333333333%;
+    margin: 0 auto;
+    height: 70px;
+    transition: 200ms;
+    cursor: pointer;
+}
+
+.SearchCategoryButton:hover, .SearchCategoryButton.Active {
+    background-color: rgb(50, 87, 155);
+}
+
+
+.SideBar {
+    grid-area: SideBar;
+    background-color: rgb(180, 198, 233);
+    text-align: center;
+}
+
+.Inputs > label > p {
+    text-align: left;
+    margin-left: 30px;
+    color: rgb(49, 49, 49);
+}
+
+.Inputs > label > input, .Inputs > label > select {
+    background-color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    width: 80%;
+    color: rgb(49, 49, 49);
+    font-size: 16px;
+    box-shadow: 1px 1px 5px;
+}
+
+.Inputs > .SearchBar > select {
+    width: 80%;
+}
+
+.Main {
+    grid-area: Main;
+}

@@ -137,8 +137,14 @@ export default class ApplicationManager extends Component {
         let newBasket = [];
         for (let i = 0; i < this.state.basket.length; i++) {
             if (textbook.c.Id === this.state.basket[i].c.Id) {
-                continue;
+                if (this.state.basket[i].taht)
+                    if (this.state.basket[i].taht.Taken) {
+                        alert("Έχετε παραλάβει σύγγραμμα για αυτό το μάθημα. Δεν μπορείτε να το διαγράψετε.");
+                    }
+                else
+                    continue;
             }
+
             newBasket.push(this.state.basket[i]);
         }
 
@@ -460,59 +466,7 @@ class Filters extends Component {
         })
     }
 
-    Dropdown(props) {
 
-        let content;
-        if (props.groupBy)
-        {
-            let groups = {};
-            for (let i = 0; i < props.data.length; i++) {
-                const element = props.data[i];
-                
-                if (!groups.hasOwnProperty(element[props.groupBy])) {
-                    groups[`${element[props.groupBy]}`] = [];
-                }
-
-                groups[`${element[props.groupBy]}`].push(element);
-            }
-
-            content = Object.keys(groups).map(key => {
-                const group = groups[key];
-
-                return (
-                    <optgroup key={key} label={key + props.groupLabel}>
-                        {
-                            group.map(element => {
-                                // console.log(element);
-                                return <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                            })
-                        }
-                    </optgroup>
-                )
-            })
-        }
-        else {
-            content = props.data.map(element => {
-                return (
-                    <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                );
-            });
-        }
-
-        return (
-            <label className="SearchBar">
-                <p>{props.label}</p>
-                <select 
-                    type = "dropdown"
-                    onChange = {props.onChange}
-                    defaultValue={props.selected}
-                    >
-                    <option value = ''></option>
-                    {content}
-                </select>
-            </label>
-        )
-    }
 
     handleSubmit() {
        
@@ -529,10 +483,10 @@ class Filters extends Component {
         const buttonClassName = this.state.selectedudp ? "SearchButton" : "SearchButton Disabled"
         return (
             <div className="Filters">
-                <this.Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities} selected={this.state.selecteduni}/>
-                <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp} selected={this.state.selectedudp}/>
-                <this.Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
-                <this.Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
+                <Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities} selected={this.state.selecteduni}/>
+                <Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp} selected={this.state.selectedudp}/>
+                <Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
+                <Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
                 <label className="SearchBar">
                     <p>&nbsp;</p>
                     <button onClick={this.handleSubmit} className={buttonClassName} disabled={disabled}>
@@ -544,7 +498,59 @@ class Filters extends Component {
     }
 }
 
+export function Dropdown(props) {
 
+    let content;
+    if (props.groupBy)
+    {
+        let groups = {};
+        for (let i = 0; i < props.data.length; i++) {
+            const element = props.data[i];
+            
+            if (!groups.hasOwnProperty(element[props.groupBy])) {
+                groups[`${element[props.groupBy]}`] = [];
+            }
+
+            groups[`${element[props.groupBy]}`].push(element);
+        }
+
+        content = Object.keys(groups).map(key => {
+            const group = groups[key];
+
+            return (
+                <optgroup key={key} label={key + props.groupLabel}>
+                    {
+                        group.map(element => {
+                            // console.log(element);
+                            return <option key = {element.Id} value = {element.Id}>{element.Name}</option>
+                        })
+                    }
+                </optgroup>
+            )
+        })
+    }
+    else {
+        content = props.data.map(element => {
+            return (
+                <option key = {element.Id} value = {element.Id}>{element.Name}</option>
+            );
+        });
+    }
+
+    return (
+        <label className="SearchBar">
+            <p>{props.label}</p>
+            <select 
+                type = "dropdown"
+                onChange = {props.onChange}
+                defaultValue={props.selected}
+                >
+                <option value = ''></option>
+                {content}
+            </select>
+        </label>
+    )
+}
 
 class TextbookContainer extends Component {
 
@@ -681,7 +687,7 @@ function Textbook(props) {
         <div className={className}>
             <h3>{props.data.t.Name}</h3>
             <p className="Writer">{props.data.t.Writer}</p>
-            <p>{props.data.t.Date_Published}</p>
+            <p>{props.data.t.Date_Published.split('-')[0]}</p>
             <p>{"ISBN: " + props.data.t.ISBN}</p>
             <p>{props.data.p.Name}</p>
             {chosen ? 
@@ -704,13 +710,18 @@ class Basket extends Component {
     render() {
         const items = this.props.data.map( (tb, index) => {
             const even = index % 2 === 0 ? "Even": "Odd"
+
+            const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
+            const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
+            const disabled = tb.taht && tb.taht.Taken;
+
             return (
                 <div key={tb.c.Id} className={`BasketEntry ${even}`}>
                     <div>
                         <p className="BasketEntryName">{tb.t.Name}</p>
-                        <p className="BasketEntryCourse">{tb.c.Name}</p>
+                        <p className="BasketEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
                     </div>
-                    <button className="BasketRemoveButton" onClick={() => {this.props.Remove(tb)}}>
+                    <button title={buttonTitle} className={buttonClass} onClick={() => {this.props.Remove(tb)}} disabled={disabled}>
                         <img src={deleteimg}/>
                     </button>
                 </div>

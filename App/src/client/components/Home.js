@@ -6,6 +6,8 @@ import { Link, browserHistory } from "react-router";
 import '../css/Home.css';
 
 import Actions from './Actions';
+import Announcements from './Announcements'
+
 import autobind from 'react-autobind';
 
 import stud_logo from '../images/student_logo.png';
@@ -25,18 +27,22 @@ export default class Home extends Component{
 
     render() {
         return(
-            <div>
+            <div className="Home">
                 <Header signalLoggedStatus={this.signalLoggedStatus}/>
-                <div className="grid-container">
-                    <Banner 
-                        type='Student'/>
-                    <Banner 
-                        type='Publisher'/>
-                    <Banner 
-                        type='Secretary'/>
-                    <Banner 
-                        type='Distributor'/>
-                </div>
+                    <main>
+                    <div className="grid-container">
+                        <Banner 
+                            type='Student'/>
+                        <Banner 
+                            type='Publisher'/>
+                        <Banner 
+                            type='Secretary'/>
+                        <Banner 
+                            type='Distributor'/>
+                    </div>
+                    <AnnouncementTable/>
+                </main>
+                
             </div>
         );
     }
@@ -68,13 +74,16 @@ class Banner extends Component {
     render() {
         const meta = Actions[`${this.props.type}`];
         let buttons = meta.Quicks.map(index => {
-            return meta.Actions[index];
+            return {
+                name: meta.Actions[index],
+                index: index
+            }
         })
 
-        buttons = buttons.map( (button, index) => {
+        buttons = buttons.map( (button) => {
             return (
-                <li key={button} onClick={ () => {browserHistory.push(`/actionpage/${this.props.type}/${index}`)} }>
-                    <Link to={`/actionpage/${this.props.type}/${index}`} className="BannerLink">{button}</Link>
+                <li key={button.name} onClick={ () => {browserHistory.push(`/actionpage/${this.props.type}/${button.index}`)} }>
+                    <Link to={`/actionpage/${this.props.type}/${button.index}`} className="BannerLink">{button.name}</Link>
                 </li>
             )
         });
@@ -90,5 +99,34 @@ class Banner extends Component {
             </div>
         )
            
+    }
+}
+
+class AnnouncementTable extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        console.log(Announcements)
+        const announcements = Announcements.map((a, index) => {
+            const even = index % 2 === 0 ? "Even" : "Odd"
+            return (
+                <div className={`Announcement ${even}`} key={index}>
+                    <h3>{a.title}</h3>
+                    <p>{a.type}</p>
+                </div>
+            )
+        })
+
+        return (
+            <div className="AnnouncementTable">
+                <h2>Ανακοινώσεις</h2>
+                <div className="Announcements">
+                    {announcements}
+                </div>
+                
+            </div>
+        )
     }
 }

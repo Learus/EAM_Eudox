@@ -49,6 +49,10 @@ export default class Header extends Component {
                     <MenuOption type="Secretary"/>
     
                     <MenuOption type="Distributor"/>
+
+                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/search')}>
+                        <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Αναζήτηση Συγγραμμάτων</Link>
+                    </button>
     
                     <button className="MenuOptionButton" onClick={() => browserHistory.push('/about')}>
                         <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Σχετικά με εμάς</Link>
@@ -65,7 +69,7 @@ function AccountSnapshot(props) {
 
     if(props.user != null)
     {
-
+        const meta = Actions[`${props.user.Type}`];
         return (
             <Popup 
                 className='AccountPopup' 
@@ -80,6 +84,7 @@ function AccountSnapshot(props) {
                         }
                     </Link>
                 )}
+                position="bottom right"
             >
 
                 <div>
@@ -87,11 +92,7 @@ function AccountSnapshot(props) {
                         Το προφίλ μου
                     </button>
 
-                    <button key="settings" onClick={ () => {browserHistory.push("/actionpage")} }>
-                        Ρυθμίσεις
-                    </button>
-
-                    <button key="help" onClick={ () => {browserHistory.push("/actionpage")} }>
+                    <button key="help" onClick={ () => {browserHistory.push(`/actionpage/${props.user.Type}`)} }>
                         Βοήθεια
                     </button>
 
@@ -127,9 +128,7 @@ function MenuOption(props) {
     links = links.map ( (option, index) => {
         return (
             <button key={option} onClick={ () => {browserHistory.push(`/actionpage/${props.type}/${index}`)} }>
-                {/* <Link to={`/actionpage/${props.type}/${index}`} className="MenuOptionLink"> */}
-                    {option}
-                {/* </Link> */}
+                {option}
             </button>
         )
     });

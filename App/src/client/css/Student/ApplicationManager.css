@@ -95,7 +95,7 @@
 
 .CourseDropdown > .Textbooks {
     /* margin: 15px; */
-    background-color: rgb(194, 207, 233);
+    background-color: rgb(205, 210, 221);
     padding: 20px 0;
     border-radius: 5px;
 }
@@ -242,8 +242,12 @@
     transition: 200ms;
 }
 
+.SearchButton:hover {
+    background-color: rgb(52, 97, 155);
+}
+
 .SearchButton.Disabled {
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(238, 238, 238) !important;
     cursor: initial;
 }
 
@@ -286,11 +290,9 @@
     margin: 0;
     position: relative;
     padding: 10px;
-    
 }
 
 .BasketEntry > div > p {
-    /* padding-left: 10px;  */
     margin-bottom: 5px;
     margin-top: 0;
     color: rgb(105, 105, 105);
@@ -328,7 +330,12 @@
     transition: 200ms;
 }
 
-.BasketRemoveButton:hover {
+.BasketRemoveButton.Disabled {
+    background-color: gray;
+    cursor: initial;
+}
+
+.BasketRemoveButton:not([disabled]):hover {
     background-color: rgb(211, 48, 75);
 }
 

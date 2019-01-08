@@ -1,29 +1,30 @@
 const sql = require('./connection').initConnection();
 
 function getStudentApplications(req, res) {
-    sql.query(  "Select Textbook_Application.* From Textbook_Application Where Textbook_Application.Id in \
-        (Select Textbook_Application_Id \
-        From Student_has_Textbook_Application \
-        Where Student_Username= ?) Order By Date Desc",
+
+    sql.query(  " Select ta.*\
+                    From Textbook_Application as ta, Student_has_Textbook_Application as shta \
+                    Where ta.Id = shta.Textbook_Application_Id and\
+                    shta.Student_Username = ? Order By Date Desc",
         [req.body.username],
         function(err, applications, fields) {
 
         if (err) throw err;
 
         if (applications.length === 0) {
-        res.send({error: true, message: "Empty set"})
+            res.send({error: true, message: "Empty set"})
         }
         else {
-
-        res.send({error: false, message: "OK", data: applications});
+            res.send({error: false, message: "OK", data: applications});
         }
     })
 }
 
 function getTextbookApplication(req, res) {
-    const query = ` Select t.*, p.*, taht.Taken, c.Id, c.Name, c.Semester
+    const query = ` Select t.*, p.*, taht.Taken, c.Id, c.Name, c.Semester, a.*, dp.*
                     From Textbook_Application as ta, Textbook_Application_has_Textbook as taht, 
-                    Publisher as p, Textbook as t, Course as c, Course_has_Textbook as cht, Student_has_Textbook_Application as shta
+                    Publisher as p, Textbook as t, Course as c, Course_has_Textbook as cht, Student_has_Textbook_Application as shta,
+                    Address as a, Distribution_Point as dp, Distribution_Point_has_Textbook as dpht
                     Where ta.Id = ${req.body.id} and
                     taht.Textbook_Application_Id = ta.Id and
                     t.Id = taht.Textbook_Id and
@@ -31,7 +32,10 @@ function getTextbookApplication(req, res) {
                     c.Id = cht.Course_Id and
                     p.Username = t.Publisher_Username and
                     shta.Student_Username = '${req.body.username}' and
-                    shta.Textbook_Application_Id = ta.Id`
+                    shta.Textbook_Application_Id = ta.Id and
+                    dp.Address_Id = a.Id and
+                    dp.Id = dpht.Distribution_Point_Id and
+                    t.Id = dpht.Textbook_Id`
 
     const options = {
         sql: query,
