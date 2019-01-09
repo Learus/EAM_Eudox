@@ -9,7 +9,7 @@ function getStudentApplications(req, res) {
         [req.body.username],
         function(err, applications, fields) {
 
-        if (err) throw err;
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
         if (applications.length === 0) {
             res.send({error: true, message: "Empty set"})
@@ -43,7 +43,7 @@ function getTextbookApplication(req, res) {
     }
 
     sql.query(options, function(err, rows, fields) {
-        if (err) throw err;
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
         if (rows.length === 0) {
             res.send({error: true, message: "Empty set"})
@@ -61,7 +61,7 @@ function createTextbookApplication(req, res) {
     if (req.body.old) {
         deletequery = `Delete From Textbook_Application_has_Textbook Where Textbook_Application_Id = ${req.body.old} and Taken = FALSE`
         sql.query(deletequery, function(err, rows) {
-            if (err) throw err;
+            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
             insertApplication(req.body.new, req.body.old, res);
         })
@@ -72,19 +72,19 @@ function createTextbookApplication(req, res) {
                     ta.Is_Current = TRUE and\
                     shta.Student_Username = ?", 
         [req.body.username], function (err, rows) {
-            if (err) throw err;
+            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
             if (rows.length === 0) {
                 const insertApplicationQuery = ` Insert into Textbook_Application (Date, Is_Current, PIN, Status)
                     Values (NOW(), TRUE, ${randomPIN()}, 'Pending')`;
                 sql.query(insertApplicationQuery, function (err, rows) {
-                    if (err) throw err;
+                    if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
                     const insertSHTAQuery = `Insert into Student_has_Textbook_Application (Student_Username, Textbook_Application_Id)
                     Values ('${req.body.user}', 
                         (SELECT \`AUTO_INCREMENT\` as a FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Textbook_Application') - 1)`
                     sql.query(insertSHTAQuery, function (err, rows) {
-                        if (err) throw err;
+                        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
                         insertApplication(req.body.new, null, res)
                     })
@@ -93,7 +93,7 @@ function createTextbookApplication(req, res) {
             else {
                 deletequery = `Delete From Textbook_Application_has_Textbook Where Textbook_Application_Id = ${rows[0].Id} and Taken = FALSE`
                 sql.query(deletequery, function(err, rows) {
-                    if (err) throw err;
+                    if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
                     insertApplication(req.body.new, rows[0].Id, res);
                 })
@@ -127,7 +127,7 @@ function insertApplication(textbooks, id, res) {
         }
 
         sql.query(query, function (err, rows) {
-            if (err) throw err;
+            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
             res.send({error: false, message:"OK"})
         })
@@ -137,7 +137,7 @@ function insertApplication(textbooks, id, res) {
         const idquery = `(SELECT \`AUTO_INCREMENT\` as a FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Textbook_Application' )`;
 
         sql.query(idquery, function (err, rows) {
-            if (err) throw err;
+            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
     
             let query = 'Insert into Textbook_Application_has_Textbook (Textbook_Application_Id, Textbook_Id,  Taken) Values '
             console.log("301", rows[0])
@@ -149,7 +149,7 @@ function insertApplication(textbooks, id, res) {
             }
     
             sql.query(query, function (err, rows) {
-                if (err) throw err;
+                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
     
                 res.send({error: false, message:"OK"})
             })

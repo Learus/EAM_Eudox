@@ -3,12 +3,14 @@ import autoBind from 'react-autobind';
 import axios from 'axios';
 import {browserHistory} from 'react-router';
 import LoginPopup from '../Login';
-import {LoginForm} from '../Login';
 
 import "../../css/Student/ApplicationManager.css"
 import searchimg from "../../images/search.png"
 import deleteimg from "../../images/trash.png"
+import {SimpleDropdown, ComboDropdown} from '../Utilities';
 
+import Select from 'react-select';
+import createFilterOptions from 'react-select-fast-filter-options';
 
 export default class ApplicationManager extends Component {
 
@@ -135,14 +137,15 @@ export default class ApplicationManager extends Component {
 
     Remove(textbook) {
         let newBasket = [];
+        console.log(textbook);
         for (let i = 0; i < this.state.basket.length; i++) {
             if (textbook.c.Id === this.state.basket[i].c.Id) {
-                if (this.state.basket[i].taht)
+                if (this.state.basket[i].taht) {
                     if (this.state.basket[i].taht.Taken) {
                         alert("Έχετε παραλάβει σύγγραμμα για αυτό το μάθημα. Δεν μπορείτε να το διαγράψετε.");
                     }
-                else
-                    continue;
+                }
+                else continue;
             }
 
             newBasket.push(this.state.basket[i]);
@@ -200,7 +203,6 @@ export default class ApplicationManager extends Component {
     }
 
     isChosen(textbook) {
-        console.log(textbook);
         for (let i = 0; i < this.state.basket.length; i++) {
             if (textbook.c.Id === this.state.basket[i].c.Id && textbook.t.Id === this.state.basket[i].t.Id) {
                 return true;
@@ -299,20 +301,6 @@ class Filters extends Component {
     }
 
     componentDidMount() {
-        axios.post('/api/getUniversities')
-        .then(res => {
-            if (res.data.error) {
-                alert(res.data.message)
-            }
-            else {
-                this.setState ( {
-                    universities: res.data.data,
-                    selecteduni: null,
-                    udp: []
-                });
-            }
-        })
-
         if (this.props.user) {
             axios.post('/api/getUserUniversityData', {user: this.props.user.Username})
             .then(res => {
@@ -322,14 +310,31 @@ class Filters extends Component {
                 })
             })
         }
+
+        axios.post('/api/getUniversities')
+        .then(res => {
+            if (res.data.error) {
+                alert(res.data.message)
+            }
+            else {
+                this.setState ( {
+                    universities: res.data.data.map(uni => {return {value: uni.Id, label: uni.Name}}),
+                    selecteduni: null,
+                    udp: []
+                });
+            }
+        })
+
+        
     }
 
     getDepartments(event) {
+        console.log(event);
         this.setState({
-            selecteduni: event.target.value
+            selecteduni: event.value
         });
 
-        if (event.target.value === '') {
+        if (event.value === '') {
             this.setState({
                 selecteduni: null,
 
@@ -346,16 +351,15 @@ class Filters extends Component {
         };
 
         axios.post('/api/getDepartments', {
-            university: event.target.value
+            university: event.value
         })
         .then(res => {
             if (res.data.error) {
                 alert(res.data.message)
             }
             else {
-                // console.log(res.data);
                 this.setState ({
-                    udp: res.data.data
+                    udp: res.data.data.map(udp => {return {value: udp.Id, label: udp.Name}}),
                 });
             }
         })
@@ -363,10 +367,10 @@ class Filters extends Component {
 
     getSemesters(event) {
         this.setState({
-            selectedudp: event.target.value
+            selectedudp: event.value
         });
 
-        if (event.target.value === '') {
+        if (event.value === '') {
             this.setState({
                 selectedudp: null,
 
@@ -380,16 +384,15 @@ class Filters extends Component {
         };
 
         axios.post('/api/getSemesters', {
-            udp: event.target.value
+            udp: event.value
         })
         .then(res => {
             if (res.data.error) {
                 alert(res.data.message);
             }
             else {
-                // console.log("Semesters" , res.data);
                 this.setState({
-                    semesters: res.data.data
+                    semesters: res.data.data.map(sem => {return {value: sem.Id, label: sem.Name}}),
                 })
             }
         })
@@ -397,10 +400,10 @@ class Filters extends Component {
 
     getCourses(event) {
         this.setState({
-            selectedudp: event.target.value
+            selectedudp: event.value
         });
 
-        if (event.target.value === '') {
+        if (event.value === '') {
             this.setState({
                 selectedudp: null,
 
@@ -414,17 +417,15 @@ class Filters extends Component {
         };
 
         axios.post('/api/getCourses', {
-            udp: event.target.value
+            udp: event.value
         })
         .then(res => {
             if (res.data.error) {
                 alert(res.data.message);
             }
             else {
-                // console.log(res.data);
-
                 this.setState({
-                    courses: res.data.data
+                    courses: res.data.data.map(course => {return {value: course.Id, label: course.Name}}),
                 })
             }
         })
@@ -432,10 +433,10 @@ class Filters extends Component {
 
     getCoursesBySemester(event) {
         this.setState({
-            selectedsemester: event.target.value
+            selectedsemester: event.value
         });
 
-        if (event.target.value === '') {
+        if (event.value === '') {
             this.setState({
                 selectedsemester: null
             })
@@ -444,16 +445,15 @@ class Filters extends Component {
 
         axios.post('/api/getCourses/Semesters', {
             udp: this.state.selectedudp,
-            semester: event.target.value
+            semester: event.value
         })
         .then(res => {
             if (res.data.error) {
                 alert(res.data.message);
             }
             else {
-                // console.log(res.data);
                 this.setState({
-                    courses: res.data.data
+                    courses: res.data.data.map(course => {return {value: course.Id, label: course.Name}}),
                 })
             }
         })
@@ -462,10 +462,9 @@ class Filters extends Component {
 
     handleCourse(event) {
         this.setState({
-            selectedcourse: event.target.value
+            selectedcourse: event.value
         })
     }
-
 
 
     handleSubmit() {
@@ -483,10 +482,28 @@ class Filters extends Component {
         const buttonClassName = this.state.selectedudp ? "SearchButton" : "SearchButton Disabled"
         return (
             <div className="Filters">
-                <Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities} selected={this.state.selecteduni}/>
-                <Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp} selected={this.state.selectedudp}/>
-                <Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
-                <Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
+                <ComboDropdown  label="Πανεπιστήμιο"
+                                placeholder=""
+                                options={this.state.universities} 
+                                onChange={this.getDepartments} 
+                                defaultValue={this.state.selecteduni}/>
+
+                <ComboDropdown  label="Τμήμα"
+                                placeholder=""
+                                options={this.state.udp} 
+                                onChange={(event) => {this.getCourses(event); this.getSemesters(event);}} 
+                                defaultValue={this.state.selectedudp}/>
+
+                <ComboDropdown  label="Εξάμηνο"
+                                placeholder=""
+                                options={this.state.semesters} 
+                                onChange={this.getCoursesBySemester} />
+
+                <ComboDropdown  label="Μάθημα"
+                                placeholder=""
+                                options={this.state.courses} 
+                                onChange={this.handleCourse} />
+
                 <label className="SearchBar">
                     <p>&nbsp;</p>
                     <button onClick={this.handleSubmit} className={buttonClassName} disabled={disabled}>
@@ -496,60 +513,6 @@ class Filters extends Component {
             </div>
         )
     }
-}
-
-export function Dropdown(props) {
-
-    let content;
-    if (props.groupBy)
-    {
-        let groups = {};
-        for (let i = 0; i < props.data.length; i++) {
-            const element = props.data[i];
-            
-            if (!groups.hasOwnProperty(element[props.groupBy])) {
-                groups[`${element[props.groupBy]}`] = [];
-            }
-
-            groups[`${element[props.groupBy]}`].push(element);
-        }
-
-        content = Object.keys(groups).map(key => {
-            const group = groups[key];
-
-            return (
-                <optgroup key={key} label={key + props.groupLabel}>
-                    {
-                        group.map(element => {
-                            // console.log(element);
-                            return <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                        })
-                    }
-                </optgroup>
-            )
-        })
-    }
-    else {
-        content = props.data.map(element => {
-            return (
-                <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-            );
-        });
-    }
-
-    return (
-        <label className="SearchBar">
-            <p>{props.label}</p>
-            <select 
-                type = "dropdown"
-                onChange = {props.onChange}
-                defaultValue={props.selected}
-                >
-                <option value = ''></option>
-                {content}
-            </select>
-        </label>
-    )
 }
 
 class TextbookContainer extends Component {

@@ -190,24 +190,23 @@
     height: 120px;
     margin-left: 20px;
     display: grid;
-    grid-template-columns: 6fr 6fr 1fr 6fr 1fr;
+    grid-template-columns: 6fr 6fr 1fr 6fr 38px;
     width: 80%;
     
 }
 
-.Filters > .SearchBar > select{
+/* dropdown control */
+.Filters > .SearchBar > .ComboDropdown > div{
     border-radius: 5px;
     border: none;
-
+    /* padding: 1px; */
     width : 100%;
-
-    float: left;
-
-    padding: 15px;
 
     background-color: rgb(241, 241, 241);
     color: rgb(75, 75, 75);
 }
+
+
 
 .Filters > .SearchBar {
     margin: 5px;
@@ -227,13 +226,11 @@
     border-radius: 5px;
     border: none;
 
-    width : 100%;
+    width : 38px;
 
-    float: left;
+    padding-top: 5px;
 
-    padding: 15px;
-
-    height: 47px;
+    height: 38px;
 
     border: none;
     outline: none;
@@ -252,7 +249,7 @@
 }
 
 .SearchImg {
-    width: 100%;
+    width: 20px;
     filter: brightness(200%)
 }
 

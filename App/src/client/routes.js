@@ -24,7 +24,7 @@ export default (
     <Route path="/actionpage/:type(/:active)(/:id)" component={ActionPage}/>
     {/* <Route path="/about(/:user)" component={About}/> */}
     <Route path="/profile" component={Profile}/>
-    <Route path="/search" component={Search}/>
+    <Route path="/search/:active(/:id)" component={Search}/>
     <Route path="*" exact={true} component={NotFound}/>
   </Route>
 );

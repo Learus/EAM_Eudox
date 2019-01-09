@@ -53,9 +53,8 @@ export default class Profile extends Component {
     hMailSubmit() {
         if( this.state.savedNewMail === this.state.savedNewMail2)
         {   
-            if( this.state.savedNewMail != "" )
+            if( this.state.savedNewMail !== "" && this.state.savedNewMail.includes('.') && this.state.savedNewMail.includes('@'))
             {
-
                 axios.post('/api/updateUser',
                 { 
                     username: this.state.user.Username,
@@ -76,17 +75,15 @@ export default class Profile extends Component {
             }
             else
             {
-                alert("Σφάλμα: Πρέπει να εισάγετε μια διεύθυνση E-mail πρώτα.");
                 this.setState({
-                    wrongEmail: "Σφάλμα: Πρέπει να εισάγετε μια διεύθυνση E-mail πρώτα."
+                    wrongEmail: "Λανθασμένο Email"
                 })
             }
         }
         else
         {
-            alert("Σφάλμα: Οι διευθύνσεις E-mail που έχετε εισάγει δεν ταιριάζουν.");
             this.setState({
-                wrongEmail: "Σφάλμα: Οι διευθύνσεις E-mail που έχετε εισάγει δεν ταιριάζουν."
+                wrongEmail: "Οι διευθύνσεις E-mail που έχετε εισάγει δεν ταιριάζουν."
             })
         }
     }
@@ -356,7 +353,7 @@ class StudentSpecificDetails extends Component {
 
             if(this.state.phone.length !== 10)
             {
-                this.setState( {wrongPhone: "Ο αριθμός τηλεφώνου είναι δεκαψήφιος."} )
+                this.setState( {wrongPhone: "Λανθασμένος αριθμός τηλεφώνου"} )
                 dontPost = true;
             }
             else
@@ -364,15 +361,15 @@ class StudentSpecificDetails extends Component {
 
             if(this.state.sid.length !== 12)
             {
-                this.setState({ wrongSid: "Ο αριθμός φοιτητικής ταυτότητας είναι δωδεκαψήφιος." })
+                this.setState({ wrongSid: "Λανθασμένος αριθμός φοιτητικής ταυτότητας" })
                 dontPost = true;
             }
             else
                 this.setState({wrongSid: ""})
             
-            if(this.state.pid.length !== 8)
+            if(this.state.pid.length !== 8 || this.state.pid.includes(' '))
             {
-                this.setState({ wrongPid: "Ο αριθμός ταυτότητας είναι οκταψήφιος." })
+                this.setState({ wrongPid: "Λανθασμένος αριθμός ταυτότητας" })
                 dontPost = true;
             }
             else
@@ -384,17 +381,14 @@ class StudentSpecificDetails extends Component {
                 this.state.oldSid === this.state.sid &&
                 this.state.oldPid === this.state.pid) ) {
 
-                    axios.post('/api/updateStudentDetails', {
-                        sid: this.state.sid,
-                        pid: this.state.pid,
-                        phone: this.state.phone,
-                        username: this.state.user.Username
-                    })
+                axios.post('/api/updateStudentDetails', {
+                    sid: this.state.sid,
+                    pid: this.state.pid,
+                    phone: this.state.phone,
+                    username: this.state.user.Username
+                })
 
-                }
-
-
-
+            }
         }
         else
         {
@@ -493,7 +487,7 @@ class StudentSpecificDetails extends Component {
 
                     
 
-                    <FormTextInput  label="Αριθμός Ταυτότητας"
+                    <FormTextInput  label="Αριθμός Ταυτότητας (Χωρίς Κενά)"
                                     title={this.state.wrongPid}
                                     className={ this.state.wrongPid ? "ProfileInput wrong" : "ProfileInput"}
                                     labelClass={this.state.user.Type}

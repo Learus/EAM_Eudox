@@ -42,6 +42,11 @@ export default class Header extends Component {
                 </div>
     
                 <div className="header-bottom">
+
+                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/')}>
+                        <Link to="/" style={{textDecoration: 'none', color: 'white'}}>Αρχική</Link>
+                    </button>
+
                     <MenuOption type="Student"/>
     
                     <MenuOption type="Publisher"/>
@@ -50,13 +55,11 @@ export default class Header extends Component {
     
                     <MenuOption type="Distributor"/>
 
-                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/search')}>
-                        <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Αναζήτηση Συγγραμμάτων</Link>
-                    </button>
+                    <MenuOption type="Search" prefix="/search"/>
     
-                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/about')}>
+                    {/* <button className="MenuOptionButton" onClick={() => browserHistory.push('/about')}>
                         <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Σχετικά με εμάς</Link>
-                    </button>
+                    </button> */}
     
                 </div>
             </div>
@@ -126,8 +129,13 @@ function MenuOption(props) {
     const meta = Actions[`${props.type}`];
     let links = meta.Actions;
     links = links.map ( (option, index) => {
+        let path;
+
+        if (props.prefix) path = `${props.prefix}/${index}`
+        else path = `/actionpage/${props.type}/${index}`
+
         return (
-            <button key={option} onClick={ () => {browserHistory.push(`/actionpage/${props.type}/${index}`)} }>
+            <button key={option} onClick={ () => {browserHistory.push(path)} }>
                 {option}
             </button>
         )
@@ -137,7 +145,12 @@ function MenuOption(props) {
         <Popup 
             className = "SubMenuPopup"
             trigger = { open => (
-                <button onClick={() => {browserHistory.push(`/actionpage/${props.type}/${meta.Actions.length - 1}`)}} 
+                <button onClick={() => {
+                    let path;
+                    if (props.prefix) path = `${props.prefix}/${meta.Actions.length - 1}`
+                    else path = `/actionpage/${props.type}/${meta.Actions.length - 1}`
+                    browserHistory.push(path)
+            }} 
                 className={open ? "MenuOptionButton Open" : "MenuOptionButton Closed"}>
                     {meta.Header}
                 </button>
