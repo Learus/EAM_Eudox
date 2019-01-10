@@ -8,7 +8,7 @@ import FormTextInput from '../Utilities';
 export default function PublisherPublish(props) {
     return (
         <div className="PublisherPublish">
-            <h1>Καταχώρηση Συγγραμμάτων</h1>
+            <h1>Καταχώριση Συγγραμμάτων</h1>
             <div className="line" />
             <div className="PublisherPublishForm">
 

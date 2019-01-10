@@ -8,6 +8,10 @@ import ApplicationManager from "./Student/ApplicationManager";
 import PublisherPublish from "./Publisher/PublisherPublish";
 import PublisherHelp from "./Publisher/PublisherHelp";
 
+import SecretaryHelp from "./Secretary/SecretaryHelp";
+
+import DistributorHelp from "./Distributor/DistributorHelp";
+
 import { NotFoundSmall } from "./NotFound";
 
 
@@ -33,14 +37,16 @@ export default {
         Actions: [
             "Καταχώριση Μαθημάτων",
             "Αντιστοίχιση Συγραμμάτων",
+            "Προβολή Καταχωρημένων Μαθημάτων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0, 1, 2],
-        Default: 2,
+        Quicks: [0, 1, 3],
+        Default: 3,
         Components: [
             () => {return <NotFoundSmall/>},
             () => {return <NotFoundSmall/>},
             () => {return <NotFoundSmall/>},
+            () => {return <SecretaryHelp/>},
         ],
         Type: "Secretary"
     },
@@ -78,7 +84,7 @@ export default {
             () => {return <NotFoundSmall/>},
             () => {return <NotFoundSmall/>},
             () => {return <NotFoundSmall/>},
-            () => {return <NotFoundSmall/>},
+            () => {return <DistributorHelp/>},
         ],
         Type: "Distributor"
     },

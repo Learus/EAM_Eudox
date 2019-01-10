@@ -109,7 +109,7 @@ class ApplicationPopup extends Component {
 
     componentDidMount() {
         axios.post('/api/getTextbookApplication', {
-            username: this.props.user,
+            user: this.props.user,
             id: this.props.data.Id
         })
         .then(res => {

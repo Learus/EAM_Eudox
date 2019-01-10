@@ -21,6 +21,7 @@ function getStudentApplications(req, res) {
 }
 
 function getTextbookApplication(req, res) {
+    console.log(req.body);
     const query = ` Select t.*, p.*, taht.Taken, c.Id, c.Name, c.Semester, a.*, dp.*, dpht.Copies
                     From Textbook_Application as ta, Textbook_Application_has_Textbook as taht, 
                     Publisher as p, Textbook as t, Course as c, Course_has_Textbook as cht, Student_has_Textbook_Application as shta,
@@ -31,12 +32,13 @@ function getTextbookApplication(req, res) {
                     t.Id = cht.Textbook_id and
                     c.Id = cht.Course_Id and
                     p.Username = t.Publisher_Username and
-                    shta.Student_Username = '${req.body.username}' and
+                    shta.Student_Username = '${req.body.user}' and
                     shta.Textbook_Application_Id = ta.Id and
                     dp.Address_Id = a.Id and
                     dp.Id = dpht.Distribution_Point_Id and
                     t.Id = dpht.Textbook_Id`
 
+    console.log(query);
     const options = {
         sql: query,
         nestTables: true
@@ -71,9 +73,10 @@ function createTextbookApplication(req, res) {
                     Where ta.Id = shta.Textbook_Application_Id and\
                     ta.Is_Current = TRUE and\
                     shta.Student_Username = ?", 
-        [req.body.username], function (err, rows) {
-            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+        [req.body.user], function (err, rows) {
 
+            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+            
             if (rows.length === 0) {
                 const insertApplicationQuery = ` Insert into Textbook_Application (Date, Is_Current, PIN, Status)
                     Values (NOW(), TRUE, ${randomPIN()}, 'Pending')`;
@@ -92,9 +95,9 @@ function createTextbookApplication(req, res) {
             }
             else {
                 deletequery = `Delete From Textbook_Application_has_Textbook Where Textbook_Application_Id = ${rows[0].Id} and Taken = FALSE`
-                sql.query(deletequery, function(err, rows) {
+                sql.query(deletequery, function(err) {
                     if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-
+                    console.log(rows);
                     insertApplication(req.body.new, rows[0].Id, res);
                 })
             }

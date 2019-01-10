@@ -29,8 +29,8 @@ export default class ApplicationManager extends Component {
     componentDidMount() {
         if (this.props.id) {
             const user = this.getUser();
-            console.log("HI")
-            axios.post("/api/getTextbookApplication", {id: this.props.id, username: user ? user.Username : null})
+            console.log("HI");
+            axios.post("/api/getTextbookApplication", {id: this.props.id, user: user ? user.Username : null})
             .then(res => {
                 if (res.data.error) {
                     browserHistory.push(`/actionpage/Student/0`);
@@ -223,7 +223,7 @@ export default class ApplicationManager extends Component {
             old: this.props.id ? this.props.id : null,
             user: this.getUser().Username
         }
-        
+        console.log(body);
         if (confirm("Είστε σίγουροι για την δήλωσή σας;"))
         {
             axios.post('/api/createTextbookApplication', body)
