@@ -14,7 +14,6 @@ export default class Search extends Component {
         super (props);
 
         const choices = ['Textbook', 'Publisher', 'Distributor'];
-        console.log( this.props.params.active)
 
         this.state = {
             active: choices[parseInt(this.props.params.active)],
@@ -41,10 +40,12 @@ export default class Search extends Component {
     }
 
     SearchCategoryButton(props) {
+        const choices = ['Textbook', 'Publisher', 'Distributor'];
+
         return (
             <button className={this.state.active === props.active ? "SearchCategoryButton Active " + props.active : 
                                                                     "SearchCategoryButton " + props.active} 
-                    onClick={ () => {this.setState({active: props.active})}}>
+                    onClick={ () => {browserHistory.push(`/search/${choices.indexOf(props.active)}`);}}>
                 {props.label}
             </button>
         )
@@ -122,6 +123,7 @@ class TextbookSearch extends Component {
             }
             else {
                 let newState = this.state;
+                
                 newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
                 if (key !== "keywords")
                     newState[key].unshift({value: "", label: " "})
@@ -138,7 +140,8 @@ class TextbookSearch extends Component {
         this.getOptions('/api/getPublishers', "publishers");
         this.getOptions('/api/getDistributors', "distributors");
         this.getOptions('/api/getAllCourses', "courses");
-        this.getOptions('/api/getAllDepartments', "udp");
+        // this.getOptions('/api/getAllDepartments', "udp")
+        
         
         axios.post('/api/getUniversities')
         .then(res => {
@@ -149,7 +152,7 @@ class TextbookSearch extends Component {
                 let newState = {};
                 newState.universities = res.data.data.map(uni => {return {value: uni.Id.toString(), label: uni.Name}});
                 newState.universities.unshift( {value: "", label: " "} );
-                newState.udp = [];
+                this.getOptions('api/getAllDepartments', 'udp')
                 newState.selecteduni = null;
                 this.setState (newState);
             }
@@ -305,13 +308,17 @@ class TextbookSearch extends Component {
             axios.post('/api/searchTextbooks', send)
             .then(res => {
                 if (res.data.error) {
-                    console.error(res.data.error);
+                    console.error(res.data.message);
                 }
                 else {
                     console.log(res.data.data)
+                    
                     this.setState({
-                        results: res.data.data
-                    })
+                        data: res.data.data.map(tb => {
+                            return <TextbookSearchDisplay key={tb.t.Id} data={tb}/>
+                        })
+                    }, () => {this.props.return(this.state.data)})
+                    
                 }
             })
         }
@@ -324,60 +331,60 @@ class TextbookSearch extends Component {
                 <h2>Αναζήτηση Συγγραμμάτων</h2>
                 <div className="Inputs">
 
-                <UltraComboDropdown  label="Όνομα Συγγράμματος"      
-                                // placeholder="Η Μηχανική και Εγώ, C++"
-                                options={this.state.names} 
-                                onChange={this.hname} 
-                                defaultValue=''/>
+                    <UltraComboDropdown  label="Όνομα Συγγράμματος"      
+                                    // placeholder="Η Μηχανική και Εγώ, C++"
+                                    options={this.state.names} 
+                                    onChange={this.hname} 
+                                    defaultValue=''/>
 
-                <UltraComboDropdown  label="Συγγραφέας"      
-                                // placeholder="Ιωάννης Ιωάννου, Δρακονταειδής, Τριβιζ"
-                                options={this.state.writers} 
-                                onChange={this.hwriter} 
-                                defaultValue=''/>
+                    <UltraComboDropdown  label="Λέξεις Κλειδιά"      
+                                    // placeholder="Μηχανική, Φρόυντ, Γλώσσα"
+                                    options={this.state.keywords} 
+                                    onChange={this.hkeyword} 
+                                    isMulti={true}
+                                    defaultValue=''/>
 
-                <ComboDropdown  label="ISBN"      
-                                // placeholder="1234567890123, 6547"
-                                options={this.state.isbns} 
-                                onChange={this.hisbn} 
-                                defaultValue=''/>
+                    <UltraComboDropdown  label="Συγγραφέας"      
+                                    // placeholder="Ιωάννης Ιωάννου, Δρακονταειδής, Τριβιζ"
+                                    options={this.state.writers} 
+                                    onChange={this.hwriter} 
+                                    defaultValue=''/>
 
-                <UltraComboDropdown  label="Λέξεις Κλειδιά"      
-                                // placeholder="Μηχανική, Φρόυντ, Γλώσσα"
-                                options={this.state.keywords} 
-                                onChange={this.hkeyword} 
-                                isMulti={true}
-                                defaultValue=''/>
+                    <ComboDropdown  label="ISBN"      
+                                    // placeholder="1234567890123, 6547"
+                                    options={this.state.isbns} 
+                                    onChange={this.hisbn} 
+                                    defaultValue=''/>
 
-                <ComboDropdown  label="Εκδότης"      
-                                // placeholder="Εκδόσεις Κνωσσός, Κνωσσός"
-                                options={this.state.publishers} 
-                                onChange={this.hpublisher} 
-                                defaultValue=''/>
+                    <ComboDropdown  label="Εκδότης"      
+                                    // placeholder="Εκδόσεις Κνωσσός, Κνωσσός"
+                                    options={this.state.publishers} 
+                                    onChange={this.hpublisher} 
+                                    defaultValue=''/>
 
-                <UltraComboDropdown  label="Σημείο Διανομής"      
-                                // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
-                                options={this.state.distributors} 
-                                onChange={this.hdistributor} 
-                                defaultValue=''/>
+                    <UltraComboDropdown  label="Σημείο Διανομής"      
+                                    // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                    options={this.state.distributors} 
+                                    onChange={this.hdistributor} 
+                                    defaultValue=''/>
 
-                <ComboDropdown  label="Πανεπιστήμιο"      
-                                // placeholder=""
-                                options={this.state.universities} 
-                                onChange={this.getDepartments} 
-                                defaultValue=''/>
+                    <ComboDropdown  label="Πανεπιστήμιο"      
+                                    // placeholder=""
+                                    options={this.state.universities} 
+                                    onChange={this.getDepartments} 
+                                    defaultValue=''/>
 
-                <ComboDropdown  label="Τμήμα"
-                                // placeholder=""
-                                options={this.state.udp} 
-                                onChange={this.hudp} 
-                                defaultValue=''/>
+                    <ComboDropdown  label="Τμήμα"
+                                    // placeholder=""
+                                    options={this.state.udp} 
+                                    onChange={this.hudp} 
+                                    defaultValue=''/>
 
-                <UltraComboDropdown  label="Μάθημα"
-                                // placeholder=""
-                                options={this.state.courses} 
-                                onChange={this.hcourse} 
-                                defaultValue=''/>
+                    <UltraComboDropdown  label="Μάθημα"
+                                    // placeholder=""
+                                    options={this.state.courses} 
+                                    onChange={this.hcourse} 
+                                    defaultValue=''/>
                 </div>
 
                 <button className="SearchButton Textbook" onClick={this.Search}>
@@ -389,11 +396,135 @@ class TextbookSearch extends Component {
     }
 }
 
+export function TextbookSearchDisplay(props) {
+    const tb = props.data;
+
+    return (
+        <div className="TextbookPopupContent TextbookSearchDisplay SearchDisplay">
+            <h3>{tb.t.Name}</h3>
+
+            <div className="line"/>
+
+            <div className="AllContent">
+                <div className="Info Content">  
+                    <h4>Στοιχεία</h4>  
+                    <p>{tb.t.Writer}</p>
+                    <p>{tb.t.Date_Published.split('-')[0]}</p>
+                    <p>ISBN: {tb.t.ISBN}</p>
+                    <p>{tb.p.Name}</p>
+                </div>
+
+                <div className="Publisher Content">
+                    <h4>Εκδότης</h4>
+                    <p>{tb.p.Name}</p>
+                    <p>{tb.p.Phone}</p>
+                </div>
+                    
+                <div onClick={() => {
+                    var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                    ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
+                    win.focus();
+                }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                    <h4>Σημείο Διανομής</h4>
+                    <p>{tb.dp.Name}</p>
+                    <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
+                    <p>{tb.dp.Phone}</p>
+                    <p>{tb.dp.Working_Hours}</p>
+                    <p>{tb.dpht.Copies + " Αντίτυπα"}</p>
+                </div>
+            </div>
+            
+        </div>
+    )
+}
+
 class PublisherSearch extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            names: [],
+            phones: [],
+            streets: [],
+            zipcodes: [],
+            cities: []
+        }
+
         autoBind(this);
+    }
+
+    getOptions(path, key) {
+        axios.get(path)
+        .then(res => {
+            if (res.data.error) {
+                console.error(res.message);
+            }
+            else {
+                console.log(res.data.data)
+                let newState = this.state;
+                newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
+                newState[key].unshift({value: "", label: " "})
+                this.setState(newState);
+            }
+        })
+    }
+
+    componentDidMount() {
+        this.getOptions('/api/getPublisherNames', "names");
+        this.getOptions('/api/getPublisherPhones', "phones");
+        this.getOptions('/api/getPublisherStreets', "streets");
+        this.getOptions('/api/getPublisherZipcodes', "zipcodes");
+        this.getOptions('/api/getPublisherCities', "cities");
+    }
+
+    hname(event) {
+        this.setState({selectedname: event.value});
+    }
+
+    hphone(event) {
+        this.setState({selectedphone: event.value});
+    }
+
+    hstreet(event) {
+        this.setState({selectedstreet: event.value});
+    }
+
+    hzipcode(event) {
+        this.setState({selectedzipcode: event.value});
+    }
+
+    hcity(event) {
+        this.setState({selectedcity: event.value});
+    }
+
+    Search() {
+        const send = {};
+
+        if (this.state.selectedname && this.state.selectedname !== '') send.name = this.state.selectedname;
+
+        if (this.state.selectedphone && this.state.selectedphone !== '') send.phone = this.state.selectedphone;
+
+        if (this.state.selectedstreet && this.state.selectedstreet !== '') send.street = this.state.selectedstreet;
+
+        if (this.state.selectedzipcode && this.state.selectedzipcode !== '') send.zipcode = this.state.selectedzipcode;
+
+        if (this.state.selectedcity && this.state.selectedcity !== '') send.city = this.state.selectedcity;
+
+        console.log(send);
+
+        axios.post('/api/searchPublishers', send)
+        .then(res => {
+            if (res.data.error)
+                console.error(res.data.message);
+
+            else {
+                this.setState({
+                    data: res.data.data.map(pub => {
+                        return <PublisherSearchDisplay key={pub.p.Username} data={pub}/>
+                    })
+                }, () => {this.props.return(this.state.data)})
+            }
+        })
     }
 
     render() {
@@ -401,28 +532,224 @@ class PublisherSearch extends Component {
             <div className="PublisherSearch Search">
                 <h2>Αναζήτηση Εκδοτών</h2>
                 <div className="Inputs">
-                
+                    <UltraComboDropdown  label="Όνομα Εκδότη"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.names} 
+                                        onChange={this.hname} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Τηλέφωνο Εκδότη"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.phones} 
+                                        onChange={this.hphone} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Οδός"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.streets} 
+                                        onChange={this.hstreet} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Τ.Κ."      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.zipcodes} 
+                                        onChange={this.hzipcode} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Πόλη"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.cities} 
+                                        onChange={this.hcity} 
+                                        defaultValue=''/>
                 </div>
+
+                <button className="SearchButton Publisher" onClick={this.Search}>
+                        Αναζήτηση
+                </button>
             </div>
         )
     }
+}
+
+function PublisherSearchDisplay(props) {
+    const pub = props.data;
+
+    return (
+        <div className="TextbookPopupContent PublisherSearchDisplay SearchDisplay">
+            <h3>{pub.p.Name}</h3>
+
+            <div className="line"/>
+
+            <div className="AllContent">               
+                <div onClick={() => {
+                    var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                    ${pub.a.Street_Name}+${pub.a.Street_Number}%2C+${pub.a.City}+${pub.a.ZipCode}`);
+                    win.focus();
+                }} className="Publisher Content" title='Ανοίξτε στο Google-Maps'>
+                    <h4>Πληροφορίες</h4>
+                    <p>{pub.p.Phone}</p>
+                    <p>{pub.a.Street_Name} {pub.a.Street_Number}, {pub.a.City} {pub.a.ZipCode}</p>
+                </div>
+            </div>
+            
+        </div>
+    )
 }
 
 class DistributorSearch extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            names: [],
+            phones: [],
+            streets: [],
+            zipcodes: [],
+            cities: []
+        }
+
         autoBind(this);
+    }
+
+    getOptions(path, key) {
+        axios.get(path)
+        .then(res => {
+            if (res.data.error) {
+                console.error(res.message);
+            }
+            else {
+                let newState = this.state;
+                newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
+                newState[key].unshift({value: "", label: " "})
+                this.setState(newState);
+            }
+        })
+    }
+
+    componentDidMount() {
+        this.getOptions('/api/getDistributorNames', "names");
+        this.getOptions('/api/getDistributorPhones', "phones");
+        this.getOptions('/api/getDistributorStreets', "streets");
+        this.getOptions('/api/getDistributorZipcodes', "zipcodes");
+        this.getOptions('/api/getDistributorCities', "cities");
+    }
+
+    hname(event) {
+        this.setState({selectedname: event.value});
+    }
+
+    hphone(event) {
+        this.setState({selectedphone: event.value});
+    }
+
+    hstreet(event) {
+        this.setState({selectedstreet: event.value});
+    }
+
+    hzipcode(event) {
+        this.setState({selectedzipcode: event.value});
+    }
+
+    hcity(event) {
+        this.setState({selectedcity: event.value});
+    }
+
+    Search() {
+        const send = {};
+
+        if (this.state.selectedname && this.state.selectedname !== '') send.name = this.state.selectedname;
+
+        if (this.state.selectedphone && this.state.selectedphone !== '') send.phone = this.state.selectedphone;
+
+        if (this.state.selectedstreet && this.state.selectedstreet !== '') send.street = this.state.selectedstreet;
+
+        if (this.state.selectedzipcode && this.state.selectedzipcode !== '') send.zipcode = this.state.selectedzipcode;
+
+        if (this.state.selectedcity && this.state.selectedcity !== '') send.city = this.state.selectedcity;
+
+        console.log(send);
+
+        axios.post('/api/searchDistributors', send)
+        .then(res => {
+            if (res.data.error)
+                console.error(res.data.message);
+
+            else {
+                this.setState({
+                    data: res.data.data.map(dist => {
+                        return <DistributorSearchDisplay key={dist.dp.Id} data={dist}/>
+                    })
+                }, () => {this.props.return(this.state.data)})
+            }
+        })
     }
 
     render() {
         return (
-            <div className="DistrubutorSearch Search">
+            <div className="DistributorSearch Search">
                 <h2>Αναζήτηση Σημείων Διανομής</h2>
                 <div className="Inputs">
-                
+                    <UltraComboDropdown  label="Όνομα Σημείου Διανομής"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.names} 
+                                        onChange={this.hname} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Τηλέφωνο Σημείου Διανομής"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.phones} 
+                                        onChange={this.hphone} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Οδός"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.streets} 
+                                        onChange={this.hstreet} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Τ.Κ."      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.zipcodes} 
+                                        onChange={this.hzipcode} 
+                                        defaultValue=''/>
+
+                    <UltraComboDropdown  label="Πόλη"      
+                                        // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
+                                        options={this.state.cities} 
+                                        onChange={this.hcity} 
+                                        defaultValue=''/>
                 </div>
+
+                <button className="SearchButton Distributor" onClick={this.Search}>
+                        Αναζήτηση
+                </button>
             </div>
         )
     }
+}
+
+function DistributorSearchDisplay(props) {
+    const dist = props.data;
+
+    return (
+        <div className="TextbookPopupContent DistributorSearchDisplay SearchDisplay">
+            <h3>{dist.dp.Name}</h3>
+
+            <div className="line"/>
+
+            <div className="AllContent">               
+                <div onClick={() => {
+                    var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                    ${dist.a.Street_Name}+${dist.a.Street_Number}%2C+${dist.a.City}+${dist.a.ZipCode}`);
+                    win.focus();
+                }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                    <h4>Πληροφορίες</h4>
+                    <p>{dist.dp.Phone}</p>
+                    <p>{dist.a.Street_Name} {dist.a.Street_Number}, {dist.a.City} {dist.a.ZipCode}</p>
+                    <p>{dist.dp.Working_Hours}</p>
+                </div>
+            </div>
+            
+        </div>
+    )
 }

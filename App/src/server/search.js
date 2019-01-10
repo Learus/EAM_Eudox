@@ -99,7 +99,7 @@ function getKeywords(req, res) {
             res.send({error: true, message: "Empty set"});
         }
         else {
-            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Id, Name: row.Word} } )});
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Word, Name: row.Word} } )});
         }
     })
 }
@@ -107,7 +107,7 @@ function getKeywords(req, res) {
 function searchTextbooks(req, res) {
     let filters = req.body;
 
-    let query = `Select t.*, dp.*, p.*, a.* `
+    let query = `Select t.*, dp.*, p.*, a.*, dpht.Copies `
 
     let tables = [
         'Textbook as t',
@@ -184,28 +184,34 @@ function searchTextbooks(req, res) {
         let conds = [];
 
         query += 'and k.Word = any ( Select Word from Keyword Where '
+        namechecks = ' or '
 
         for (let i = 0; i < filters.keywords.length; i++) {
             const word = filters.keywords[i]
 
             if (isNaN(parseInt(word))) {
                 query += `Keyword.Word Like '%${word}%'`
+                namechecks += `t.Name Like '%${word}%'`
             }
             else {
                 query += `Keyword.Id = ${word}`
             }
 
-            if (i !== filters.keywords.length - 1) 
+            if (i !== filters.keywords.length - 1) {
                 query += ' or '
+                namechecks += ' or '
+            }
         }
 
-        
+        query += ')'
+        query += namechecks;
 
-        query += ') group by t.Id'
+
+        query += ' group by t.Id'
     }
 
     
-    console.log(query);
+    console.log("query", query);
     const options = {
         sql: query,
         nestTables: true
@@ -226,6 +232,239 @@ function searchTextbooks(req, res) {
     
 }
 
+
+function getPublisherNames(req, res) {
+    sql.query("Select distinct(Name) From Publisher", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Name, Name: row.Name} } )});
+        }
+    })
+}
+
+function getPublisherPhones(req, res) {
+    sql.query("Select distinct(Phone) From Publisher", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Phone, Name: row.Phone} } )});
+        }
+    })
+}
+
+function getPublisherStreets(req, res) {
+    sql.query("Select distinct(Street_Name) From Publisher as p, Address as a Where p.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Street_Name, Name: row.Street_Name} } )});
+        }
+    })
+}
+
+function getPublisherStreetNumbers(req, res) {
+    sql.query("Select distinct(Street_Number) From Publisher as p, Address as a Where p.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Street_Number, Name: row.Street_Number} } )});
+        }
+    })
+}
+
+function getPublisherZipcodes(req, res) {
+    sql.query("Select distinct(ZipCode) From Publisher as p, Address as a Where p.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.ZipCode, Name: row.ZipCode} } )});
+        }
+    })
+}
+
+function getPublisherCities(req, res) {
+    sql.query("Select distinct(City) From Publisher as p, Address as a Where p.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.City, Name: row.City} } )});
+        }
+    })
+}
+
+function searchPublishers(req, res) {
+    let filters = req.body;
+
+    let query = "Select p.*, a.* From Publisher as p, Address as a\
+                Where p.Address_Id = a.Id "
+
+    if (filters.name) query += `and p.Name Like '%${filters.name}%' `
+
+    if (filters.phone) query += `and CAST(p.Phone as CHAR) Like '%${filters.phone}%' `
+
+    if (filters.street) query += `and a.Street_Name Like '%${filters.street}%' `
+
+    if (filters.zipcode) query += `and CAST(a.ZipCode as CHAR) Like '%${filters.zipcode}%' `
+
+    if (filters.city) query += `and a.City Like '%${filters.city}%' `
+
+    query += 'group by p.Username'
+
+    const options = {
+        sql: query,
+        nestTables: true
+    }
+
+    sql.query("Set sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'", function (err) {
+        sql.query(options, function (err, rows) {
+            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+    
+            if (rows.length === 0)
+                res.send({error: true, message: "Empty Set"})
+            else {
+                res.send({error: false, message: "OK", data: rows})
+                console.log("Successfully Searched");
+            }
+        })
+    })
+}
+
+
+
+function getDistributorNames(req, res) {
+    sql.query("Select distinct(Name) From Distribution_Point", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Name, Name: row.Name} } )});
+        }
+    })
+}
+
+function getDistributorPhones(req, res) {
+    sql.query("Select distinct(Phone) From Distribution_Point", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Phone, Name: row.Phone} } )});
+        }
+    })
+}
+
+function getDistributorStreets(req, res) {
+    sql.query("Select distinct(Street_Name) From Distribution_Point as dp, Address as a Where dp.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Street_Name, Name: row.Street_Name} } )});
+        }
+    })
+}
+
+function getDistributorStreetNumbers(req, res) {
+    sql.query("Select distinct(Street_Number) From Distribution_Point as dp, Address as a Where dp.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.Street_Number, Name: row.Street_Number} } )});
+        }
+    })
+}
+
+function getDistributorZipcodes(req, res) {
+    sql.query("Select distinct(ZipCode) From Distribution_Point as dp, Address as a Where dp.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.ZipCode, Name: row.ZipCode} } )});
+        }
+    })
+}
+
+function getDistributorCities(req, res) {
+    sql.query("Select distinct(City) From Distribution_Point as dp, Address as a Where dp.Address_Id = a.Id", function(err, rows) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows.map(row => {return {Id: row.City, Name: row.City} } )});
+        }
+    })
+}
+
+function searchDistributors(req, res) {
+    let filters = req.body;
+
+    let query = "Select dp.*, a.* From Distribution_Point as dp, Address as a\
+                Where dp.Address_Id = a.Id "
+
+    if (filters.name) query += `and dp.Name Like '%${filters.name}%' `
+
+    if (filters.phone) query += `and CAST(dp.Phone as CHAR) Like '%${filters.phone}%' `
+
+    if (filters.street) query += `and a.Street_Name Like '%${filters.street}%' `
+
+    if (filters.zipcode) query += `and CAST(a.ZipCode as CHAR) Like '%${filters.zipcode}%' `
+
+    if (filters.city) query += `and a.City Like '%${filters.city}%' `
+
+    query += 'group by dp.Owner'
+
+    const options = {
+        sql: query,
+        nestTables: true
+    }
+
+    sql.query("Set sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'", function (err) {
+        sql.query(options, function (err, rows) {
+            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+    
+            if (rows.length === 0)
+                res.send({error: true, message: "Empty Set"})
+            else {
+                res.send({error: false, message: "OK", data: rows})
+                console.log("Successfully Searched");
+            }
+        })
+    })
+}
+
 module.exports = {
     getTextbooks: getTextbooks,
     getKeywords: getKeywords,
@@ -234,5 +473,22 @@ module.exports = {
     getTextbookISBNs: getTextbookISBNs,
     getTextbookWriters: getTextbookWriters,
     getTextbookNames: getTextbookNames,
-    searchTextbooks: searchTextbooks
+    searchTextbooks: searchTextbooks,
+
+    getPublisherCities: getPublisherCities,
+    getPublisherNames: getPublisherNames,
+    getPublisherZipcodes: getPublisherZipcodes,
+    getPublisherStreetNumbers: getPublisherStreetNumbers,
+    getPublisherPhones: getPublisherPhones,
+    getPublisherStreets: getPublisherStreets,
+    searchPublishers: searchPublishers,
+
+    getDistributorCities: getDistributorCities,
+    getDistributorNames: getDistributorNames,
+    getDistributorZipcodes: getDistributorZipcodes,
+    getDistributorStreetNumbers: getDistributorStreetNumbers,
+    getDistributorPhones: getDistributorPhones,
+    getDistributorStreets: getDistributorStreets,
+    searchDistributors: searchDistributors
+    
 }

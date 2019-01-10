@@ -21,7 +21,7 @@ function getStudentApplications(req, res) {
 }
 
 function getTextbookApplication(req, res) {
-    const query = ` Select t.*, p.*, taht.Taken, c.Id, c.Name, c.Semester, a.*, dp.*
+    const query = ` Select t.*, p.*, taht.Taken, c.Id, c.Name, c.Semester, a.*, dp.*, dpht.Copies
                     From Textbook_Application as ta, Textbook_Application_has_Textbook as taht, 
                     Publisher as p, Textbook as t, Course as c, Course_has_Textbook as cht, Student_has_Textbook_Application as shta,
                     Address as a, Distribution_Point as dp, Distribution_Point_has_Textbook as dpht

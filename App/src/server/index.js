@@ -98,9 +98,24 @@ app.get('/api/getTextbookISBNs', require('./search').getTextbookISBNs)
 app.get('/api/getPublishers', require('./search').getPublishers)
 app.get('/api/getDistributors', require('./search').getDistrbutionPoints)
 app.get('/api/getKeywords', require('./search').getKeywords)
-
 app.post('/api/searchTextbooks', require('./search').searchTextbooks);
 
+app.get('/api/getPublisherNames', require('./search').getPublisherNames)
+app.get('/api/getPublisherPhones', require('./search').getPublisherPhones)
+app.get('/api/getPublisherStreets', require('./search').getPublisherStreets)
+app.get('/api/getPublisherStreetNumbers', require('./search').getPublisherStreetNumbers)
+app.get('/api/getPublisherZipcodes', require('./search').getPublisherZipcodes)
+app.get('/api/getPublisherCities', require('./search').getPublisherCities)
+app.post('/api/searchPublishers', require('./search').searchPublishers)
+
+
+app.get('/api/getDistributorNames', require('./search').getDistributorNames)
+app.get('/api/getDistributorPhones', require('./search').getDistributorPhones)
+app.get('/api/getDistributorStreets', require('./search').getDistributorStreets)
+app.get('/api/getDistributorStreetNumbers', require('./search').getDistributorStreetNumbers)
+app.get('/api/getDistributorZipcodes', require('./search').getDistributorZipcodes)
+app.get('/api/getDistributorCities', require('./search').getDistributorCities)
+app.post('/api/searchDistributors', require('./search').searchDistributors)
 
 app.post('/api/getTextbooks/Course', function (req, res) {
     const course = req.body.course;

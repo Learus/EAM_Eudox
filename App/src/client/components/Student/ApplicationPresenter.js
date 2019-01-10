@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { Link, browserHistory } from "react-router";
 import Popup from 'reactjs-popup';
+import ReactToPrint from 'react-to-print';
+import {TextbookSearchDisplay} from '../Search';
 
 import '../../css/Student/ApplicationPresenter.css';
 import searchimg from '../../images/search.png'
@@ -65,25 +67,29 @@ function TextbookPopup(props) {
 
                 <div className="line"/>
 
-                <div className="Info Content">  
-                    <h4>Στοιχεία</h4>  
-                    <p>{tb.t.Writer}</p>
-                    <p>{tb.t.Date_Published.split('-')[0]}</p>
-                    <p>ISBN: {tb.t.ISBN}</p>
-                    <p>{tb.p.Name}</p>
+                <div className="AllContent">
+                    <div className="Info Content">  
+                        <h4>Στοιχεία</h4>  
+                        <p>{tb.t.Writer}</p>
+                        <p>{tb.t.Date_Published.split('-')[0]}</p>
+                        <p>ISBN: {tb.t.ISBN}</p>
+                        <p>{tb.p.Name}</p>
+                    </div>
+                        
+                    <div onClick={() => {
+                        var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                        ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
+                        win.focus();
+                    }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                        <h4>Σημείο Διανομής</h4>
+                        <p>{tb.dp.Name}</p>
+                        <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
+                        <p>{tb.dp.Phone}</p>
+                        <p>{tb.dp.Working_Hours}</p>
+                        <p>{tb.dpht.Copies + " Αντίτυπα"}</p>
+                    </div>
                 </div>
-                    
-                <div onClick={() => {
-                    var win = window.open(`https://www.google.com/maps/search/?api=1&query=
-                    ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
-                    win.focus();
-                }} className="Distribution Content" title='Ανοίξτε στο Google-Maps'>
-                    <h4>Σημείο Διανομής</h4>
-                    <p>{tb.dp.Name}</p>
-                    <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
-                    <p>{tb.dp.Phone}</p>
-                    <p>{tb.dp.Working_Hours}</p>
-                </div>
+                
             </div>
             
         </Popup>
@@ -98,6 +104,8 @@ class ApplicationPopup extends Component {
             textbooks: []
         }
     }
+
+
 
     componentDidMount() {
         axios.post('/api/getTextbookApplication', {
@@ -139,9 +147,18 @@ class ApplicationPopup extends Component {
                     arrow={true}
                 >
                     <div>
+                        <button className="PrintButton" onClick = {
+                            () => {
+                                sessionStorage.setItem("EudoxusPrintApplication", JSON.stringify(this.state.textbooks))
+                                browserHistory.push('/print');
+                            }
+                        }>
+                            "Εκτύπωση Δήλωσης"
+                        </button>
+                        
                         {textbooks}
                     </div>
-    
+                    
                 </Popup>
             )
         // return null;
