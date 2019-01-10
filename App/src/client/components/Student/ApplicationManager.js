@@ -223,18 +223,21 @@ export default class ApplicationManager extends Component {
             old: this.props.id ? this.props.id : null,
             user: this.getUser().Username
         }
-    
-        axios.post('/api/createTextbookApplication', body)
-        .then(res => {
-            if (res.data.error) {
-                alert(res.data.message)
-            }
-            else {
-                alert('Η Δήλωσή σας ήταν επιτυχής!');
-                sessionStorage.removeItem("PendingTextbookApplication");
-                browserHistory.push(`/actionpage/Student/1`)
-            }
-        })
+        
+        if (confirm("Είστε σίγουροι για την δήλωσή σας;"))
+        {
+            axios.post('/api/createTextbookApplication', body)
+            .then(res => {
+                if (res.data.error) {
+                    alert(res.data.message)
+                }
+                else {
+                    alert('Η Δήλωσή σας ήταν επιτυχής!');
+                    sessionStorage.removeItem("PendingTextbookApplication");
+                    browserHistory.push(`/actionpage/Student/1`)
+                }
+            })
+        }
     }
 
     saveData() {
