@@ -81,5 +81,13 @@ export default {
             () => {return <NotFoundSmall/>},
         ],
         Type: "Distributor"
+    },
+    Search: {
+        Header: "Αναζήτηση",
+        Actions: [
+            "Συγγράμματα",
+            "Εκδότες",
+            "Σημεία Διανομής"
+        ]
     }
 }

@@ -120,7 +120,7 @@ function insertAddress(base, spec, insertcb, rescb, res) {
                     Values ("${spec.street}", "${spec.number}", ${spec.zipcode}, "${spec.city}")`;
     
     sql.query(adinsert, function (err) {
-        if (err) throw err;
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
         console.log("Inserted Address.");
 

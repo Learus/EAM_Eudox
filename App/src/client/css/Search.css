@@ -1,9 +1,9 @@
 .SearchPage {
     display: grid;
-    grid-template-areas: "Header Header Header Header Header Header Header Header Header"
-                         "SideBar SideBar Main Main Main Main Main Main Main";
-    grid-template-rows: 1fr 9fr;
-    grid-template-columns: repeat(9, 1fr);
+    grid-template-areas: "Header Header Header Header Header Header Header Header Header Header Header"
+                         "SideBar SideBar SideBar Main Main Main Main Main Main Main Main";
+    grid-template-rows: 2fr 10fr;
+    grid-template-columns: repeat(11, 1fr);
     height: 100vh;
     overflow: hidden;
 }
@@ -12,7 +12,7 @@
     grid-area: Header;
 }
 
-.SearchCategoryButton {
+.SearchCategoryButtons > .SearchCategoryButton {
     padding: 10px;
     color: white;
     font-size: 16px;
@@ -29,39 +29,147 @@
     cursor: pointer;
 }
 
-.SearchCategoryButton:hover, .SearchCategoryButton.Active {
+.SearchCategoryButtons > .SearchCategoryButton.Textbook, .SearchButton.Textbook {
+    background-color: rgb(64, 110, 196);
+    box-shadow: none;
+    text-align: center;
+}
+
+.SearchCategoryButton.Distributor, .SearchButton.Distributor {
+    background-color: rgb(218, 130, 42);
+}
+
+
+.SearchCategoryButton.Publisher, .SearchButton.Publisher {
+    background-color: rgb(47, 165, 86);
+}
+
+
+.SearchCategoryButtons > .SearchCategoryButton:hover, .SearchCategoryButtons > .SearchCategoryButton.Active, .SearchButton.Textbook:hover {
     background-color: rgb(50, 87, 155);
+}
+
+.SearchCategoryButton.Distributor:hover, .SearchCategoryButton.Distributor.Active, .SearchButton.Distributor:hover {
+    background-color: rgb(175, 106, 37);
+}
+
+.SearchCategoryButton.Publisher:hover, .SearchCategoryButton.Publisher.Active, .SearchButton.Publisher:hover {
+    background-color: rgb(38, 131, 71);
 }
 
 
 .SideBar {
     grid-area: SideBar;
-    background-color: rgb(180, 198, 233);
+    background-color: rgb(180, 186, 199);
     text-align: center;
+    overflow-y: auto;
+    height: auto;
 }
 
-.Inputs > label > p {
-    text-align: left;
-    margin-left: 30px;
+.SideBar > .Search > h2 {
+    font-weight: normal;
     color: rgb(49, 49, 49);
 }
 
-.Inputs > label > input, .Inputs > label > select {
+.Inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.Inputs > .SearchBar > p {
+    text-align: left;
+    /* margin-left: 30px; */
+    color: rgb(49, 49, 49);
+}
+
+.Inputs > .SearchBar > .ComboDropdown > div {
     background-color: white;
-    padding: 15px;
     border: none;
     border-radius: 5px;
     text-align: left;
-    width: 80%;
+    width: 220px;
     color: rgb(49, 49, 49);
     font-size: 16px;
     box-shadow: 1px 1px 5px;
-}
-
-.Inputs > .SearchBar > select {
-    width: 80%;
+    /* float: left; */
 }
 
 .Main {
     grid-area: Main;
+    overflow-y: auto;
+    position: relative;
 }
+
+.Search > .SearchButton {
+    padding: 20px;
+    width: unset;
+    height: unset;
+    color: white;
+    font-size: 20px;
+    margin-top: 40px;
+    box-shadow: 1px 1px 5px black;
+}
+
+.SearchDisplay {
+    margin: 40px 100px;
+    background-color: rgb(238, 238, 238) !important;
+    color: rgb(61, 61, 61);
+    /* height: 100%; */
+    box-shadow: 1px 1px 5px black;
+    border-radius: 5px;
+}
+
+.SearchDisplay > h3 {
+    /* padding: 15px; */
+    padding-top: 15px;
+    font-size: 22px;
+}
+
+.TextbookSearchDisplay > .AllContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr !important;
+}
+
+.TextbookPopupContent > .AllContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.PublisherSearchDisplay > .AllContent, .DistributorSearchDisplay > .AllContent {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.AllContent > .Content {
+    font-size: 14px;
+    text-align: left;
+    margin: 0;
+    padding: 0 15px;
+    transition: 200ms;
+}
+
+.TextbookPopupContent > .AllContent > .Info {
+    background-color: rgb(223, 223, 223) !important;
+}
+
+.TextbookPopupContent > .AllContent > .Distributor {
+    background-color: rgb(172, 172, 172) !important;
+    cursor: pointer;
+}
+
+.TextbookPopupContent > .AllContent > .Distributor:hover {
+    background-color: rgb(138, 138, 138) !important;
+}
+
+.SearchDisplay > .AllContent > .Publisher {
+    background-color: rgb(202, 202, 202) !important;
+}
+
+.PublisherSearchDisplay > .AllContent > .Publisher {
+    cursor: pointer;
+}
+
+.PublisherSearchDisplay > .AllContent > .Publisher:hover {
+    background-color: rgb(161, 161, 161) !important;
+}
+

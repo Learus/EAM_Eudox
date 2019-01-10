@@ -9,6 +9,7 @@ import Actions from './Actions';
 import Announcements from './Announcements'
 
 import autobind from 'react-autobind';
+import Popup from 'reactjs-popup'
 
 import stud_logo from '../images/student_logo.png';
 import secr_logo from '../images/secretary_logo.svg';
@@ -111,12 +112,29 @@ class AnnouncementTable extends Component {
         console.log(Announcements)
         const announcements = Announcements.map((a, index) => {
             const even = index % 2 === 0 ? "Even" : "Odd"
-            return (
-                <div className={`Announcement ${even}`} key={index}>
-                    <h3>{a.title}</h3>
-                    <p>{a.type}</p>
-                </div>
-            )
+            if (a.content !== '')
+                return (
+                    <Popup className='AnnouncementPopup' key={index} modal position="left center" trigger=
+                    {
+                        <div className={`Announcement ${even}`} >
+                            <h3>{a.title}</h3>
+                            <p>{a.type}</p>
+                        </div>
+                    }>
+                        <h3>{a.title}</h3>
+                        <span>{a.type}</span>
+                        <p>{a.content}</p>
+                        
+                    </Popup>
+                    
+                );
+            else 
+                return (
+                    <div className={`Announcement ${even}`} >
+                        <h3>{a.title}</h3>
+                        <p>{a.type}</p>
+                    </div>
+                );
         })
 
         return (

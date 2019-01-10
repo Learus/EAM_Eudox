@@ -14,13 +14,13 @@ export default function LoginPopup(props) {
     else
         return (
         <Popup className='LoginPopup' trigger={<button className={className}>{content}</button>} modal>
-                { close => (
-                    props.hasOwnProperty('loginHandler') ?
-                    <LoginForm saveData={props.saveData} signupRedirect={props.signupRedirect} loginHandler={props.loginHandler} Close={close}/>
-                    :
-                    <LoginForm signupRedirect={props.signupRedirect} Close={close}/>
-                )}
-            </Popup>
+            { close => (
+                props.hasOwnProperty('loginHandler') ?
+                <LoginForm saveData={props.saveData} signupRedirect={props.signupRedirect} loginHandler={props.loginHandler} Close={close}/>
+                :
+                <LoginForm signupRedirect={props.signupRedirect} Close={close}/>
+            )}
+        </Popup>
         )
 }
 

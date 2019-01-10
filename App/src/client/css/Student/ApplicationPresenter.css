@@ -64,6 +64,10 @@
     background-color: rgb(184, 184, 184);
 }
 
+.ApplicationPopup {
+    z-index: 2;
+    position: relative;
+}
 
 .ApplicationPopupEntry {
     margin: 0;
@@ -140,7 +144,7 @@
 }
 
 .TextbookPopupContent > .Content {
-    float: left;
+    /* float: left; */
     width: calc(50% - 30px);
 
     font-size: 14px;
