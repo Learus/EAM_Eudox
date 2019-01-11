@@ -131,7 +131,7 @@
 }
 
 .TextbookPopupButton:hover, .TextbookPopupButton.Open {
-    background-color: rgb(184, 184, 184); 
+    background-color: rgb(184, 184, 184) !important; 
 }
 
 .TextbookPopupButton > .Eligible {

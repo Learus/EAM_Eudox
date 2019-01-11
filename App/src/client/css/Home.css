@@ -59,13 +59,13 @@
     background-color: rgb(206, 206, 206);
 }
 
-.Announcement > h3, .AnnouncementPopup > h3 {
+.Announcement > h3, .AnnouncementPopup > div > h3 {
     font-size: 16px;
     color: rgb(66, 66, 66);
     font-weight: normal;
 }
 
-.AnnouncementPopup > h3 {
+.AnnouncementPopup > div > h3 {
     font-size: 20px;
 }
 
@@ -81,13 +81,13 @@
     padding: 20px !important
 }
 
-.AnnouncementPopup > p {
+.AnnouncementPopup > div > p {
     font-size: 16px;
     color: rgb(66, 66, 66);
     line-height: 25px;
 }
 
-.AnnouncementPopup > span {
+.AnnouncementPopup > div > span {
     font-size: 12px;
     color: rgb(58, 58, 58);
 }

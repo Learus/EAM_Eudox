@@ -121,10 +121,12 @@ class AnnouncementTable extends Component {
                             <p>{a.type}</p>
                         </div>
                     }>
-                        <h3>{a.title}</h3>
-                        <span>{a.type}</span>
-                        <p>{a.content}</p>
-                        
+                        <div>
+                            <h3>{a.title}</h3>
+                            <span>{a.type}</span>
+                            <p>{a.content}</p>
+                        </div>
+                          
                     </Popup>
                     
                 );

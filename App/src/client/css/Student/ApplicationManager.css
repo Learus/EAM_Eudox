@@ -106,6 +106,7 @@
 
 .Textbook {
     position: relative;
+    border-radius: 5px;
 
     border: 1px solid rgb(241, 241, 241);
     text-align: left;
@@ -120,26 +121,32 @@
 
     margin: 0 auto;
 
-
     transition: 200ms;
     box-shadow: 1px 1px 5px black;
 }
 
-.Textbook > p, .Textbook > h3 {
+.TextbookInfo > p, .Textbook > h3 {
     margin-left: 20px;
     font-weight: normal;
+}
+
+.Textbook > div {
+    display: grid;
+    grid-template-columns: 250px 250px;
 }
 
 .Textbook > h3 {
     font-size: 25px;
     line-height: 20px;
+    margin-bottom: 10px;
+    margin-top: 25px;
 }
 
-.Textbook > p {
+.TextbookInfo > p {
     font-size: 12px;
 }
 
-.Textbook > .Writer {
+.TextbookInfo > .Writer {
     font-size: 16px;
     line-height: 10px;
 }
@@ -285,31 +292,8 @@
 }
 
 .BasketEntry {
-    margin: 0;
-    position: relative;
-    padding: 10px;
-}
-
-.BasketEntry > div > p {
-    margin-bottom: 5px;
-    margin-top: 0;
-    color: rgb(105, 105, 105);
-}
-
-.BasketEntry.Even {
-    background-color: rgb(241, 241, 241);
-}
-
-.BasketEntryCourse {
-    font-size: 10px;
-}
-
-.BasketEntryName {
-    font-size: 14px;
-}
-
-.BasketEntry.Odd {
-    background-color: rgb(230, 230, 230);
+    display: grid;
+    grid-template-columns: 5fr 40px;
 }
 
 .BasketRemoveButton {
@@ -318,10 +302,6 @@
     cursor: pointer;
     font-size: 30px;
     border-radius: 3px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
     width: 40px;
     background-color: #FA3A5B;
     color: white;
@@ -340,6 +320,37 @@
 .BasketRemoveButton > img {
     width : 30px;
 }
+
+.BasketPopupEntry {
+    margin: 0;
+    position: initial;
+    padding: 20px;
+    text-align: left;
+}
+
+.BasketPopupEntry > p {
+    margin-bottom: 5px;
+    margin-top: 0;
+    color: rgb(83, 83, 83);
+}
+
+.BasketPopupEntry.Even {
+    background-color: rgb(241, 241, 241);
+}
+
+.BasketPopupEntryCourse {
+    font-size: 10px;
+}
+
+.BasketPopupEntryName {
+    font-size: 14px;
+    color: rgb(70, 70, 70);
+}
+
+.BasketPopupEntry.Odd {
+    background-color: rgb(216, 216, 216);
+}
+
 
 .ApplyButton {
     border: none;

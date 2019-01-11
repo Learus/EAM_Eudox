@@ -9,10 +9,12 @@ import searchimg from "../../images/search.png"
 import deleteimg from "../../images/trash.png"
 import {SimpleDropdown, ComboDropdown} from '../Utilities';
 
+import Popup from 'reactjs-popup'
+
 // import Select from 'react-select';
 // import createFilterOptions from 'react-select-fast-filter-options';
 
-import {TextbookPopup} from './ApplicationPresenter'
+// import {TextbookPopup} from './ApplicationPresenter'
 
 export default class ApplicationManager extends Component {
 
@@ -338,11 +340,12 @@ class Filters extends Component {
                 alert(res.data.message)
             }
             else {
-                this.setState ( {
-                    universities: res.data.data.map(uni => {return {value: uni.Id, label: uni.Name}}),
-                    selecteduni: null,
-                    udp: []
-                });
+                let newState = this.state;
+                newState.universities = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.universities.unshift({value: "", label: " "})
+                newState.selecteduni = null;
+                newState.udp = [];
+                this.setState(newState);
             }
         })
 
@@ -378,9 +381,10 @@ class Filters extends Component {
                 alert(res.data.message)
             }
             else {
-                this.setState ({
-                    udp: res.data.data.map(udp => {return {value: udp.Id, label: udp.Name}}),
-                });
+                let newState = this.state;
+                newState.udp = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.udp.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
     }
@@ -411,9 +415,10 @@ class Filters extends Component {
                 alert(res.data.message);
             }
             else {
-                this.setState({
-                    semesters: res.data.data.map(sem => {return {value: sem.Id, label: sem.Name}}),
-                })
+                let newState = this.state;
+                newState.semesters = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.semesters.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
     }
@@ -444,9 +449,10 @@ class Filters extends Component {
                 alert(res.data.message);
             }
             else {
-                this.setState({
-                    courses: res.data.data.map(course => {return {value: course.Id, label: course.Name}}),
-                })
+                let newState = this.state;
+                newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.courses.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
     }
@@ -472,9 +478,10 @@ class Filters extends Component {
                 alert(res.data.message);
             }
             else {
-                this.setState({
-                    courses: res.data.data.map(course => {return {value: course.Id, label: course.Name}}),
-                })
+                let newState = this.state;
+                newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.courses.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
 
@@ -666,13 +673,31 @@ function Textbook(props) {
         className += " Chosen";
         chosen = true;
     }
+    console.log(props.data)
     return (
         <div className={className}>
             <h3>{props.data.t.Name}</h3>
-            <p className="Writer">{props.data.t.Writer}</p>
-            <p>{props.data.t.Date_Published.split('-')[0]}</p>
-            <p>{"ISBN: " + props.data.t.ISBN}</p>
-            <p>{props.data.p.Name}</p>
+            <div>
+                <div className="TextbookInfo">
+                    
+                    <p className="Writer">{props.data.t.Writer}</p>
+                    <p>{props.data.t.Date_Published.split('-')[0]}</p>
+                    <p>{"ISBN: " + props.data.t.ISBN}</p>
+                    <p>{props.data.p.Name}</p>
+
+                </div>
+
+                {/* <div className="TextbookInfo">
+                    <p className="Writer">{props.data.dp.Name}</p>
+                    <p>{props.data.a.Street_Name} {props.data.a.Street_Number}, {props.data.a.City} {props.data.a.ZipCode}</p>
+                    <p>{props.data.dp.Phone}</p>
+                    <p>{props.data.dp.Working_Hours}</p>
+
+                </div> */}
+            </div>
+            
+            
+ 
             {chosen ? 
             <button className="RemoveButton" onClick={() => { props.remover(props.data)}}>
                 Διαγραφή
@@ -684,6 +709,65 @@ function Textbook(props) {
         </div>
     );
 }
+
+
+export function TextbookPopup(props) {
+    const tb = props.data;
+    const title = tb.taht && tb.taht.Taken ? "Το σύγγραμμα αυτό έχει ήδη παρθεί ή η προθεσμία έχει λήξει" : null
+
+    const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
+    const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
+    const disabled = tb.taht && tb.taht.Taken;
+
+    return (
+        <Popup 
+            className = "TextbookPopup"
+            trigger = { open => (
+                <div title={title} className={open ? `TextbookPopupButton Open ${props.className}` : `TextbookPopupButton Closed ${props.className}`}>
+                    <p className="BasketPopupEntryName">{tb.t.Name}</p>
+                    <p className="BasketPopupEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
+                </div>
+            )}
+            closeOnDocumentClick
+            on="hover"
+            position="left center"
+            arrow={true}
+        >
+            <div className="TextbookPopupContent">
+                <h3>{tb.t.Name}</h3>
+
+                <div className="line"/> 
+
+                <div className="AllContent">
+                    <div className="Info Content">  
+                        <h4>Στοιχεία</h4>  
+                        <p>{tb.t.Writer}</p>
+                        <p>{tb.t.Date_Published.split('-')[0]}</p>
+                        <p>ISBN: {tb.t.ISBN}</p>
+                        <p>{tb.p.Name}</p>
+                    </div>
+                        
+                    <div onClick={() => {
+                        var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                        ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
+                        win.focus();
+                    }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                        <h4>Σημείο Διανομής</h4>
+                        <p>{tb.dp.Name}</p>
+                        <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
+                        <p>{tb.dp.Phone}</p>
+                        <p>{tb.dp.Working_Hours}</p>
+                        <p>{tb.dpht.Copies + " Αντίτυπα"}</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </Popup>
+    )
+}
+
+
 
 class Basket extends Component {
     constructor(props) {
@@ -699,6 +783,16 @@ class Basket extends Component {
                 const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
                 const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
                 const disabled = tb.taht && tb.taht.Taken;
+
+                return (
+                    <div key={tb.c.Id} className={`BasketEntry ${even}`}>
+                        <TextbookPopup className={`BasketPopupEntry ${even}`} data={tb} onClick={() => {this.props.Remove(tb)}}/>
+                        <button title={buttonTitle} className={buttonClass} onClick={() => {this.props.Remove(tb)}} disabled={disabled}>
+                            <img src={deleteimg}/>
+                        </button>
+                    </div>
+                    
+                )
 
                 return (
                     <div key={tb.c.Id} className={`BasketEntry ${even}`}>
