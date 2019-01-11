@@ -46,13 +46,13 @@
 }
 
 
-.PublisherPublishForm > label {
+.PublisherPublishForm  label {
     margin: 0 auto;
     width: 80%;
     height: 100%;
 }
 
-.PublisherPublishForm > label > p {
+.PublisherPublishForm  label > p {
 
     margin: 10px auto;
 
@@ -64,15 +64,15 @@
     text-align: left;
 }
 
-.PublisherPublishForm > label > input.wrong, .PublisherPublishForm > label > select.wrong {
+.PublisherPublishForm  label > input.wrong, .PublisherPublishForm  label > select.wrong {
     border: 1px solid rgb(248, 97, 97);
 }
 
-.PublisherPublishForm > label > input.right, .PublisherPublishForm > label > select.right {
+.PublisherPublishForm  label > input.right, .PublisherPublishForm  label > select.right {
     border: none;
 }
 
-.PublisherPublishForm > label > input, .PublisherPublishForm > label > select {
+.PublisherPublishForm  label > input, .PublisherPublishForm  label > select {
     border-radius: 5px;
     border: none;
 
@@ -89,13 +89,13 @@
     float: left;
 }
 
-.PublisherPublishForm > label > .radioInputs > div > label {
+.PublisherPublishForm  label > .radioInputs > div > label {
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
     color: gray;
 }
 
 
-.PublisherPublishForm > span {
+.PublisherPublishForm  span {
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
     color: gray;
 }

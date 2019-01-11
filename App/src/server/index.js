@@ -310,6 +310,64 @@ app.post('/api/getAddress', function(req, res) {
     });
 })
 
+app.post('/api/getPublisherDetails', function(req, res) {
+
+    sql.query("Select * from Publisher Where Username= ?", [req.body.username], function(err, rows) {
+
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if(rows.length === 0) {
+            res.send({error: true, message: "Empty Set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows[0]});
+        }
+    })
+})
+
+
+app.post('/api/publishTextbook', function(req, res) {
+
+    sql.query("Select 1 from Textbook Where ISBN = ?", [req.body.isbn], function(err, rows) {
+        
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if(rows.length === 0)
+        {
+            sql.query("Insert into Textbook (Publisher_Username, Name, Writer, Date_Published, Last_Edited,\
+                      Date_Added, Price, ISBN, Issue_Number)\
+                      Values (?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)", [
+                          req.body.publisher_username,
+                          req.body.title,
+                          req.body.writer,
+                          req.body.date,
+                          req.body.price,
+                          req.body.isbn,
+                          req.body.publication_number
+                      ], function(err) {
+                        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                      });
+        }
+        else
+        {
+            sql.query("Update Textbook Set Publisher_Username= ?, Name= ?, Writer= ?, Date_Published= ?,\
+                    Last_Edited= NOW(), Price= ?, Issue_Number= ? Where ISBN= ?", [
+                    req.body.publisher_username,
+                    req.body.title,
+                    req.body.writer,
+                    req.body.date,
+                    req.body.price,
+                    req.body.publicationNumber,
+                    req.body.isbn
+                ], function(err) {
+                  if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                });
+        }
+
+        res.send({error: false, message: "OK"});
+
+    });
+})
 
 
 
