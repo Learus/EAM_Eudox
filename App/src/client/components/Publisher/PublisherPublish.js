@@ -134,7 +134,16 @@ export default class PublisherPublish extends Component {
             publicationNumber: this.state.publicationNumber,
             price: this.state.price,
             keywords: this.state.keywords
-        });
+        }).then(
+            res => {
+                if (res.data.error)
+                {
+                    alert(res.data.message);
+                    this.setState({isbnError: res.data.message})
+                }
+                else
+                    this.setState({isbnError: ""});
+            });
     }
 
     hTitleChange(event) {
