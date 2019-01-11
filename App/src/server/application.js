@@ -20,8 +20,42 @@ function getStudentApplications(req, res) {
     })
 }
 
+function getCurrentTextbookApplication(req, res) {
+    const query = ` Select t.*, p.*, taht.Taken, c.Id, c.Name, c.Semester, a.*, dp.*, dpht.Copies, ta.Id
+                    From Textbook_Application as ta, Textbook_Application_has_Textbook as taht, 
+                    Publisher as p, Textbook as t, Course as c, Course_has_Textbook as cht, Student_has_Textbook_Application as shta,
+                    Address as a, Distribution_Point as dp, Distribution_Point_has_Textbook as dpht
+                    Where ta.Is_Current = TRUE and
+                    taht.Textbook_Application_Id = ta.Id and
+                    t.Id = taht.Textbook_Id and
+                    t.Id = cht.Textbook_id and
+                    c.Id = cht.Course_Id and
+                    p.Username = t.Publisher_Username and
+                    shta.Student_Username = '${req.body.user}' and
+                    shta.Textbook_Application_Id = ta.Id and
+                    dp.Address_Id = a.Id and
+                    dp.Id = dpht.Distribution_Point_Id and
+                    t.Id = dpht.Textbook_Id`;
+
+    console.log(query);
+    const options = {
+        sql: query,
+        nestTables: true
+    }
+
+    sql.query(options, function(err, rows, fields) {
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if (rows.length === 0) {
+            res.send({error: true, message: "Empty set"})
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows});
+        }
+    });   
+}
+
 function getTextbookApplication(req, res) {
-    console.log(req.body);
     const query = ` Select t.*, p.*, taht.Taken, c.Id, c.Name, c.Semester, a.*, dp.*, dpht.Copies
                     From Textbook_Application as ta, Textbook_Application_has_Textbook as taht, 
                     Publisher as p, Textbook as t, Course as c, Course_has_Textbook as cht, Student_has_Textbook_Application as shta,
@@ -117,7 +151,7 @@ function insertApplication(textbooks, id, res) {
 
     if (id) {
         let query = 'Insert into Textbook_Application_has_Textbook (Textbook_Application_Id, Textbook_Id, Taken) Values '
-        console.log("320", id)
+        console.log("154", id)
         for (let i = 0; i < textbooks.length; i++) {
 
             if (textbooks[i].taht)
@@ -128,12 +162,15 @@ function insertApplication(textbooks, id, res) {
                 query += ", ";
             }
         }
+        if (query.length !== 99)
+            sql.query(query, function (err, rows) {
+                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
-        sql.query(query, function (err, rows) {
-            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-
+                res.send({error: false, message:"OK"})
+            });
+        else {
             res.send({error: false, message:"OK"})
-        })
+        }
     }
     else {
         console.log("New Application")
@@ -163,5 +200,6 @@ function insertApplication(textbooks, id, res) {
 module.exports = {
     getStudentApplications: getStudentApplications,
     getTextbookApplication: getTextbookApplication,
+    getCurrentTextbookApplication: getCurrentTextbookApplication,
     createTextbookApplication: createTextbookApplication,
 }

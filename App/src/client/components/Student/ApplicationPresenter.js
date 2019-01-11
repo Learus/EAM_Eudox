@@ -43,7 +43,7 @@ export default function StudentApplications(props) {
     }
 }
 
-function TextbookPopup(props) {
+export function TextbookPopup(props) {
     const tb = props.data;
     const elig = tb.taht.Taken ? "Ineligible" : "Eligible";
     const title = tb.taht.Taken ? "Το σύγγραμμα αυτό έχει ήδη παρθεί ή η προθεσμία έχει λήξει" : null
@@ -153,7 +153,7 @@ class ApplicationPopup extends Component {
                                 browserHistory.push('/print');
                             }
                         }>
-                            "Εκτύπωση Δήλωσης"
+                            Εκτύπωση Δήλωσης
                         </button>
                         
                         {textbooks}
@@ -214,7 +214,7 @@ class StudentApplicationList extends Component {
                                         className={background} 
                                         label={string}
                                         title={this.props.showCurrent ? "Πατήστε για τροποποίηση" : null} 
-                                        onClick= { this.props.showCurrent ? () => {browserHistory.push(`/actionpage/Student/0/${item.Id}`)} : null }
+                                        onClick= { this.props.showCurrent ? () => {browserHistory.push(`/actionpage/Student/0`)} : null }
                                         position={this.props.pos} />
                                 );
                             }

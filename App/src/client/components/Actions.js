@@ -26,7 +26,7 @@ export default {
         Quicks: [0, 1, 2],
         Default: 2,
         Components: [
-            (props) => {return <ApplicationManager id={props.id}/>},
+            (props) => {return <ApplicationManager login={props.login} loginHandler={props.loginHandler}/>},
             () => {return <StudentApplications/>},
             () => {return <StudentHelp/>},
         ],

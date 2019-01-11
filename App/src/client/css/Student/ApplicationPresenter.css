@@ -69,6 +69,23 @@
     position: relative;
 }
 
+.PrintButton {
+    background-color: rgb(216, 216, 216);
+    color: rgb(76, 112, 179);
+    border: none;
+    outline: none;
+    padding: 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 200ms;
+}
+
+.PrintButton:hover {
+    background-color: rgb(170, 170, 170);
+}
+
 .ApplicationPopupEntry {
     margin: 0;
     position: relative;

@@ -89,6 +89,7 @@ app.post('/api/getUserUniversityData', require('./university').getUserUniversity
 
 app.post('/api/getStudentApplications', require('./application').getStudentApplications)
 app.post('/api/getTextbookApplication', require('./application').getTextbookApplication)
+app.post('/api/getCurrentTextbookApplication', require('./application').getCurrentTextbookApplication);
 app.post('/api/createTextbookApplication', require('./application').createTextbookApplication)
 
 app.get('/api/getTextbooks', require('./search').getTextbooks)

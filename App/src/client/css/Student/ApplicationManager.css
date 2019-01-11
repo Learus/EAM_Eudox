@@ -190,7 +190,7 @@
     height: 120px;
     margin-left: 20px;
     display: grid;
-    grid-template-columns: 6fr 6fr 1fr 6fr 38px;
+    grid-template-columns: 5fr 5fr 2fr 5fr 38px;
     width: 80%;
     
 }
@@ -209,7 +209,8 @@
 
 
 .Filters > .SearchBar {
-    margin: 5px;
+    /* margin: 0 20px; */
+    width: 90%;
 }
 
 .Filters > .SearchBar > p {
