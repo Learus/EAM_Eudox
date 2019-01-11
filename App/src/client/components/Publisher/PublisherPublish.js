@@ -37,22 +37,19 @@ export default class PublisherPublish extends Component {
 
     componentDidMount() {
         this.setState( {
-            user: JSON.parse(sessionStorage.getItem('EudoxusUser')),
+            user: JSON.parse(sessionStorage.getItem('EudoxusUser'))
+        }, () => {
+            if(this.state.user)
+            {
+                axios.post('/api/getPublisherDetails', {username: this.state.user.Username}).then( res => {
+                    console.log(res.data.data);
+                    this.setState( {publisherName: res.data.data.Name} );
+                });
+            }
         });
-
-        console.log(this.state.user);
-
-        if(this.state.user)
-        {
-            axios.post('/api/getPublisherDetails', {username: this.state.user.Username}).then( res => {
-                console.log(res.data.data);
-                this.setState( {publisherName: res.data.data.Name} );
-            });
-        }
     }
 
     hSubmit() {
-
 
         let shouldPost = true; 
         

@@ -343,7 +343,7 @@ app.post('/api/publishTextbook', function(req, res) {
                           req.body.date,
                           req.body.price,
                           req.body.isbn,
-                          req.body.publication_number
+                          req.body.publicationΝumber
                       ], function(err) {
                         if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
                       });
