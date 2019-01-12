@@ -6,6 +6,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 import FormTextInput from '../Utilities';
+import {UltraComboDropdown} from '../Utilities';
 
 export default class PublisherPublish extends Component {
 
@@ -22,7 +23,8 @@ export default class PublisherPublish extends Component {
             publisher: "",
             publicationNumber: null,
             price: null,
-            keywords: "",
+            keywords: [],
+            newKeywords: [],
             titleError: "",
             writerError: "",
             isbnError: "",
@@ -47,6 +49,23 @@ export default class PublisherPublish extends Component {
                 });
             }
         });
+
+        this.getKeywords();
+    }
+
+    getKeywords() {
+        axios.get('/api/getKeywords')
+        .then(res => {
+            if (res.data.error) {
+                console.error(res.message);
+            }
+            else {
+                this.setState({
+                    keywords: res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
+                }, () => console.log(this.state));
+            }
+            //console.log(res.data);
+        })
     }
 
     hSubmit() {
@@ -133,7 +152,7 @@ export default class PublisherPublish extends Component {
             publisher_username: this.state.user.Username,
             publicationNumber: this.state.publicationNumber,
             price: this.state.price,
-            keywords: this.state.keywords
+            keywords: this.state.newKeywords
         }).then(
             res => {
                 if (res.data.error)
@@ -172,7 +191,7 @@ export default class PublisherPublish extends Component {
     }
 
     hKeywordChange(event) {
-        this.setState( {keywords: event.target.value} );
+        this.setState( {newKeywords: event.map( keyword => {return keyword.value;})} );
     }
 
     render() {
@@ -206,7 +225,7 @@ export default class PublisherPublish extends Component {
                         className={this.state.isbnError ? "Publisher wrong" : "Publisher"}
                         type="text"
                         label='ISBN *'
-                        placeholder="π.χ. 9783161484100"
+                        placeholder="π.χ. 9783161484"
                         onChange={this.hIsbnChange}/>
 
                     <FormTextInput
@@ -249,13 +268,12 @@ export default class PublisherPublish extends Component {
                         onChange={this.hPriceChange}/>
 
 
-                    <FormTextInput
-                        title=""
-                        className="Publisher"
-                        type="text"
-                        label='Λέξεις Κλειδιά'
-                        placeholder="π.χ. Φυσική Ηλεκρομαγνητισμός Οπτική"
-                        onChange={this.hKeywordChange}/>
+                    <UltraComboDropdown  label="Λέξεις Κλειδιά"      
+                        // placeholder="Μηχανική, Φρόυντ, Γλώσσα"
+                        options={this.state.keywords} 
+                        onChange={this.hKeywordChange} 
+                        isMulti={true}
+                        defaultValue=''/>
 
                     <button onClick={this.hSubmit}>Υποβολή</button>
 

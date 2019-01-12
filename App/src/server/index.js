@@ -348,44 +348,9 @@ app.post('/api/publishTextbook', function(req, res) {
                         if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
                         sql.query("Select LAST_INSERT_ID() as Id", function(err, tid) {
-                            let keywords = req.body.keywords.split(" ");
-                            
-                            console.log(keywords)
-                            keywords.forEach(keyword => {
-                                console.log(keyword)
-                                sql.query("Select Id from Keyword Where Word= ?", [keyword], function (err, ids) {
-
-                                    if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-
-                                    if(ids.length === 0)
-                                    {
-                                        sql.query("Insert into Keyword (Word) Values (?)", [keyword], function(err) {
-
-                                            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-                                            
-                                            sql.query("Select LAST_INSERT_ID() as Id", function(err, id) {
-                                                console.log(id);
-
-                                                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-                                                
-                                                sql.query("Insert into Textbook_has_Keyword (Textbook_Id, Keyword_Id) \
-                                                          Values (?, ?)", [tid[0].Id, id[0].Id],
-                                                          function(err){
-                                                            if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-                                                        } );
-                                            })
-                                        })
-                                    }
-                                    else
-                                    {
-                                        sql.query("Insert into Textbook_has_Keyword (Textbook_Id, Keyword_Id) \
-                                                Values (?, ?)", [tid[0].Id, ids[0].Id],
-                                                function(err){
-                                                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-                                            } );
-                                    }
-                                });
-                            });
+                            let keywords = req.body.keywords;
+                            console.log(keywords);
+                            insertKeywords(keywords, res, tid);
                             res.send({error: false, message: "OK"});
                         })
                     });
@@ -413,6 +378,50 @@ app.post('/api/publishTextbook', function(req, res) {
     });
 })
 
+function insertKeywords(keywords, res, tid) {
+    if(keywords.length === 0)
+        return;
+    
+    let keyword = keywords[0];
+    keywords.shift();
+    
+    console.log(keyword)
+    sql.query("Select Id from Keyword Where Word= ?", [keyword], function (err, ids) {
+
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if(ids.length === 0)
+        {
+            sql.query("Insert into Keyword (Word) Values (?)", [keyword], function(err) {
+
+                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                
+                sql.query("Select LAST_INSERT_ID() as Id", function(err, id) {
+                    console.log(id);
+
+                    if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                    
+                    sql.query("Insert into Textbook_has_Keyword (Textbook_Id, Keyword_Id) \
+                                Values (?, ?)", [tid[0].Id, id[0].Id],
+                                function(err){
+                                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                                insertKeywords(keywords, res, tid);
+                            } );
+                })
+            })
+        }
+        else
+        {
+            sql.query("Insert into Textbook_has_Keyword (Textbook_Id, Keyword_Id) \
+                    Values (?, ?)", [tid[0].Id, ids[0].Id],
+                    function(err){
+                    if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                    insertKeywords(keywords, res, tid);
+                } );
+        }
+    });
+
+}
 
 
 
