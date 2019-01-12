@@ -322,9 +322,127 @@ app.post('/api/getAddress', function(req, res) {
     });
 })
 
+app.post('/api/getPublisherDetails', function(req, res) {
+
+    sql.query("Select * from Publisher Where Username= ?", [req.body.username], function(err, rows) {
+
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+        if(rows.length === 0) {
+            res.send({error: true, message: "Empty Set"});
+        }
+        else {
+            res.send({error: false, message: "OK", data: rows[0]});
+        }
+    })
+})
 
 
+app.post('/api/publishTextbook', function(req, res) {
 
+    sql.query("Select 1 from Textbook Where ISBN = ?", [req.body.isbn], function(err, rows) {
+        
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+        //console.log(req.body.publicationNumber)
+        if(rows.length === 0)
+        {
+            sql.query("Insert into Textbook (Publisher_Username, Name, Writer, Date_Published, Last_Edited,\
+                      Date_Added, Price, ISBN, Issue_Number)\
+                      Values (?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)", [
+                          req.body.publisher_username,
+                          req.body.title,
+                          req.body.writer,
+                          req.body.date,
+                          req.body.price,
+                          req.body.isbn,
+                          req.body.publicationNumber
+                      ], function(err) {
+                        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+
+                        sql.query("Select Id from Textbook Where ISBN = ?", [req.body.isbn], function(err, tid) {
+                            let keywords = req.body.keywords;
+                            //console.log(keywords);
+                            insertKeywords(keywords, res, tid);
+
+                            if(req.body.distPoint)
+                                sql.query("Insert into Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies) Values (?, ?, 0)",
+                                    [req.body.distPoint, tid[0].Id], function (err) { 
+                                        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                                        res.send({error: false, message: "OK"});
+                                    });
+                            else
+                                res.send({error: false, message: "OK"});
+  
+                        })
+                    });
+        }
+        else
+        {
+            // sql.query("Update Textbook Set Publisher_Username= ?, Name= ?, Writer= ?, Date_Published= ?,\
+            //         Last_Edited= NOW(), Price= ?, Issue_Number= ? Where ISBN= ?", [
+            //         req.body.publisher_username,
+            //         req.body.title,
+            //         req.body.writer,
+            //         req.body.date,
+            //         req.body.price,
+            //         req.body.publicationNumber,
+            //         req.body.isbn
+            //     ], function(err) {
+            //       if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+            //       res.send({error: false, message: "OK"});
+            //     });
+
+            res.send({error: true, message: "Ο αριθμός ISBN που έχετε εισάγει έχει ήδη καταχωρηθεί"})
+        }
+
+
+    });
+})
+
+function insertKeywords(keywords, res, tid) {
+    if(keywords.length === 0)
+        return;
+    
+    let keyword = keywords[0];
+    keywords.shift();
+    
+    //console.log(keyword)
+    sql.query("Select Id from Keyword Where Word= ?", [keyword], function (err, ids) {
+        console.log(ids);
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+        console.log("HA")
+        if(ids.length === 0)
+        {
+            sql.query("Insert into Keyword (Word) Values (?)", [keyword], function(err) {
+
+                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                
+                sql.query("Select Id from Keyword Where Word = ?", [keyword], function(err, id) {
+                    //console.log(id);
+
+                    if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                    
+                    sql.query("Insert into Textbook_has_Keyword (Textbook_Id, Keyword_Id) \
+                                Values (?, ?)", [tid[0].Id, id[0].Id],
+                                function(err){
+                                if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                                insertKeywords(keywords, res, tid);
+                            } );
+                })
+            })
+        }
+        else
+        {
+            sql.query("Insert into Textbook_has_Keyword (Textbook_Id, Keyword_Id) \
+                    Values (?, ?)", [tid[0].Id, ids[0].Id],
+                    function(err){
+                    if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                    insertKeywords(keywords, res, tid);
+                } );
+        }
+    });
+
+}
 
 app.listen(8080, () => console.log('Listening on port 8080!'));
 

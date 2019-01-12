@@ -14,6 +14,7 @@ export default function FormTextInput(props)  {
                 placeholder={props.placeholder}
                 onChange = {props.onChange}
                 value = {props.value}
+                readOnly={props.readonly}
             />
         </label>
     );
