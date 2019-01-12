@@ -6,7 +6,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 import FormTextInput from '../Utilities';
-import {UltraComboDropdown} from '../Utilities';
+import {UltraComboDropdown, ComboDropdown} from '../Utilities';
 
 export default class PublisherPublish extends Component {
 
@@ -25,6 +25,8 @@ export default class PublisherPublish extends Component {
             price: null,
             keywords: [],
             newKeywords: [],
+            distPoints: [],
+            chosenDistPoint: null,
             titleError: "",
             writerError: "",
             isbnError: "",
@@ -51,6 +53,7 @@ export default class PublisherPublish extends Component {
         });
 
         this.getKeywords();
+        this.getDistributionPoints();
     }
 
     getKeywords() {
@@ -65,6 +68,25 @@ export default class PublisherPublish extends Component {
                 }, () => console.log(this.state));
             }
             //console.log(res.data);
+        })
+    }
+
+    getDistributionPoints() {
+        axios.get('/api/getDistributors')
+        .then(res => {
+            if (res.data.error) {
+                console.error(res.message);
+            }
+            else {
+                let newState = this.state;
+                
+                newState.distPoints= res.data.data.map(element => {return {value: element.Id, label: element.Name} } );
+                
+                newState.distPoints.unshift( {value: null, label: " "} );
+
+                this.setState(newState);
+            }
+            
         })
     }
 
@@ -152,7 +174,8 @@ export default class PublisherPublish extends Component {
             publisher_username: this.state.user.Username,
             publicationNumber: this.state.publicationNumber,
             price: this.state.price,
-            keywords: this.state.newKeywords
+            keywords: this.state.newKeywords,
+            distPoint: this.state.chosenDistPoint
         }).then(
             res => {
                 if (res.data.error)
@@ -161,7 +184,9 @@ export default class PublisherPublish extends Component {
                     this.setState({isbnError: res.data.message})
                 }
                 else
+                {
                     this.setState({isbnError: ""});
+                }
             });
     }
 
@@ -192,6 +217,10 @@ export default class PublisherPublish extends Component {
 
     hKeywordChange(event) {
         this.setState( {newKeywords: event.map( keyword => {return keyword.value;})} );
+    }
+
+    hDistPointChange(event) {
+        this.setState( {chosenDistPoint: event.value}, () => console.log(this.state) );
     }
 
     render() {
@@ -273,6 +302,11 @@ export default class PublisherPublish extends Component {
                         options={this.state.keywords} 
                         onChange={this.hKeywordChange} 
                         isMulti={true}
+                        defaultValue=''/>
+
+                    <ComboDropdown  label="Σημείο Διανομής"      
+                        options={this.state.distPoints} 
+                        onChange={this.hDistPointChange} 
                         defaultValue=''/>
 
                     <button onClick={this.hSubmit}>Υποβολή</button>

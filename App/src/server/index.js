@@ -347,11 +347,20 @@ app.post('/api/publishTextbook', function(req, res) {
                       ], function(err) {
                         if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
-                        sql.query("Select LAST_INSERT_ID() as Id", function(err, tid) {
+                        sql.query("Select Id from Textbook Where ISBN = ?", [req.body.isbn], function(err, tid) {
                             let keywords = req.body.keywords;
-                            console.log(keywords);
+                            //console.log(keywords);
                             insertKeywords(keywords, res, tid);
-                            res.send({error: false, message: "OK"});
+
+                            if(req.body.distPoint)
+                                sql.query("Insert into Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies) Values (?, ?, 0)",
+                                    [req.body.distPoint, tid[0].Id], function (err) { 
+                                        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
+                                        res.send({error: false, message: "OK"});
+                                    });
+                            else
+                                res.send({error: false, message: "OK"});
+  
                         })
                     });
         }
@@ -385,19 +394,19 @@ function insertKeywords(keywords, res, tid) {
     let keyword = keywords[0];
     keywords.shift();
     
-    console.log(keyword)
+    //console.log(keyword)
     sql.query("Select Id from Keyword Where Word= ?", [keyword], function (err, ids) {
-
+        console.log(ids);
         if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
-
+        console.log("HA")
         if(ids.length === 0)
         {
             sql.query("Insert into Keyword (Word) Values (?)", [keyword], function(err) {
 
                 if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
                 
-                sql.query("Select LAST_INSERT_ID() as Id", function(err, id) {
-                    console.log(id);
+                sql.query("Select Id from Keyword Where Word = ?", [keyword], function(err, id) {
+                    //console.log(id);
 
                     if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
                     
@@ -422,8 +431,6 @@ function insertKeywords(keywords, res, tid) {
     });
 
 }
-
-
 
 app.listen(8080, () => console.log('Listening on port 8080!'));
 
