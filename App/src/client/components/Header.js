@@ -89,7 +89,13 @@ function AccountSnapshot(props) {
 
     if(props.user != null)
     {
-        const meta = Actions[`${props.user.Type}`];
+        let type = props.user.Type;
+        if (props.user.Type === "PublDist")
+            type = "Publisher";
+
+        const meta = Actions[`${type}`];
+        
+
         return (
             <Popup 
                 className='AccountPopup' 
@@ -112,7 +118,7 @@ function AccountSnapshot(props) {
                         Το προφίλ μου
                     </button>
 
-                    <button key="help" onClick={ () => {browserHistory.push(`/actionpage/${props.user.Type}`)} }>
+                    <button key="help" onClick={ () => {browserHistory.push(`/actionpage/${type}/${meta.Actions.length - 1}`)} }>
                         Βοήθεια
                     </button>
 
