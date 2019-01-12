@@ -32,6 +32,7 @@ export default class ApplicationManager extends Component {
     }
 
     getCurrentApplication(user) {
+        console.log("klhuhka");
         if (user) {
             axios.post("/api/getCurrentTextbookApplication", {user: user ? user.Username : null})
             .then(res => {
@@ -89,6 +90,7 @@ export default class ApplicationManager extends Component {
     }
 
     loginHandler() {
+        console.log("lol");
         this.props.loginHandler();
     }
 
@@ -278,7 +280,7 @@ export default class ApplicationManager extends Component {
             : 
             <LoginPopup signupRedirect={'StudentTextbookApplication'} 
                         className={buttonClassName} 
-                        loginHandler={ () => {this.Apply(); this.loginHandler()} }
+                        loginHandler={ () => {this.loginHandler()} }
                         content="Υποβολή Δήλωσης"
                         saveData={this.saveData}
                         disabled={disabled}/>
@@ -673,7 +675,7 @@ function Textbook(props) {
         className += " Chosen";
         chosen = true;
     }
-    console.log(props.data)
+
     return (
         <div className={className}>
             <h3>{props.data.t.Name}</h3>

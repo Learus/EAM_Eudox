@@ -230,7 +230,7 @@ class StudentApplicationList extends Component {
             <div className={"StudentApplicationList " + this.props.pos}>
                 <h2>{this.props.title}</h2>
                 <div>
-                    {this.state.list != null ? this.state.list : ''}
+                    {this.state.list && this.state.list.length !== 0 ? this.state.list : <h3 className="NoApplicationEntry">Δεν υπάρχουν δηλώσεις.</h3>}
                 </div>
             </div>
         );

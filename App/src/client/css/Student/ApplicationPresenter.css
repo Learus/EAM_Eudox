@@ -64,6 +64,14 @@
     background-color: rgb(184, 184, 184);
 }
 
+.NoApplicationEntry {
+    font-weight: normal;
+    padding: 15px;
+    color: gray;
+    background-color: rgb(241, 241, 241);
+    margin: 0;
+}
+
 .ApplicationPopup {
     z-index: 2;
     position: relative;
