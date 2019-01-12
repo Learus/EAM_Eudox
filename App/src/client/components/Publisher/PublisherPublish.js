@@ -5,6 +5,7 @@ import autobind from 'react-autobind';
 import axios from 'axios';
 import moment from 'moment';
 
+import LoginPopup from '../Login';
 import FormTextInput from '../Utilities';
 import {UltraComboDropdown, ComboDropdown} from '../Utilities';
 
@@ -88,6 +89,57 @@ export default class PublisherPublish extends Component {
             }
             
         })
+    }
+
+    hTitleChange(event) {
+        this.setState( {title: event.target.value} );
+    }
+
+    hWriterChange(event) {
+        this.setState( {writer: event.target.value} );
+    }
+
+    hIsbnChange(event) {
+        this.setState( {isbn: event.target.value} );
+    }
+
+    hDateChange(event) {
+        this.setState( {date: event.target.value} );
+    }
+
+    hPublicationNumberChange(event) {
+        this.setState( {publicationNumber: event.target.value} );
+    }
+
+    hPriceChange(event) {
+        this.setState( {price: event.target.value} );
+    }
+
+    hKeywordChange(event) {
+        this.setState( {newKeywords: event.map( keyword => {return keyword.value;})} );
+    }
+
+    hDistPointChange(event) {
+        this.setState( {chosenDistPoint: event.value}, () => console.log(this.state) );
+    }
+
+    saveData() {
+        console.log("savedata");
+        const toSave = {
+            title: this.state.title,
+            writer: this.state.writer,
+            isbn: this.state.isbn,
+            date: this.state.date,
+            publicationNumber: this.state.publicationNumber,
+            price: this.state.price,
+            newKeywords: this.state.newKeywords, 
+            chosenDistPoint: this.state.chosenDistPoint
+        }
+        sessionStorage.setItem("PendingTextbookPublication", JSON.stringify(toSave))
+    }
+
+    loginHandler() {
+
     }
 
     hSubmit() {
@@ -185,133 +237,104 @@ export default class PublisherPublish extends Component {
                 }
                 else
                 {
+                    alert(`Η καταχώριση του "${this.state.title}" ήταν επιτυχής`);
+                    browserHistory.push("/actionpage/Publisher/2");
                     this.setState({isbnError: ""});
                 }
             });
     }
 
-    hTitleChange(event) {
-        this.setState( {title: event.target.value} );
-    }
-
-    hWriterChange(event) {
-        this.setState( {writer: event.target.value} );
-    }
-
-    hIsbnChange(event) {
-        this.setState( {isbn: event.target.value} );
-    }
-
-
-    hDateChange(event) {
-        this.setState( {date: event.target.value} );
-    }
-
-    hPublicationNumberChange(event) {
-        this.setState( {publicationNumber: event.target.value} );
-    }
-
-    hPriceChange(event) {
-        this.setState( {price: event.target.value} );
-    }
-
-    hKeywordChange(event) {
-        this.setState( {newKeywords: event.map( keyword => {return keyword.value;})} );
-    }
-
-    hDistPointChange(event) {
-        this.setState( {chosenDistPoint: event.value}, () => console.log(this.state) );
-    }
-
     render() {
 
-        //console.log(this.state);
+        const buttonContent = this.state.user ? 
+            <button className="PublishButton" onClick={this.hSubmit}>
+                Υποβολή
+            </button> 
+            : 
+            <LoginPopup signupRedirect={'StudentTextbookApplication'} 
+                        className="PublishButton"
+                        loginHandler={this.hSubmit} 
+                        content="Υποβολή"
+                        saveData={this.saveData}/>
 
         return (
             <div className="PublisherPublish">
                 <h1>Καταχώριση Συγγραμμάτων</h1>
                 <div className="line" />
-                <div className="PublisherPublishForm">
 
-                    <FormTextInput
-                        title={this.state.titleError}
-                        className={this.state.titleError ? "Publisher wrong" : "Publisher"}
-                        type="text"
-                        label='Τίτλος Συγγράμματος *'
-                        placeholder="π.χ. Ίντριγκα στο Βατικανό"
-                        onChange={this.hTitleChange}/>
+                <div className="PublisherPublishForms">
+                    <div className="PublisherPublishForm">
 
-                    <FormTextInput
-                        title={this.state.writerError}
-                        className={this.state.writerError ? "Publisher wrong" : "Publisher"}
-                        type="text"
-                        label='Συγγραφέας/είς *'
-                        placeholder="π.χ. Ροδρίγος Βοργίας"
-                        onChange={this.hWriterChange}/>
+                        <FormTextInput
+                            title={this.state.titleError}
+                            className={this.state.titleError ? "Publisher wrong" : "Publisher"}
+                            type="text"
+                            label='Τίτλος Συγγράμματος *'
+                            placeholder="π.χ. Ίντριγκα στο Βατικανό"
+                            onChange={this.hTitleChange}/>
 
-                    <FormTextInput
-                        title={this.state.isbnError}
-                        className={this.state.isbnError ? "Publisher wrong" : "Publisher"}
-                        type="text"
-                        label='ISBN *'
-                        placeholder="π.χ. 9783161484"
-                        onChange={this.hIsbnChange}/>
+                        <FormTextInput
+                            title={this.state.writerError}
+                            className={this.state.writerError ? "Publisher wrong" : "Publisher"}
+                            type="text"
+                            label='Συγγραφέας/είς *'
+                            placeholder="π.χ. Ροδρίγος Βοργίας"
+                            onChange={this.hWriterChange}/>
 
-                    <FormTextInput
-                        title={this.state.publisherError}
-                        className={this.state.publisherError ? "Publisher wrong" : "Publisher"}
-                        type="text"
-                        label='Εκδότης *'
-                        placeholder="π.χ. Εκδόσεις Λουκρετία"
-                        /*onChange={}*/
-                        value ={this.state.publisherName}
-                        readonly={true}/>
+                        <FormTextInput
+                            title={this.state.isbnError}
+                            className={this.state.isbnError ? "Publisher wrong" : "Publisher"}
+                            type="text"
+                            label='ISBN *'
+                            placeholder="π.χ. 9783161484"
+                            onChange={this.hIsbnChange}/>
 
 
-                    <FormTextInput
-                        title={this.state.dateError}
-                        className={this.state.dateError ? "Publisher wrong" : "Publisher"}
-                        type="date"
-                        label='Ημερομηνία έκδοσης *'
-                        placeholder="π.χ. 23/1/1997"
-                        onChange={this.hDateChange}/>
+                        <div className="TriplePublisherInputs">
+                            <FormTextInput
+                                title={this.state.dateError}
+                                className={this.state.dateError ? "Publisher wrong" : "Publisher"}
+                                type="date"
+                                label='Ημερομηνία έκδοσης *'
+                                placeholder="π.χ. 23/1/1997"
+                                onChange={this.hDateChange}/>
 
-                    <span>&nbsp;-&nbsp;</span>
+                            <FormTextInput
+                                title={this.state.issueError}
+                                className={this.state.issueError ? "Publisher wrong" : "Publisher"}
+                                type="number"
+                                label='Αριθμός Έκδοσης *'
+                                placeholder="π.χ. 3"
+                                onChange={this.hPublicationNumberChange}/>
 
-                    <FormTextInput
-                        title={this.state.issueError}
-                        className={this.state.issueError ? "Publisher wrong" : "Publisher"}
-                        type="number"
-                        label='Αριθμός Έκδοσης *'
-                        placeholder="π.χ. 3"
-                        onChange={this.hPublicationNumberChange}/>
+                            <FormTextInput
+                                title={this.state.priceError}
+                                className={this.state.priceError ? "Publisher wrong" : "Publisher"}
+                                type="number"
+                                label='Τιμή *'
+                                placeholder="π.χ. 30"
+                                onChange={this.hPriceChange}/>
+                        </div>
 
-                    <span>&nbsp;-&nbsp;</span>
+                        </div>
 
-                    <FormTextInput
-                        title={this.state.priceError}
-                        className={this.state.priceError ? "Publisher wrong" : "Publisher"}
-                        type="number"
-                        label='Τιμή *'
-                        placeholder="π.χ. 30"
-                        onChange={this.hPriceChange}/>
+                        <div className="PublisherPublishForm Right">
+                            <UltraComboDropdown  label="Λέξεις Κλειδιά"      
+                                // placeholder="Μηχανική, Φρόυντ, Γλώσσα"
+                                options={this.state.keywords} 
+                                onChange={this.hKeywordChange} 
+                                isMulti={true}
+                                defaultValue=''/>
 
-
-                    <UltraComboDropdown  label="Λέξεις Κλειδιά"      
-                        // placeholder="Μηχανική, Φρόυντ, Γλώσσα"
-                        options={this.state.keywords} 
-                        onChange={this.hKeywordChange} 
-                        isMulti={true}
-                        defaultValue=''/>
-
-                    <ComboDropdown  label="Σημείο Διανομής"      
-                        options={this.state.distPoints} 
-                        onChange={this.hDistPointChange} 
-                        defaultValue=''/>
-
-                    <button onClick={this.hSubmit}>Υποβολή</button>
-
+                            <ComboDropdown  label="Σημείο Διανομής"      
+                                options={this.state.distPoints} 
+                                onChange={this.hDistPointChange} 
+                                defaultValue=''/>
+                        </div>
                 </div>
+
+                {buttonContent}
+                {/* <button className="PublishButton" onClick={this.hSubmit}>Υποβολή</button> */}
             </div>
         );
     }

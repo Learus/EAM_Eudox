@@ -1,102 +1,107 @@
 
-
-.PublisherPublishChoices {
-    float: left;
-    margin-left: 60px;
-}
-
-.PublisherPublishChoices > button {
-    box-shadow: 1px 1px 10px gray;
-    
-    border: none;
-    border-radius: 5px;
-
-    cursor: pointer;
-
-    color: white;
-
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    font-size: 20px;
-
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    
-    width: 150px;
-
-    text-align: center;
-
-    background-color: rgb(58,212,124);
-
-}
-
-.PublisherPublishChoices > div {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-}
-
-
 .PublisherPublishForms {
-    display: flex;
+    display: grid;
+    margin-top: 50px;
+    margin-left: 60px;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 50px;
 }
 
+.PublisherPublishForm.Right {
+    grid-template-rows: 120px 120px;
+}
 
 .PublisherPublishForm {
     display: grid;
-    width: 50vw;
+    grid-template-rows: 120px 120px 120px 120px 120px;
 }
 
 
-.PublisherPublishForm  label {
-    margin: 0 auto;
-    width: 80%;
+.TriplePublisherInputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 15px;
+}
+
+
+.PublisherPublishForm > label {
+    width: 100%;
     height: 100%;
 }
 
-.PublisherPublishForm  label > p {
+.PublisherPublishForm  label > p, .SearchBar > p {
 
     margin: 10px auto;
-
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
     font-size: 18px;
-
 
     color: rgb(47, 175, 103);
     text-align: left;
 }
 
-.PublisherPublishForm  label > input.wrong, .PublisherPublishForm  label > select.wrong {
+.PublisherPublishForm  label > input.wrong {
     border: 1px solid rgb(248, 97, 97);
 }
 
-.PublisherPublishForm  label > input.right, .PublisherPublishForm  label > select.right {
+.PublisherPublishForm  label > input.right {
     border: none;
 }
 
-.PublisherPublishForm  label > input, .PublisherPublishForm  label > select {
+.PublisherPublishForm label > input {
     border-radius: 5px;
     border: none;
 
-    width : 80%;
-
-    float: left;
+    width : calc(100% - 30px);
 
     padding: 15px;
 
-    background-color: rgb(241, 241, 241)
-}
+    background-color: rgb(241, 241, 241);
 
-.radioInputs {
-    float: left;
+    font-size: 16px;
+    color: rgb(75, 75, 75);
 }
 
 .PublisherPublishForm  label > .radioInputs > div > label {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
     color: gray;
 }
 
-
-.PublisherPublishForm  span {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    color: gray;
+.SearchBar {
+    width: 80%;
 }
 
+.SearchBar > .ComboDropdown > div{
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    width : 100%;
+
+    background-color: rgb(241, 241, 241);
+    color: rgb(75, 75, 75);
+}
+
+.PublisherPublish > button {
+    border: none;
+    outline: none;
+
+    border-radius: 5px;
+    box-shadow: 1px 2.5px 5px black;
+    padding: 15px;
+
+    color: white;
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 25px;
+
+    cursor: pointer;
+    transition: 200ms;
+
+    position: absolute;
+    bottom: 40px;
+    right: 50px;
+    width: 400px;
+    height: 80px;
+
+    background-color: rgb(29, 175, 93);
+}
+
+.PublisherPublish > button:hover {
+    background-color: rgb(23, 131, 70);
+}
