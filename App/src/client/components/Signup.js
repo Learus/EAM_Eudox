@@ -341,6 +341,9 @@ export default class Signup extends Component {
         if (this.props.params.redirect === "StudentTextbookApplication") {
             return '/actionpage/Student/0';
         }
+        else if (this.props.params.redirect === "PublisherTextbookPublish") {
+            return '/actionpage/Publisher/0'
+        }
         return '/'
     }
 

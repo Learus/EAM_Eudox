@@ -33,6 +33,7 @@
     background-color: rgb(64, 110, 196);
     box-shadow: none;
     text-align: center;
+    border-radius: 0px;
 }
 
 .SearchCategoryButton.Distributor, .SearchButton.Distributor {

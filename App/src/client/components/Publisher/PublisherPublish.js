@@ -41,20 +41,51 @@ export default class PublisherPublish extends Component {
     }
 
     componentDidMount() {
-        this.setState( {
-            user: JSON.parse(sessionStorage.getItem('EudoxusUser'))
-        }, () => {
-            if(this.state.user)
-            {
-                axios.post('/api/getPublisherDetails', {username: this.state.user.Username}).then( res => {
-                    console.log(res.data.data);
-                    this.setState( {publisherName: res.data.data.Name} );
-                });
-            }
-        });
+
+        const user = this.getUser();
+        // sessionStorage.removeItem("PendingTextbookPublication")
+        let publication = sessionStorage.getItem("PendingTextbookPublication");
+        if (publication) {
+            publication = JSON.parse(publication);
+            this.setState({
+                title: publication.title,
+                writer: publication.writer,
+                isbn: publication.isbn,
+                date: publication.date,
+                publicationNumber: publication.publicationNumber,
+                price: publication.price,
+                newKeywords: publication.newKeywords,
+                chosenDistPoint: publication.chosenDistPoint,
+                user: user
+            }, () => this.hSubmit());
+        }
+        else {
+            this.setState({user: user})
+        }
 
         this.getKeywords();
         this.getDistributionPoints();
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.login !== this.props.login) {
+            this.setState({
+                user: this.getUser()
+            })
+            return true;
+        }
+
+        return true;
+    }
+
+    getUser() {
+        const user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
+        return user;
+    }
+
+    loginHandler() {
+        this.props.loginHandler();
+        this.hSubmit();
     }
 
     getKeywords() {
@@ -66,9 +97,8 @@ export default class PublisherPublish extends Component {
             else {
                 this.setState({
                     keywords: res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
-                }, () => console.log(this.state));
+                });
             }
-            //console.log(res.data);
         })
     }
 
@@ -138,11 +168,13 @@ export default class PublisherPublish extends Component {
         sessionStorage.setItem("PendingTextbookPublication", JSON.stringify(toSave))
     }
 
-    loginHandler() {
-
-    }
-
     hSubmit() {
+
+        const user = this.state.user ? this.state.user : this.getUser();
+        if (user && (user.Type !== "Publisher" && user.Type !== "PublDist")) {
+            alert("Δεν δικαιούστε να κάνετε δήλωση. Παρακαλώ συνδεθείτε σε έναν εκδοτικό λογαριασμό")
+            return;
+        }
 
         let shouldPost = true; 
         
@@ -238,6 +270,7 @@ export default class PublisherPublish extends Component {
                 else
                 {
                     alert(`Η καταχώριση του "${this.state.title}" ήταν επιτυχής`);
+                    sessionStorage.removeItem("PendingTextbookPublication");
                     browserHistory.push("/actionpage/Publisher/2");
                     this.setState({isbnError: ""});
                 }
@@ -251,9 +284,9 @@ export default class PublisherPublish extends Component {
                 Υποβολή
             </button> 
             : 
-            <LoginPopup signupRedirect={'StudentTextbookApplication'} 
+            <LoginPopup signupRedirect={'PublisherTextbookPublish'} 
                         className="PublishButton"
-                        loginHandler={this.hSubmit} 
+                        loginHandler={this.loginHandler} 
                         content="Υποβολή"
                         saveData={this.saveData}/>
 
@@ -271,7 +304,8 @@ export default class PublisherPublish extends Component {
                             type="text"
                             label='Τίτλος Συγγράμματος *'
                             placeholder="π.χ. Ίντριγκα στο Βατικανό"
-                            onChange={this.hTitleChange}/>
+                            onChange={this.hTitleChange}
+                            value={this.state.title}/>
 
                         <FormTextInput
                             title={this.state.writerError}
@@ -279,7 +313,8 @@ export default class PublisherPublish extends Component {
                             type="text"
                             label='Συγγραφέας/είς *'
                             placeholder="π.χ. Ροδρίγος Βοργίας"
-                            onChange={this.hWriterChange}/>
+                            onChange={this.hWriterChange}
+                            value={this.state.writer}/>
 
                         <FormTextInput
                             title={this.state.isbnError}
@@ -297,7 +332,8 @@ export default class PublisherPublish extends Component {
                                 type="date"
                                 label='Ημερομηνία έκδοσης *'
                                 placeholder="π.χ. 23/1/1997"
-                                onChange={this.hDateChange}/>
+                                onChange={this.hDateChange}
+                                value={this.state.date}/>
 
                             <FormTextInput
                                 title={this.state.issueError}
@@ -305,7 +341,8 @@ export default class PublisherPublish extends Component {
                                 type="number"
                                 label='Αριθμός Έκδοσης *'
                                 placeholder="π.χ. 3"
-                                onChange={this.hPublicationNumberChange}/>
+                                onChange={this.hPublicationNumberChange}
+                                value={this.state.publicationNumber}/>
 
                             <FormTextInput
                                 title={this.state.priceError}
@@ -313,7 +350,8 @@ export default class PublisherPublish extends Component {
                                 type="number"
                                 label='Τιμή *'
                                 placeholder="π.χ. 30"
-                                onChange={this.hPriceChange}/>
+                                onChange={this.hPriceChange}
+                                value={this.state.price}/>
                         </div>
 
                         </div>
@@ -324,12 +362,12 @@ export default class PublisherPublish extends Component {
                                 options={this.state.keywords} 
                                 onChange={this.hKeywordChange} 
                                 isMulti={true}
-                                defaultValue=''/>
+                                defaultValue={this.state.keywords}/>
 
                             <ComboDropdown  label="Σημείο Διανομής"      
                                 options={this.state.distPoints} 
                                 onChange={this.hDistPointChange} 
-                                defaultValue=''/>
+                                defaultValue={this.state.chosenDistPoint}/>
                         </div>
                 </div>
 

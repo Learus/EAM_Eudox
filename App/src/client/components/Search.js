@@ -140,7 +140,7 @@ class TextbookSearch extends Component {
         this.getOptions('/api/getPublishers', "publishers");
         this.getOptions('/api/getDistributors', "distributors");
         this.getOptions('/api/getAllCourses', "courses");
-        // this.getOptions('/api/getAllDepartments', "udp")
+        this.getOptions('/api/getAllDepartments', "udp");
         
         
         axios.post('/api/getUniversities')
@@ -152,7 +152,7 @@ class TextbookSearch extends Component {
                 let newState = {};
                 newState.universities = res.data.data.map(uni => {return {value: uni.Id.toString(), label: uni.Name}});
                 newState.universities.unshift( {value: "", label: " "} );
-                this.getOptions('api/getAllDepartments', 'udp')
+                // this.getOptions('api/getAllDepartments', 'udp')
                 newState.selecteduni = null;
                 this.setState (newState);
             }
@@ -163,6 +163,11 @@ class TextbookSearch extends Component {
         this.setState({
             selecteduni: event.value
         });
+
+        if (!event.value || event.value === '') {
+            this.getOptions('/api/getAllDepartments', "udp");
+            return;
+        }
 
         axios.post('/api/getDepartments', {
             university: event.value

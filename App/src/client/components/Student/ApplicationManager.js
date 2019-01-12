@@ -90,7 +90,6 @@ export default class ApplicationManager extends Component {
     }
 
     loginHandler() {
-        console.log("lol");
         this.props.loginHandler();
     }
 

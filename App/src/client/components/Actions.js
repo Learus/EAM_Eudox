@@ -62,7 +62,7 @@ export default {
         Quicks: [0, 2, 4],
         Default: 4,
         Components: [
-            () => {return <PublisherPublish/>},
+            (props) => {return <PublisherPublish login={props.login} loginHandler={props.loginHandler}/>},
             () => {return <NotFoundSmall/>},
             () => {return <NotFoundSmall/>},
             () => {return <NotFoundSmall/>},
