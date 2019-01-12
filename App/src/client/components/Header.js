@@ -11,6 +11,7 @@ import Popup from 'reactjs-popup';
 import autoBind from 'react-autobind';
 
 export default class Header extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {user: JSON.parse(sessionStorage.getItem('EudoxusUser')) };
@@ -22,6 +23,22 @@ export default class Header extends Component {
             user: JSON.parse(sessionStorage.getItem('EudoxusUser')) 
         });
         this.signalLoggedStatus();
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
+
+        if (user) {
+            if (nextState.user){
+                if (nextState.user.Username !== user.Username) {
+                    this.setState({user: user})
+                }
+            }
+            else {
+                this.setState({user: user})
+            }
+        }
+        return true;
     }
 
     signalLoggedStatus() {

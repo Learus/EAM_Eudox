@@ -89,6 +89,7 @@ app.post('/api/getUserUniversityData', require('./university').getUserUniversity
 
 app.post('/api/getStudentApplications', require('./application').getStudentApplications)
 app.post('/api/getTextbookApplication', require('./application').getTextbookApplication)
+app.post('/api/getCurrentTextbookApplication', require('./application').getCurrentTextbookApplication);
 app.post('/api/createTextbookApplication', require('./application').createTextbookApplication)
 
 app.get('/api/getTextbooks', require('./search').getTextbooks)
@@ -120,12 +121,19 @@ app.post('/api/searchDistributors', require('./search').searchDistributors)
 app.post('/api/getTextbooks/Course', function (req, res) {
     const course = req.body.course;
 
-    const query = ` Select t.*, p.*, c.Id, c.Name, c.Semester
-                    From Textbook as t, Publisher as p, Course_has_Textbook as cht, Course as c
-                    Where   cht.Textbook_id = t.Id and 
-                            c.Id = ${course} and 
-                            cht.Course_Id = c.Id and
-                            p.Username = t.Publisher_Username`
+    const query = `Select t.*, p.*, c.Id, c.Name, c.Semester, a.*, dp.*, dpht.Copies
+            From Textbook as t, Course as c, Course_has_Textbook as cht, University_Department as ud, Publisher as p,
+            Distribution_Point as dp, Distribution_Point_has_Textbook as dpht, Address as a
+            Where  t.Id = cht.Textbook_id and 
+           c.Id = cht.Course_Id and 
+           c.Id = ${course} and
+           c.University_Department_Id = ud.Id and
+           ud.Id = ${req.body.udp} and
+           p.Username = t.Publisher_Username and
+           dp.Address_Id = a.Id and
+           dp.Id = dpht.Distribution_Point_Id and
+           t.Id = dpht.Textbook_Id`;
+           
     const options = {
         sql: query,
         nestTables: true
@@ -146,13 +154,17 @@ app.post('/api/getTextbooks/Course', function (req, res) {
 
 app.post('/api/getTextbooks', function (req, res) {
   let query = 
-    `Select t.*, p.*, c.Id, c.Name, c.Semester
-     From Textbook as t, Course as c, Course_has_Textbook as cht, University_Department as ud, Publisher as p
+    `Select t.*, p.*, c.Id, c.Name, c.Semester, a.*, dp.*, dpht.Copies
+     From Textbook as t, Course as c, Course_has_Textbook as cht, University_Department as ud, Publisher as p,
+     Distribution_Point as dp, Distribution_Point_has_Textbook as dpht, Address as a
      Where  t.Id = cht.Textbook_id and 
             c.Id = cht.Course_Id and 
             c.University_Department_Id = ud.Id and
             ud.Id = ${req.body.udp} and
-            p.Username = t.Publisher_Username`;
+            p.Username = t.Publisher_Username and
+            dp.Address_Id = a.Id and
+            dp.Id = dpht.Distribution_Point_Id and
+            t.Id = dpht.Textbook_Id`;
 
     if (req.body.semester) 
         query += ` and c.Semester = ${req.body.semester}`;

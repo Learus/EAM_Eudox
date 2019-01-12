@@ -16,7 +16,8 @@ export default class ActionPage extends Component {
             user: null,
             type: this.props.params.type,
             meta: Actions[`${this.props.params.type}`],
-            active: this.props.params.active
+            active: this.props.params.active,
+            login: false
         };
 
         if (!this.props.params.active) {
@@ -26,6 +27,10 @@ export default class ActionPage extends Component {
     }
 
     signalLoggedStatus() {
+        console.log("hello")
+        this.setState({
+            login: !this.state.login
+        })
         this.forceUpdate();
     }
 
@@ -53,18 +58,18 @@ export default class ActionPage extends Component {
             <div className = 'Container'>
                 <Header signalLoggedStatus={this.signalLoggedStatus}/>
                 <ActionList meta={this.state.meta} active={this.state.active} activeChanger={this.changeActive}/>
-                <Main id={this.props.params.id} meta={this.state.meta} active={this.state.active}/>
+                <Main id={this.props.params.id} loginHandler={this.signalLoggedStatus} meta={this.state.meta} active={this.state.active} login={this.state.login}/>
             </div>
         );
     }
 }
 
 function Main(props) {
-    console.log(props)
+    // console.log(props)
     if(props.meta.Components[props.active])
         return (
             <div className="Main">
-                {props.meta.Components[props.active]( {id: props.id} )}
+                {props.meta.Components[props.active]( {id: props.id, login: props.login, loginHandler: props.loginHandler} )}
             </div>
         )
 

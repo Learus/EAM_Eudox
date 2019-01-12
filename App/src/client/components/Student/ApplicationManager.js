@@ -9,8 +9,12 @@ import searchimg from "../../images/search.png"
 import deleteimg from "../../images/trash.png"
 import {SimpleDropdown, ComboDropdown} from '../Utilities';
 
-import Select from 'react-select';
-import createFilterOptions from 'react-select-fast-filter-options';
+import Popup from 'reactjs-popup'
+
+// import Select from 'react-select';
+// import createFilterOptions from 'react-select-fast-filter-options';
+
+// import {TextbookPopup} from './ApplicationPresenter'
 
 export default class ApplicationManager extends Component {
 
@@ -22,55 +26,72 @@ export default class ApplicationManager extends Component {
             basket: [],
             textbooksBySemester: [],
             searchType: null,
-            user: null
+            user: null,
+            oldApplication: null
         }
     }
 
-    componentDidMount() {
-        if (this.props.id) {
-            const user = this.getUser();
-            console.log("HI");
-            axios.post("/api/getTextbookApplication", {id: this.props.id, user: user ? user.Username : null})
+    getCurrentApplication(user) {
+        console.log("klhuhka");
+        if (user) {
+            axios.post("/api/getCurrentTextbookApplication", {user: user ? user.Username : null})
             .then(res => {
                 if (res.data.error) {
-                    browserHistory.push(`/actionpage/Student/0`);
+                    this.setState({
+                        basket: [],
+                        oldApplication: null
+                    })
                 }
                 else {
                     this.setState({
                         basket: res.data.data,
-                        user: user
+                        user: user,
+                        oldApplication: res.data.data[0].ta.Id
                     })
                 }
             })
-            .catch(err => console.error(err));
         }
         else {
-            let application = sessionStorage.getItem("PendingTextbookApplication");
-            if (application) {
-                application = JSON.parse(application);
-                this.setState({
-                    basket: application
-                })
-            }
+            this.setState({
+                user : null,
+                basket: [],
+                oldApplication: null
+            })
         }
     }
 
-    shouldComponentUpdate() {
-        if (this.props.id && !this.getUser()) {
+    componentDidMount() {
+        const user = this.getUser();
+
+        let application = sessionStorage.getItem("PendingTextbookApplication");
+        if (application) {
+            application = JSON.parse(application);
             this.setState({
-                basket: []
+                basket: application
             })
-            browserHistory.push(`/actionpage/Student/0`);
         }
+        else {
+            this.getCurrentApplication(user)
+        }
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.login !== this.props.login) {
+            this.getCurrentApplication(this.getUser());
+            return true;
+        }
+
         return true;
     }
 
     getUser() {
-        return JSON.parse(sessionStorage.getItem('EudoxusUser'));
+        const user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
+        return user;
     }
 
     loginHandler() {
-
+        console.log("lol");
+        this.props.loginHandler();
     }
 
     Search(filters) {
@@ -108,7 +129,7 @@ export default class ApplicationManager extends Component {
     }
 
     Add(textbook) {
-        console.log(textbook)
+
         let newBasket = this.state.basket;
         let replaced = false;
         for (let i = 0; i < newBasket.length; i++) {
@@ -137,20 +158,21 @@ export default class ApplicationManager extends Component {
 
     Remove(textbook) {
         let newBasket = [];
-        console.log(textbook);
+
         for (let i = 0; i < this.state.basket.length; i++) {
             if (textbook.c.Id === this.state.basket[i].c.Id) {
                 if (this.state.basket[i].taht) {
                     if (this.state.basket[i].taht.Taken) {
                         alert("Έχετε παραλάβει σύγγραμμα για αυτό το μάθημα. Δεν μπορείτε να το διαγράψετε.");
                     }
+                    else continue;
                 }
                 else continue;
             }
 
             newBasket.push(this.state.basket[i]);
         }
-
+        console.log(newBasket);
         this.setState({
             basket: newBasket
         })
@@ -220,8 +242,8 @@ export default class ApplicationManager extends Component {
 
         const body = {
             new: this.state.basket,
-            old: this.props.id ? this.props.id : null,
-            user: this.getUser().Username
+            old: this.state.oldApplication,
+            user: user.Username
         }
         console.log(body);
         if (confirm("Είστε σίγουροι για την δήλωσή σας;"))
@@ -241,15 +263,15 @@ export default class ApplicationManager extends Component {
     }
 
     saveData() {
-        console.log("savedata")
+        console.log(this.state.basket)
         sessionStorage.setItem("PendingTextbookApplication", JSON.stringify(this.state.basket))
     }
     
     render() {
         const user = this.state.user ? this.state.user : this.getUser();
         
-        const buttonClassName = this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
-        const disabled = this.state.basket.length === 0 ? true : false;
+        const buttonClassName = this.state.basket && this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
+        const disabled = this.state.basket && this.state.basket.length === 0 ? true : false;
 
         const buttonContent = user ? 
             <button className={buttonClassName} onClick={this.Apply} disabled={disabled}>
@@ -258,7 +280,7 @@ export default class ApplicationManager extends Component {
             : 
             <LoginPopup signupRedirect={'StudentTextbookApplication'} 
                         className={buttonClassName} 
-                        loginHandler={this.Apply} 
+                        loginHandler={ () => {this.loginHandler()} }
                         content="Υποβολή Δήλωσης"
                         saveData={this.saveData}
                         disabled={disabled}/>
@@ -320,11 +342,12 @@ class Filters extends Component {
                 alert(res.data.message)
             }
             else {
-                this.setState ( {
-                    universities: res.data.data.map(uni => {return {value: uni.Id, label: uni.Name}}),
-                    selecteduni: null,
-                    udp: []
-                });
+                let newState = this.state;
+                newState.universities = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.universities.unshift({value: "", label: " "})
+                newState.selecteduni = null;
+                newState.udp = [];
+                this.setState(newState);
             }
         })
 
@@ -332,7 +355,6 @@ class Filters extends Component {
     }
 
     getDepartments(event) {
-        console.log(event);
         this.setState({
             selecteduni: event.value
         });
@@ -361,9 +383,10 @@ class Filters extends Component {
                 alert(res.data.message)
             }
             else {
-                this.setState ({
-                    udp: res.data.data.map(udp => {return {value: udp.Id, label: udp.Name}}),
-                });
+                let newState = this.state;
+                newState.udp = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.udp.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
     }
@@ -394,9 +417,10 @@ class Filters extends Component {
                 alert(res.data.message);
             }
             else {
-                this.setState({
-                    semesters: res.data.data.map(sem => {return {value: sem.Id, label: sem.Name}}),
-                })
+                let newState = this.state;
+                newState.semesters = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.semesters.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
     }
@@ -427,9 +451,10 @@ class Filters extends Component {
                 alert(res.data.message);
             }
             else {
-                this.setState({
-                    courses: res.data.data.map(course => {return {value: course.Id, label: course.Name}}),
-                })
+                let newState = this.state;
+                newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.courses.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
     }
@@ -455,9 +480,10 @@ class Filters extends Component {
                 alert(res.data.message);
             }
             else {
-                this.setState({
-                    courses: res.data.data.map(course => {return {value: course.Id, label: course.Name}}),
-                })
+                let newState = this.state;
+                newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.courses.unshift({value: "", label: " "})
+                this.setState(newState);
             }
         })
 
@@ -498,7 +524,7 @@ class Filters extends Component {
                                 defaultValue={this.state.selectedudp}/>
 
                 <ComboDropdown  label="Εξάμηνο"
-                                placeholder=""
+                                placeholder=" "
                                 options={this.state.semesters} 
                                 onChange={this.getCoursesBySemester} />
 
@@ -649,13 +675,31 @@ function Textbook(props) {
         className += " Chosen";
         chosen = true;
     }
+
     return (
         <div className={className}>
             <h3>{props.data.t.Name}</h3>
-            <p className="Writer">{props.data.t.Writer}</p>
-            <p>{props.data.t.Date_Published.split('-')[0]}</p>
-            <p>{"ISBN: " + props.data.t.ISBN}</p>
-            <p>{props.data.p.Name}</p>
+            <div>
+                <div className="TextbookInfo">
+                    
+                    <p className="Writer">{props.data.t.Writer}</p>
+                    <p>{props.data.t.Date_Published.split('-')[0]}</p>
+                    <p>{"ISBN: " + props.data.t.ISBN}</p>
+                    <p>{props.data.p.Name}</p>
+
+                </div>
+
+                {/* <div className="TextbookInfo">
+                    <p className="Writer">{props.data.dp.Name}</p>
+                    <p>{props.data.a.Street_Name} {props.data.a.Street_Number}, {props.data.a.City} {props.data.a.ZipCode}</p>
+                    <p>{props.data.dp.Phone}</p>
+                    <p>{props.data.dp.Working_Hours}</p>
+
+                </div> */}
+            </div>
+            
+            
+ 
             {chosen ? 
             <button className="RemoveButton" onClick={() => { props.remover(props.data)}}>
                 Διαγραφή
@@ -668,34 +712,108 @@ function Textbook(props) {
     );
 }
 
+
+export function TextbookPopup(props) {
+    const tb = props.data;
+    const title = tb.taht && tb.taht.Taken ? "Το σύγγραμμα αυτό έχει ήδη παρθεί ή η προθεσμία έχει λήξει" : null
+
+    const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
+    const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
+    const disabled = tb.taht && tb.taht.Taken;
+
+    return (
+        <Popup 
+            className = "TextbookPopup"
+            trigger = { open => (
+                <div title={title} className={open ? `TextbookPopupButton Open ${props.className}` : `TextbookPopupButton Closed ${props.className}`}>
+                    <p className="BasketPopupEntryName">{tb.t.Name}</p>
+                    <p className="BasketPopupEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
+                </div>
+            )}
+            closeOnDocumentClick
+            on="hover"
+            position="left center"
+            arrow={true}
+        >
+            <div className="TextbookPopupContent">
+                <h3>{tb.t.Name}</h3>
+
+                <div className="line"/> 
+
+                <div className="AllContent">
+                    <div className="Info Content">  
+                        <h4>Στοιχεία</h4>  
+                        <p>{tb.t.Writer}</p>
+                        <p>{tb.t.Date_Published.split('-')[0]}</p>
+                        <p>ISBN: {tb.t.ISBN}</p>
+                        <p>{tb.p.Name}</p>
+                    </div>
+                        
+                    <div onClick={() => {
+                        var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                        ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
+                        win.focus();
+                    }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                        <h4>Σημείο Διανομής</h4>
+                        <p>{tb.dp.Name}</p>
+                        <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
+                        <p>{tb.dp.Phone}</p>
+                        <p>{tb.dp.Working_Hours}</p>
+                        <p>{tb.dpht.Copies + " Αντίτυπα"}</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </Popup>
+    )
+}
+
+
+
 class Basket extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        const items = this.props.data.map( (tb, index) => {
-            const even = index % 2 === 0 ? "Even": "Odd"
+        let items;
+        if (this.props.data)
+            items = this.props.data.map( (tb, index) => {
+                const even = index % 2 === 0 ? "Even": "Odd"
 
-            const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
-            const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
-            const disabled = tb.taht && tb.taht.Taken;
+                const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
+                const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
+                const disabled = tb.taht && tb.taht.Taken;
 
-            return (
-                <div key={tb.c.Id} className={`BasketEntry ${even}`}>
-                    <div>
-                        <p className="BasketEntryName">{tb.t.Name}</p>
-                        <p className="BasketEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
+                return (
+                    <div key={tb.c.Id} className={`BasketEntry ${even}`}>
+                        <TextbookPopup className={`BasketPopupEntry ${even}`} data={tb} onClick={() => {this.props.Remove(tb)}}/>
+                        <button title={buttonTitle} className={buttonClass} onClick={() => {this.props.Remove(tb)}} disabled={disabled}>
+                            <img src={deleteimg}/>
+                        </button>
                     </div>
-                    <button title={buttonTitle} className={buttonClass} onClick={() => {this.props.Remove(tb)}} disabled={disabled}>
-                        <img src={deleteimg}/>
-                    </button>
-                </div>
-            )
-        })
+                    
+                )
+
+                return (
+                    <div key={tb.c.Id} className={`BasketEntry ${even}`}>
+                        <div>
+                            <p className="BasketEntryName">{tb.t.Name}</p>
+                            <p className="BasketEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
+                        </div>
+                        <button title={buttonTitle} className={buttonClass} onClick={() => {this.props.Remove(tb)}} disabled={disabled}>
+                            <img src={deleteimg}/>
+                        </button>
+                    </div>
+                )
+            })
+        else {
+            items = null;
+        }
 
         return (
-            items.length ?
+            items && items.length ?
 
                 <div className="Basket">
                     <h3>Επιλεγμένα Συγγράμματα</h3>
