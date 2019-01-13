@@ -147,7 +147,7 @@ function searchTextbooks(req, res) {
 
         if (filters.udp) wheres.push(`udp.Id = ${filters.udp}`)
 
-        if (filters.course) wheres.push(`(c.Id = ${filters.course} XOR c.Name Like %'${filters.course}%')`)
+        if (filters.course) wheres.push(`(c.Id = ${filters.course} XOR c.Name Like '%${filters.course}%')`)
     }
 
     if (filters.keywords) {
