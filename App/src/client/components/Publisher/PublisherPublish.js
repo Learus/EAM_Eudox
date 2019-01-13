@@ -209,13 +209,13 @@ export default class PublisherPublish extends Component {
             this.setState({isbnError: ""});
 
         // Date
-        
+        console.log(`${moment(Date(this.state.date)).format("YYYY-MM-DD")} ${moment(Date.now()).format("YYYY-MM-DD")}`)
         if(this.state.date === null)
         {
             this.setState({ dateError: "Αυτό το πεδίο είναι υποχρεωτικό" });
             shouldPost = false;
         }
-        else if(Date(this.state.date) > moment(Date.now()).format("YYYY-MM-DD"))
+        else if(moment(Date(this.state.date)).format("YYYY-MM-DD") > moment(Date.now()).format("YYYY-MM-DD"))
         {
             this.setState({ dateError: "Δεν γίνεται να βάλετε μελλοντική ημερομηνία στο πεδίο \"Hμερομηνία έκδοσης\"" });
             shouldPost = false;
@@ -226,7 +226,7 @@ export default class PublisherPublish extends Component {
         // Publisher
 
         // Price
-
+        
         if(this.state.price === null)
         {
             this.setState({ priceError: "Αυτό το πεδίο είναι υποχρεωτικό" });
