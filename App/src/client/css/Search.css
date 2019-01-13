@@ -111,6 +111,10 @@
     box-shadow: 1px 1px 5px black;
 }
 
+.LoadingGif {
+    margin: 200px auto;
+}
+
 .SearchDisplay {
     margin: 40px 100px;
     background-color: rgb(238, 238, 238) !important;

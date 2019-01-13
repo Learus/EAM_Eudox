@@ -9,6 +9,7 @@ import {browserHistory} from 'react-router'
 import {SimpleDropdown, ComboDropdown, UltraComboDropdown} from './Utilities';
 import FormTextInput from './Utilities'
 import Header from './Header'
+import ReactLoading from 'react-loading';
 
 export default class Search extends Component {
     constructor(props) {
@@ -18,7 +19,8 @@ export default class Search extends Component {
 
         this.state = {
             active: choices[parseInt(this.props.params.active)],
-            data: null
+            data: null,
+            loading: false
         }
 
         autoBind(this);
@@ -56,7 +58,7 @@ export default class Search extends Component {
         let actionList = null;
         switch(this.state.active) {
             case "Textbook" : 
-                actionList = <TextbookSearch return={this.retrieveData}/>;
+                actionList = <TextbookSearch return={this.retrieveData} loading={() => {this.setState({loading: !this.state.loading})}}/>;
                 break;
             case "Publisher" : 
                 actionList = <PublisherSearch return={this.retrieveData}/>;
@@ -81,16 +83,20 @@ export default class Search extends Component {
 
                 </div>
                 
-                <Main data={this.state.data}/>
+                <Main data={this.state.data} loading={this.state.loading}/>
             </div>
         )
     }
 }
 
 function Main(props) {
+    console.log(props)
     let display;
-    if (!props.data) {
+    if (!props.data && !props.loading) {
         display = null;
+    }
+    else if(!props.data && props.loading) {
+        display = <ReactLoading className="LoadingGif" color="#6495ed" type="spin" width="150px" height="150px"/>
     }
     else {
         if (props.data.length === 0) {
@@ -316,11 +322,9 @@ class TextbookSearch extends Component {
         }
 
 
-
-        this.setState({
-            searching: true
-        })
-
+        this.props.loading();
+        this.props.return(null);
+       
         axios.post('/api/searchTextbooks', send)
         .then(res => {
             if (res.data.error) {
@@ -340,9 +344,8 @@ class TextbookSearch extends Component {
                 }, () => {this.props.return(this.state.data)})
                 
             }
-            this.setState({
-                searching: false
-            })
+            
+            this.props.loading();
         })
         
     }
@@ -543,6 +546,9 @@ class PublisherSearch extends Component {
 
         console.log(send);
 
+        this.props.loading();
+        this.props.return(null);
+
         axios.post('/api/searchPublishers', send)
         .then(res => {
             if (res.data.error) {
@@ -558,7 +564,11 @@ class PublisherSearch extends Component {
                         return <PublisherSearchDisplay key={pub.p.Username} data={pub}/>
                     })
                 }, () => {this.props.return(this.state.data)})
+
+                
             }
+
+            this.props.loading()
         })
     }
 
@@ -704,6 +714,9 @@ class DistributorSearch extends Component {
 
         console.log(send);
 
+        this.props.loading();
+        this.props.return(null);
+
         axios.post('/api/searchDistributors', send)
         .then(res => {
             if (res.data.error) {
@@ -721,6 +734,8 @@ class DistributorSearch extends Component {
                     })
                 }, () => {this.props.return(this.state.data)})
             }
+
+            this.props.loading();
         })
     }
 
