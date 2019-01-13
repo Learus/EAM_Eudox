@@ -61,10 +61,10 @@ export default class Search extends Component {
                 actionList = <TextbookSearch return={this.retrieveData} loading={() => {this.setState({loading: !this.state.loading})}}/>;
                 break;
             case "Publisher" : 
-                actionList = <PublisherSearch return={this.retrieveData}/>;
+                actionList = <PublisherSearch return={this.retrieveData} loading={() => {this.setState({loading: !this.state.loading})}}/>;
                 break;
             case "Distributor" : 
-                actionList = <DistributorSearch return={this.retrieveData}/>;
+                actionList = <DistributorSearch return={this.retrieveData} loading={() => {this.setState({loading: !this.state.loading})}}/>;
                 break;
 
         }
