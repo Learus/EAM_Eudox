@@ -95,10 +95,10 @@ export default class ApplicationManager extends Component {
 
     Search(filters) {
         filters = {
-            university: filters.selecteduni,
-            udp: filters.selectedudp,
-            course: filters.selectedcourse,
-            semester: filters.selectedsemester
+            university: filters.selecteduni.value,
+            udp: filters.selectedudp.value,
+            course: filters.selectedcourse.value,
+            semester: filters.selectedsemester.value
         }
 
         let searchType = null;
@@ -309,16 +309,16 @@ class Filters extends Component {
 
         this.state = {
             universities: [],
-            selecteduni: null,
+            selecteduni: {value: null,label: null},
 
             udp: [],
-            selectedudp: null,
+            selectedudp: {value: null,label: null},
 
             courses: [],
-            selectedcourse: null,
+            selectedcourse: {value: null,label: null},
 
             semesters: [],
-            selectedsemester: null
+            selectedsemester: {value: null,label: null}
         };
 
         autoBind(this);
@@ -343,8 +343,8 @@ class Filters extends Component {
             else {
                 let newState = this.state;
                 newState.universities = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
-                newState.universities.unshift({value: "", label: " "})
-                newState.selecteduni = null;
+                newState.universities.unshift({value: null,label: null})
+                // newState.selecteduni = {value: null,label: null};
                 newState.udp = [];
                 this.setState(newState);
             }
@@ -355,21 +355,21 @@ class Filters extends Component {
 
     getDepartments(event) {
         this.setState({
-            selecteduni: event.value
+            selecteduni: event
         });
 
-        if (event.value === '') {
+        if (!event.value) {
             this.setState({
-                selecteduni: null,
+                selecteduni: {value: null,label: null},
 
                 udp: [],
-                selectedudp: null,
+                selectedudp: {value: null,label: null},
 
                 courses: [],
-                selectedcourse: null,
+                selectedcourse: {value: null,label: null},
 
                 semesters: [],
-                selectedsemester: null
+                selectedsemester: {value: null,label: null}
             })
             return;
         };
@@ -384,7 +384,7 @@ class Filters extends Component {
             else {
                 let newState = this.state;
                 newState.udp = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
-                newState.udp.unshift({value: "", label: " "})
+                newState.udp.unshift({value: "",label: null})
                 this.setState(newState);
             }
         })
@@ -392,18 +392,18 @@ class Filters extends Component {
 
     getSemesters(event) {
         this.setState({
-            selectedudp: event.value
+            selectedudp: event
         });
 
-        if (event.value === '') {
+        if (!event.value) {
             this.setState({
-                selectedudp: null,
+                selectedudp: {value: null,label: null},
 
                 courses: [],
-                selectedcourse: null,
+                selectedcourse: {value: null,label: null},
 
                 semesters: [],
-                selectedsemester: null
+                selectedsemester: {value: null,label: null}
             })
             return;
         };
@@ -418,26 +418,27 @@ class Filters extends Component {
             else {
                 let newState = this.state;
                 newState.semesters = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
-                newState.semesters.unshift({value: "", label: " "})
+                newState.semesters.unshift({value: "",label: null})
                 this.setState(newState);
             }
         })
     }
 
     getCourses(event) {
+        console.log(event)
         this.setState({
-            selectedudp: event.value
+            selectedudp: event
         });
 
-        if (event.value === '') {
+        if (!event.value) {
             this.setState({
-                selectedudp: null,
+                selectedudp: {value: null,label: null},
 
                 courses: [],
-                selectedcourse: null,
+                selectedcourse: {value: null,label: null},
 
                 semesters: [],
-                selectedsemester: null
+                selectedsemester: {value: null,label: null}
             })
             return;
         };
@@ -452,7 +453,7 @@ class Filters extends Component {
             else {
                 let newState = this.state;
                 newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
-                newState.courses.unshift({value: "", label: " "})
+                newState.courses.unshift({value: null,label: null})
                 this.setState(newState);
             }
         })
@@ -460,18 +461,19 @@ class Filters extends Component {
 
     getCoursesBySemester(event) {
         this.setState({
-            selectedsemester: event.value
+            selectedsemester: event
         });
 
-        if (event.value === '') {
+        if (!event.value) {
             this.setState({
-                selectedsemester: null
+                selectedsemester: {value: null,label: null},
+                selectedcourse: {value: null,label: null}
             })
-            return this.getCourses({target: {value: this.state.selectedudp}});
+            return this.getCourses(this.state.selectedudp);
         }
 
         axios.post('/api/getCourses/Semesters', {
-            udp: this.state.selectedudp,
+            udp: this.state.selectedudp.value,
             semester: event.value
         })
         .then(res => {
@@ -481,7 +483,8 @@ class Filters extends Component {
             else {
                 let newState = this.state;
                 newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
-                newState.courses.unshift({value: "", label: " "})
+                newState.courses.unshift({value: null,label: null});
+                newState.selectedcourse = {value: null, label: null}
                 this.setState(newState);
             }
         })
@@ -490,7 +493,7 @@ class Filters extends Component {
 
     handleCourse(event) {
         this.setState({
-            selectedcourse: event.value
+            selectedcourse: event
         })
     }
 
@@ -514,23 +517,25 @@ class Filters extends Component {
                                 placeholder=""
                                 options={this.state.universities} 
                                 onChange={this.getDepartments} 
-                                defaultValue={this.state.selecteduni}/>
+                                value={this.state.selecteduni}/>
 
                 <ComboDropdown  label="Τμήμα"
                                 placeholder=""
                                 options={this.state.udp} 
                                 onChange={(event) => {this.getCourses(event); this.getSemesters(event);}} 
-                                defaultValue={this.state.selectedudp}/>
+                                value={this.state.selectedudp}/>
 
                 <ComboDropdown  label="Εξάμηνο"
                                 placeholder=" "
                                 options={this.state.semesters} 
-                                onChange={this.getCoursesBySemester} />
+                                onChange={this.getCoursesBySemester}
+                                value={this.state.selectedsemester} />
 
                 <ComboDropdown  label="Μάθημα"
                                 placeholder=""
                                 options={this.state.courses} 
-                                onChange={this.handleCourse} />
+                                onChange={this.handleCourse}
+                                value={this.state.selectedcourse} />
 
                 <label className="SearchBar">
                     <p>&nbsp;</p>

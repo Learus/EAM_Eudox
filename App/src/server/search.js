@@ -444,7 +444,7 @@ function searchDistributors(req, res) {
 
     if (filters.city) query += `and a.City Like '%${filters.city}%' `
 
-    query += 'group by dp.Owner'
+    // query += 'group by dp.Owner'
 
     const options = {
         sql: query,

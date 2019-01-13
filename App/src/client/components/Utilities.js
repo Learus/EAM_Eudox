@@ -85,7 +85,8 @@ export function ComboDropdown(props) {
                     placeholder={props.placeholder ? props.placeholder : "Επιλέξτε ή Γράψτε..."}
                     isMulti={props.isMulti}
                     className={"ComboDropdown " + props.className}
-                    classNamePrefix="ComboDropdown" />
+                    classNamePrefix="ComboDropdown"
+                    value={props.value} />
         </div>
     )
 }
@@ -101,7 +102,8 @@ export function UltraComboDropdown(props) {
                     placeholder={props.placeholder ? props.placeholder : "Επιλέξτε ή Γράψτε..."}
                     isMulti={props.isMulti}
                     className={"ComboDropdown " + props.className}
-                    classNamePrefix="ComboDropdown" />
+                    classNamePrefix="ComboDropdown"
+                    value={props.value} />
         </div>
     )
 }

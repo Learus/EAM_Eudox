@@ -4,10 +4,12 @@ import axios from 'axios';
 import "../css/Search.css";
 
 import {browserHistory} from 'react-router'
+// import loadinggif from "../images/Loading_icon.gif"
 
 import {SimpleDropdown, ComboDropdown, UltraComboDropdown} from './Utilities';
 import FormTextInput from './Utilities'
 import Header from './Header'
+import ReactLoading from 'react-loading';
 
 export default class Search extends Component {
     constructor(props) {
@@ -87,10 +89,22 @@ export default class Search extends Component {
 }
 
 function Main(props) {
+    let display;
+    if (!props.data) {
+        display = null;
+    }
+    else {
+        if (props.data.length === 0) {
+            display = <h3 className="EmptyResults">Η Αναζήτησή σας δεν έφερε αποτελέσματα...</h3>;
+        }
+        else {
+            display = props.data;
+        }
+    }
 
     return (
         <div className="Main">
-            {props.data}
+            {display}
         </div>
     )
 }
@@ -110,7 +124,8 @@ class TextbookSearch extends Component {
             keywords: [],
             publishers: [],
             distributors: [],
-            courses: []
+            courses: [],
+            searching: false
         }
         autoBind(this);
     }
@@ -126,7 +141,7 @@ class TextbookSearch extends Component {
                 
                 newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
                 if (key !== "keywords")
-                    newState[key].unshift({value: "", label: " "})
+                    newState[key].unshift({value: null,label: null})
                 this.setState(newState);
             }
         })
@@ -151,9 +166,8 @@ class TextbookSearch extends Component {
             else {
                 let newState = {};
                 newState.universities = res.data.data.map(uni => {return {value: uni.Id.toString(), label: uni.Name}});
-                newState.universities.unshift( {value: "", label: " "} );
-                // this.getOptions('api/getAllDepartments', 'udp')
-                newState.selecteduni = null;
+                newState.universities.unshift( {value: null,label: null} );
+                newState.selecteduni = {value: null, label: null};
                 this.setState (newState);
             }
         })
@@ -161,11 +175,15 @@ class TextbookSearch extends Component {
 
     getDepartments(event) {
         this.setState({
-            selecteduni: event.value
+            selecteduni: event
         });
 
         if (!event.value || event.value === '') {
             this.getOptions('/api/getAllDepartments', "udp");
+            this.setState({
+                selectedudp: {value: null,label: null},
+                selectedcourse: {value: null, label: null}
+            })
             return;
         }
 
@@ -179,60 +197,48 @@ class TextbookSearch extends Component {
             else {
                 let newState = {};
                 newState.udp = res.data.data.map(udp => {return {value: udp.Id.toString(), label: udp.Name}});
-                newState.udp.unshift( {value: "", label: " "} );
-                newState.selectedudp = null;
+                newState.udp.unshift( {value: null,label: null} );
+                newState.selectedudp = {value: null,label: null};
+                newState.selectedcourse = {value: null,label: null};
                 this.setState (newState);
             }
         })
     }
 
     hname(event) {
-        this.setState({selectedname: event.value});
+        this.setState({selectedname: event});
     }
 
     hwriter(event) {
-        this.setState({selectedwriter: event.value});
+        this.setState({selectedwriter: event});
     }
 
     hisbn(event) {
-        this.setState({selectedisbn: event.value});
+        this.setState({selectedisbn: event});
     }
 
     hkeyword(event) {
-        this.setState({selectedkeywords: event.map(word => {return word.value})});
+        this.setState({selectedkeywords: event.map(word => {return word})});
     }
 
     hpublisher(event) {
-        this.setState({selectedpublisher: event.value});
+        this.setState({selectedpublisher: event});
     }
 
     hdistributor(event) {
-        this.setState({selecteddistributor: event.value});
-    }
-
-    huniversity(event) {
-        this.setState({selecteduni: event.value});
-
-        if (event.value === '') {
-            this.getOptions('/api/getAllDepartments', "udp");
-            this.setState({
-                selectedudp: null,
-                selecteduni: null,
-            })
-            return;
-        };
+        this.setState({selecteddistributor: event});
     }
 
     hudp(event) {
         this.setState({
-            selectedudp: event.value
+            selectedudp: event
         });
 
-        if (event.value === '') {
+        if (!event.value) {
             this.getOptions('/api/getAllCourses', "courses");
             this.setState({
-                selectedudp: null,
-                selectedcourse: null,
+                selectedudp: {value: null,label: null},
+                selectedcourse: {value: null,label: null},
             })
             return;
         };
@@ -245,44 +251,48 @@ class TextbookSearch extends Component {
                 alert(res.data.message);
             }
             else {
-                this.setState({
-                    courses: res.data.data.map(course => {return {value: course.Id.toString(), label: course.Name}}),
-                })
+                let newState = this.state;
+                newState.courses = res.data.data.map(course => {return {value: course.Id.toString(), label: course.Name}});
+                newState.courses.unshift({value: null,label: null});
+                newState.selectedcourse = {value: null,label: null};
+                this.setState(newState);
             }
         })
     }
 
     hcourse(event) {
-        this.setState({selectedcourse: event.value});
+        this.setState({selectedcourse: event});
     }
 
     Search() {
         const send = {};
 
-        if (this.state.selectedname && this.state.selectedname !== '') send.name = this.state.selectedname;
+        if (this.state.selectedname && this.state.selectedname.value) send.name = this.state.selectedname.value;
 
-        if (this.state.selectedwriter && this.state.selectedwriter !== '') send.writer = this.state.selectedwriter;
+        if (this.state.selectedwriter && this.state.selectedwriter.value) send.writer = this.state.selectedwriter.value;
 
-        if (this.state.selectedisbn && this.state.selectedisbn !== '') send.isbn = parseInt(this.state.selectedisbn);
+        if (this.state.selectedisbn && this.state.selectedisbn.value) send.isbn = parseInt(this.state.selectedisbn.value);
 
-        if (this.state.selectedpublisher && this.state.selectedpublisher !== '') send.publisher = this.state.selectedpublisher;
+        if (this.state.selectedpublisher && this.state.selectedpublisher.value) send.publisher = this.state.selectedpublisher.value;
 
-        if (this.state.selecteddistributor && this.state.selecteddistributor !== '') {
+        if (this.state.selecteddistributor && this.state.selecteddistributor.value) {
             // if Distributor is a new "keyword"
-            if (isNaN(parseInt(this.state.selecteddistributor)))
-                send.distributor = this.state.selecteddistributor;
+            if (isNaN(parseInt(this.state.selecteddistributor.value)))
+                send.distributor = this.state.selecteddistributor.value;
             else 
-                send.distributor = parseInt(this.state.selecteddistributor);
+                send.distributor = parseInt(this.state.selecteddistributor.value);
         }
 
         if (this.state.selectedkeywords && this.state.selectedkeywords.length !== 0) {
+            console.log(this.state.selectedkeywords)
             send.keywords = [];
 
             for (let i = 0; i < this.state.selectedkeywords.length; i++) {
-                const word = this.state.selectedkeywords[i];
+                const word = this.state.selectedkeywords[i].value;
+				console.log("​Search -> word", word)
 
                 // if keyword does not exist
-                if (word === '') continue
+                if (!word || word === '') continue
                 if (isNaN(parseInt(word))) {
                     send.keywords.push(word);
                 }
@@ -290,43 +300,51 @@ class TextbookSearch extends Component {
                     send.keywords.push(parseInt(word));
                 }
             }
-            send.keywords = this.state.selectedkeywords;
+
+            console.log(send.keywords)
         }
 
-        if (this.state.selecteduni && this.state.selecteduni !== '') send.uni = this.state.selecteduni;
+        if (this.state.selecteduni && this.state.selecteduni.value) send.uni = this.state.selecteduni.value;
 
-        if (this.state.selectedudp && this.state.selectedudp !== '') send.udp = this.state.selectedudp;
+        if (this.state.selectedudp && this.state.selectedudp.value) send.udp = this.state.selectedudp.value;
 
-        if (this.state.selectedcourse && this.state.selectedcourse !== ''){
+        if (this.state.selectedcourse && this.state.selectedcourse.value){
             // if course is a new "keyword"
-            if (isNaN(parseInt(this.state.selectedcourse)))
-                send.course = this.state.selectedcourse;
+            if (isNaN(parseInt(this.state.selectedcourse.value)))
+                send.course = this.state.selectedcourse.value;
             else 
-                send.course = parseInt(this.state.selectedcourse);
+                send.course = parseInt(this.state.selectedcourse.value);
         }
 
 
 
-        if (Object.keys(send).length !== 0) {
-            console.log("​TextbookSearch -> Search -> send", send)
+        this.setState({
+            searching: true
+        })
 
-            axios.post('/api/searchTextbooks', send)
-            .then(res => {
-                if (res.data.error) {
-                    console.error(res.data.message);
-                }
-                else {
-                    console.log(res.data.data)
-                    
-                    this.setState({
-                        data: res.data.data.map(tb => {
-                            return <TextbookSearchDisplay key={tb.t.Id} data={tb}/>
-                        })
-                    }, () => {this.props.return(this.state.data)})
-                    
-                }
+        axios.post('/api/searchTextbooks', send)
+        .then(res => {
+            if (res.data.error) {
+                console.error(res.data.message);
+
+                this.setState({
+                    data: []
+                }, () => {this.props.return(this.state.data)})
+            }
+            else {
+                console.log(res.data.data)
+                
+                this.setState({
+                    data: res.data.data.map(tb => {
+                        return <TextbookSearchDisplay key={tb.t.Id} data={tb}/>
+                    })
+                }, () => {this.props.return(this.state.data)})
+                
+            }
+            this.setState({
+                searching: false
             })
-        }
+        })
         
     }
 
@@ -340,56 +358,65 @@ class TextbookSearch extends Component {
                                     // placeholder="Η Μηχανική και Εγώ, C++"
                                     options={this.state.names} 
                                     onChange={this.hname} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selectedname}/>
 
                     <UltraComboDropdown  label="Λέξεις Κλειδιά"      
                                     // placeholder="Μηχανική, Φρόυντ, Γλώσσα"
                                     options={this.state.keywords} 
                                     onChange={this.hkeyword} 
                                     isMulti={true}
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selectedkeywords}/>
 
                     <UltraComboDropdown  label="Συγγραφέας"      
                                     // placeholder="Ιωάννης Ιωάννου, Δρακονταειδής, Τριβιζ"
                                     options={this.state.writers} 
                                     onChange={this.hwriter} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selectedwriter}/>
 
                     <ComboDropdown  label="ISBN"      
                                     // placeholder="1234567890123, 6547"
                                     options={this.state.isbns} 
                                     onChange={this.hisbn} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selectedisbn}/>
 
                     <ComboDropdown  label="Εκδότης"      
                                     // placeholder="Εκδόσεις Κνωσσός, Κνωσσός"
                                     options={this.state.publishers} 
                                     onChange={this.hpublisher} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selectedpublisher}/>
 
                     <UltraComboDropdown  label="Σημείο Διανομής"      
                                     // placeholder="Κνωσσός, Βιβλιοπωλείο Ο Λάμπρος"
                                     options={this.state.distributors} 
                                     onChange={this.hdistributor} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selecteddistributor}/>
 
                     <ComboDropdown  label="Πανεπιστήμιο"      
                                     // placeholder=""
                                     options={this.state.universities} 
                                     onChange={this.getDepartments} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selecteduni}/>
 
                     <ComboDropdown  label="Τμήμα"
                                     // placeholder=""
                                     options={this.state.udp} 
                                     onChange={this.hudp} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selectedudp}/>
 
                     <UltraComboDropdown  label="Μάθημα"
                                     // placeholder=""
                                     options={this.state.courses} 
                                     onChange={this.hcourse} 
-                                    defaultValue=''/>
+                                    defaultValue=''
+                                    value={this.state.selectedcourse}/>
                 </div>
 
                 <button className="SearchButton Textbook" onClick={this.Search}>
@@ -468,7 +495,7 @@ class PublisherSearch extends Component {
                 console.log(res.data.data)
                 let newState = this.state;
                 newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
-                newState[key].unshift({value: "", label: " "})
+                newState[key].unshift({value: null,label: null})
                 this.setState(newState);
             }
         })
@@ -519,9 +546,13 @@ class PublisherSearch extends Component {
 
         axios.post('/api/searchPublishers', send)
         .then(res => {
-            if (res.data.error)
+            if (res.data.error) {
                 console.error(res.data.message);
 
+                this.setState({
+                    data: []
+                }, () => {this.props.return(this.state.data)})
+            }
             else {
                 this.setState({
                     data: res.data.data.map(pub => {
@@ -625,7 +656,7 @@ class DistributorSearch extends Component {
             else {
                 let newState = this.state;
                 newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
-                newState[key].unshift({value: "", label: " "})
+                newState[key].unshift({value: null,label: null})
                 this.setState(newState);
             }
         })
@@ -676,8 +707,13 @@ class DistributorSearch extends Component {
 
         axios.post('/api/searchDistributors', send)
         .then(res => {
-            if (res.data.error)
+            if (res.data.error) {
                 console.error(res.data.message);
+
+                this.setState({
+                    data: []
+                }, () => {this.props.return(this.state.data)})
+            }
 
             else {
                 this.setState({
