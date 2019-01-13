@@ -23,7 +23,7 @@
 
 .ApplicationManager > h1 {
     color: rgb(63, 118, 190);;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-weight: 400;
     text-align: left;
     margin-left: 20px;
@@ -67,7 +67,7 @@
     width: 99.9%;
 
     color: white;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
     /* margin: 5px; */
@@ -114,7 +114,7 @@
     background-color: rgb(241, 241, 241);
 
     color: black;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
 
     height: 180px;
     width: calc(100% - 33px);
@@ -165,7 +165,7 @@
     padding: 15px;
 
     color: white;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
     cursor: pointer;
@@ -223,7 +223,7 @@
 .Filters > .SearchBar > p {
     margin: 10px auto;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
     color: rgb(63, 118, 190);;
@@ -266,7 +266,7 @@
     top: 200px;
     right: 100px;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     display: grid;
     grid-template-columns: 350px;
     text-align: left;
@@ -361,7 +361,7 @@
     padding: 15px;
 
     color: white;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 25px;
 
     cursor: pointer;

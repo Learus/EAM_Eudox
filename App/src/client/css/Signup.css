@@ -25,7 +25,7 @@
 
     color: white;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 20px;
 
     padding: 10px 20px;
@@ -41,11 +41,11 @@
 }
 
 .SignupChoices > div {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
 }
 
 #SignupLink, #LoginLink {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     cursor: pointer;
     color: cornflowerblue;
 }
@@ -72,7 +72,7 @@
 
     margin: 10px auto;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
 
