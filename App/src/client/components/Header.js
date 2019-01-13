@@ -170,8 +170,8 @@ function MenuOption(props) {
             trigger = { open => (
                 <button onClick={() => {
                     let path;
-                    if (props.prefix) path = `${props.prefix}/${meta.Actions.length - 1}`
-                    else path = `/actionpage/${props.type}/${meta.Actions.length - 1}`
+                    if (props.prefix) path = `${props.prefix}/${meta.Default}`
+                    else path = `/actionpage/${props.type}/${meta.Default}`
                     browserHistory.push(path)
             }} 
                 className={open ? "MenuOptionButton Open" : "MenuOptionButton Closed"}>
