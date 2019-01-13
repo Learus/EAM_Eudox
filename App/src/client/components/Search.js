@@ -140,7 +140,7 @@ class TextbookSearch extends Component {
                 
                 newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
                 if (key !== "keywords")
-                    newState[key].unshift({value: null,label: null})
+                    newState[key].unshift({value: '', label: ''})
                 this.setState(newState);
             }
         })
@@ -165,8 +165,8 @@ class TextbookSearch extends Component {
             else {
                 let newState = {};
                 newState.universities = res.data.data.map(uni => {return {value: uni.Id.toString(), label: uni.Name}});
-                newState.universities.unshift( {value: null,label: null} );
-                newState.selecteduni = {value: null, label: null};
+                newState.universities.unshift( {value: '', label: ''} );
+                newState.selecteduni = {value: '', label: ''};
                 this.setState (newState);
             }
         })
@@ -180,8 +180,8 @@ class TextbookSearch extends Component {
         if (!event.value || event.value === '') {
             this.getOptions('/api/getAllDepartments', "udp");
             this.setState({
-                selectedudp: {value: null,label: null},
-                selectedcourse: {value: null, label: null}
+                selectedudp: {value: '', label: ''},
+                selectedcourse: {value: '', label: ''}
             })
             return;
         }
@@ -196,9 +196,9 @@ class TextbookSearch extends Component {
             else {
                 let newState = {};
                 newState.udp = res.data.data.map(udp => {return {value: udp.Id.toString(), label: udp.Name}});
-                newState.udp.unshift( {value: null,label: null} );
-                newState.selectedudp = {value: null,label: null};
-                newState.selectedcourse = {value: null,label: null};
+                newState.udp.unshift( {value: '', label: ''} );
+                newState.selectedudp = {value: '', label: ''};
+                newState.selectedcourse = {value: '', label: ''};
                 this.setState (newState);
             }
         })
@@ -233,11 +233,11 @@ class TextbookSearch extends Component {
             selectedudp: event
         });
 
-        if (!event.value) {
+        if (event.value === '') {
             this.getOptions('/api/getAllCourses', "courses");
             this.setState({
-                selectedudp: {value: null,label: null},
-                selectedcourse: {value: null,label: null},
+                selectedudp: {value: '', label: ''},
+                selectedcourse: {value: '', label: ''},
             })
             return;
         };
@@ -252,8 +252,8 @@ class TextbookSearch extends Component {
             else {
                 let newState = this.state;
                 newState.courses = res.data.data.map(course => {return {value: course.Id.toString(), label: course.Name}});
-                newState.courses.unshift({value: null,label: null});
-                newState.selectedcourse = {value: null,label: null};
+                newState.courses.unshift({value: '', label: ''});
+                newState.selectedcourse = {value: '', label: ''};
                 this.setState(newState);
             }
         })
@@ -266,15 +266,15 @@ class TextbookSearch extends Component {
     Search() {
         const send = {};
 
-        if (this.state.selectedname && this.state.selectedname.value) send.name = this.state.selectedname.value;
+        if (this.state.selectedname && this.state.selectedname.value && this.state.selectedname.value !== '') send.name = this.state.selectedname.value;
 
-        if (this.state.selectedwriter && this.state.selectedwriter.value) send.writer = this.state.selectedwriter.value;
+        if (this.state.selectedwriter && this.state.selectedwriter.value && this.state.selectedwriter.value !== '') send.writer = this.state.selectedwriter.value;
 
-        if (this.state.selectedisbn && this.state.selectedisbn.value) send.isbn = parseInt(this.state.selectedisbn.value);
+        if (this.state.selectedisbn && this.state.selectedisbn.value && this.state.selectedisbn.value !== '') send.isbn = parseInt(this.state.selectedisbn.value);
 
-        if (this.state.selectedpublisher && this.state.selectedpublisher.value) send.publisher = this.state.selectedpublisher.value;
+        if (this.state.selectedpublisher && this.state.selectedpublisher.value && this.state.selectedpublisher.value !== '') send.publisher = this.state.selectedpublisher.value;
 
-        if (this.state.selecteddistributor && this.state.selecteddistributor.value) {
+        if (this.state.selecteddistributor && this.state.selecteddistributor.value && this.state.selecteddistributor.value !== '') {
             // if Distributor is a new "keyword"
             if (isNaN(parseInt(this.state.selecteddistributor.value)))
                 send.distributor = this.state.selecteddistributor.value;
@@ -303,11 +303,11 @@ class TextbookSearch extends Component {
             console.log(send.keywords)
         }
 
-        if (this.state.selecteduni && this.state.selecteduni.value) send.uni = this.state.selecteduni.value;
+        if (this.state.selecteduni && this.state.selecteduni.value && this.state.selecteduni.value !== '') send.uni = this.state.selecteduni.value;
 
-        if (this.state.selectedudp && this.state.selectedudp.value) send.udp = this.state.selectedudp.value;
+        if (this.state.selectedudp && this.state.selectedudp.value && this.state.selectedudp.value !== '') send.udp = this.state.selectedudp.value;
 
-        if (this.state.selectedcourse && this.state.selectedcourse.value){
+        if (this.state.selectedcourse && this.state.selectedcourse.value && this.state.selectedcourse.value !== ''){
             // if course is a new "keyword"
             if (isNaN(parseInt(this.state.selectedcourse.value)))
                 send.course = this.state.selectedcourse.value;
@@ -494,7 +494,7 @@ class PublisherSearch extends Component {
                 console.log(res.data.data)
                 let newState = this.state;
                 newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
-                newState[key].unshift({value: null,label: null})
+                newState[key].unshift({value: '', label: ''})
                 this.setState(newState);
             }
         })
@@ -655,7 +655,7 @@ class DistributorSearch extends Component {
             else {
                 let newState = this.state;
                 newState[key] = res.data.data.map(element => {return {value: element.Id.toString(), label: element.Name} })
-                newState[key].unshift({value: null,label: null})
+                newState[key].unshift({value: '', label: ''})
                 this.setState(newState);
             }
         })

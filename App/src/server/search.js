@@ -130,7 +130,13 @@ function searchTextbooks(req, res) {
 
     if (filters.isbn) wheres.push(`t.ISBN = ${filters.isbn}`)
 
-    if (filters.distributor) wheres.push(`(dp.Id = ${filters.distributor} XOR dp.Name Like '%${filters.distributor}%')`)
+    if (filters.distributor) {
+        if (isNaN(parseInt(filters.course)))
+            wheres.push(`dp.Name Like '%${filters.distributor}%')`)
+        else {
+            wheres.push(`dp.Id = ${filters.distributor}`)
+        }
+    }
 
     if (filters.publisher) wheres.push(`p.Username = '${filters.publisher}'`)
 
@@ -147,7 +153,13 @@ function searchTextbooks(req, res) {
 
         if (filters.udp) wheres.push(`udp.Id = ${filters.udp}`)
 
-        if (filters.course) wheres.push(`(c.Id = ${filters.course} XOR c.Name Like '%${filters.course}%')`)
+        if (filters.course) {
+            if (isNaN(parseInt(filters.course)))
+                wheres.push(`c.Name Like '%${filters.course}%)'`)
+            else {
+                wheres.push(`c.Id = ${filters.course}`)
+            }
+        } 
     }
 
     if (filters.keywords) {
@@ -166,7 +178,7 @@ function searchTextbooks(req, res) {
         query += `${tables[i]} `;
 
         if (i !== tables.length - 1) 
-            query += ', '
+            query += ', ';
     }
 
     query += 'Where '
@@ -174,7 +186,7 @@ function searchTextbooks(req, res) {
         query += `${wheres[i]} `;
 
         if (i !== wheres.length - 1) 
-            query += 'and '
+            query += ' and '
     }
 
     if (filters.keywords) {
@@ -183,29 +195,19 @@ function searchTextbooks(req, res) {
 
         let conds = [];
 
-        query += 'and k.Word = any ( Select Word from Keyword Where '
-        namechecks = ' or '
+        query += 'and ('
 
         for (let i = 0; i < filters.keywords.length; i++) {
             const word = filters.keywords[i]
 
-            if (isNaN(parseInt(word))) {
-                query += `Keyword.Word Like '%${word}%'`
-                namechecks += `t.Name Like '%${word}%'`
-            }
-            else {
-                query += `Keyword.Id = ${word}`
-            }
-
+            query += `k.Word Like '%${word}%' or t.Name Like '%${word}%'`
+                
             if (i !== filters.keywords.length - 1) {
                 query += ' or '
-                namechecks += ' or '
             }
         }
 
         query += ')'
-        query += namechecks;
-
 
         query += ' group by t.Id'
     }
