@@ -9,7 +9,6 @@ import {browserHistory} from 'react-router'
 import {SimpleDropdown, ComboDropdown, UltraComboDropdown} from './Utilities';
 import FormTextInput from './Utilities'
 import Header from './Header'
-import ReactLoading from 'react-loading';
 
 export default class Search extends Component {
     constructor(props) {
