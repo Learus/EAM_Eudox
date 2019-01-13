@@ -14,7 +14,7 @@
 
 .ActionContainer {
     grid-area: SideBar;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     text-decoration: none;
     height: 100%;
 }
@@ -119,7 +119,7 @@
 
 .Main h1 {
     color: rgb(63, 118, 190);;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-weight: 400;
     text-align: left;
     margin-left: 20px;
