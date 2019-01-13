@@ -56,6 +56,32 @@
     color: rgb(47, 175, 103)
 }
 
+.Secretary.H1 {
+    color: #FA3A5B;
+}
+
+.Secretary.Line {
+    background-color: #FA3A5B;
+}
+
+.SecretaryPresenter > h3 {
+    text-align: left;
+    color: #FA3A5B;
+}
+
+.Distributor.H1 {
+    color: #FF9933;
+}
+
+.Distributor.Line {
+    background-color: #FF9933;
+}
+
+.DistributorPresenter > h3 {
+    text-align: left;
+    color: #FF9933;
+}
+
 .DataPresenter {
     margin-bottom: 20px;
 }
@@ -122,6 +148,14 @@ p.Student {
     color: rgb(98, 138, 180);
 }
 
+p.Secretary {
+    color: #FA3A5B;
+}
+
+p.Distributor {
+    color: #FF9933;
+}
+
 .subPresenter.StudentPresenter > h3 {
     color: rgb(98, 138, 180);
 }
@@ -168,4 +202,20 @@ button.Student {
 
 button.Student:hover {
     background-color: rgb(79, 116, 184);
+}
+
+button.Secretary {
+    background-color: #FA3A5B;
+}
+
+button.Secretary:hover {
+    background-color: rgb(179, 41, 64);
+}
+
+button.Distributor {
+    background-color: #FF9933;
+}
+
+button.Distributor:hover {
+    background-color: rgb(201, 120, 39);
 }
