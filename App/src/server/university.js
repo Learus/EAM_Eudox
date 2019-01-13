@@ -124,6 +124,7 @@ function getCoursesBySemester(req, res) {
                     Where University_Department_id = ${dep} and Semester = ${sem}
                     Order By Semester ASC`;
 
+
     sql.query(query, function (err, rows, fields) {
         if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
