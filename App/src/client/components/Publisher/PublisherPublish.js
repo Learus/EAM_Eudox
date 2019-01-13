@@ -20,7 +20,7 @@ export default class PublisherPublish extends Component {
             title: "",
             writer: "",
             isbn: "",
-            date: null,
+            date: "",
             publisher: "",
             publicationNumber: null,
             price: null,
@@ -209,13 +209,13 @@ export default class PublisherPublish extends Component {
             this.setState({isbnError: ""});
 
         // Date
-
+        
         if(this.state.date === null)
         {
             this.setState({ dateError: "Αυτό το πεδίο είναι υποχρεωτικό" });
             shouldPost = false;
         }
-        else if(Date(this.state.date) > Date(Date.now()))
+        else if(Date(this.state.date) > moment(Date.now()).format("YYYY-MM-DD"))
         {
             this.setState({ dateError: "Δεν γίνεται να βάλετε μελλοντική ημερομηνία στο πεδίο \"Hμερομηνία έκδοσης\"" });
             shouldPost = false;
