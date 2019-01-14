@@ -5,7 +5,7 @@ import Actions from './Actions';
 import {Link, browserHistory} from 'react-router';
 import autoBind from 'react-autobind';
 import axios from 'axios';
-import { NotFoundSmall } from './NotFound';
+import NotFound, { NotFoundSmall } from './NotFound';
 
 export default class ActionPage extends Component {
 
@@ -21,7 +21,14 @@ export default class ActionPage extends Component {
         };
 
         if (!this.props.params.active) {
-            browserHistory.push(`/actionpage/${this.props.params.type}/${Actions[`${this.props.params.type}`].Default}`)
+            if (this.state.meta)
+                browserHistory.push(`/actionpage/${this.props.params.type}/${Actions[`${this.props.params.type}`].Default}`)
+            else
+                browserHistory.push(`/`);
+        }
+        else {
+            if (!this.state.meta)
+                browserHistory.push(`/`);
         }
         autoBind(this);
     }
@@ -65,6 +72,7 @@ export default class ActionPage extends Component {
 
 function Main(props) {
     // console.log(props)
+    if (!props.meta) return null;
     if(props.meta.Components[props.active])
         return (
             <div className="Main">
@@ -77,6 +85,7 @@ function Main(props) {
 }
 
 function ActionList(props) {
+    if (!props.meta) return null;
 
     const actions = props.meta.Actions.map( (action, index) => {
         return (

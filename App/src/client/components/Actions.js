@@ -21,13 +21,15 @@ export default {
         Actions: [
             "Δήλωση Συγγραμμάτων",
             "Προβολή Δηλώσεων",
+            "Ανταλλαγή Συγγραμμάτων",
             "Οδηγίες - Βοήθεια"
         ],
         Quicks: [0, 1, 2],
-        Default: 2,
+        Default: 3,
         Components: [
             (props) => {return <ApplicationManager login={props.login} loginHandler={props.loginHandler}/>},
             () => {return <StudentApplications/>},
+            () => {return <NotFoundSmall/>},
             () => {return <StudentHelp/>},
         ],
         Type: "Student"
