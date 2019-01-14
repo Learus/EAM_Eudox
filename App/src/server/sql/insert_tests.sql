@@ -1,16 +1,17 @@
 -- Universities - Departments --
+Use sdi1500084;
 
-Alter Table mydb.University AUTO_INCREMENT = 20000;
-Alter Table mydb.University_Department AUTO_INCREMENT = 30000;
-Alter Table mydb.Course AUTO_INCREMENT = 40000;
+Alter Table sdi1500084.University AUTO_INCREMENT = 20000;
+Alter Table sdi1500084.University_Department AUTO_INCREMENT = 30000;
+Alter Table sdi1500084.Course AUTO_INCREMENT = 40000;
 
-Insert into mydb.University (Name)
+Insert into sdi1500084.University (Name)
 Values ('Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών');
 
-Insert into mydb.University_Department (University_Id, Name)
+Insert into sdi1500084.University_Department (University_Id, Name)
 Values ( 20000, 'Μουσικών Σπουδών'), ( 20000, 'Πληροφορικής και Τηλεπικοινωνιών' ), ( 20000, 'Εφαρμοσμένων Μαθηματικών και Φυσικών Επιστημών' );
 
-Insert into mydb.Course (University_Department_Id, Name,  Semester, Professor_Name, Professor_Surname)
+Insert into sdi1500084.Course (University_Department_Id, Name,  Semester, Professor_Name, Professor_Surname)
 Values  (30000, 'Συνοπτική Ιστορία της Ευρωπαϊκής Μουσικής',        1, 'Ίρμγκαρντ',     'Λερχ'),
         (30000, 'Βυζαντινή Μουσικολογία',                           1, 'Αχιλλέας',      'Χαλδαιάκης'),
         (30000, 'Ηχοληψία για Σχολικές Μονάδες',                    4, 'Ιωάννης',       'Πεϊκίδης'),
@@ -29,13 +30,13 @@ Values  (30000, 'Συνοπτική Ιστορία της Ευρωπαϊκής �
         (30002, 'Άλγεβρα και Εφαρμογές',                            5, 'Φιλία',         'Βόντα'),
         (30002, 'Στοιχειώδη Σωματίδια 2',                           8, 'Αλέξανδρος',    'Γεωργακίλας');
 
-Insert into mydb.University (Name)
+Insert into sdi1500084.University (Name)
 Values ('Αριστοτέλειο Πανεπιστήμιο Θεσσαλονίκης');
 
-Insert into mydb.University_Department (University_Id, Name)
+Insert into sdi1500084.University_Department (University_Id, Name)
 Values ( 20001, 'Οικονομικών Επιστημών'), ( 20001, 'Κτηνιατρικής');
 
-Insert into mydb.Course (University_Department_Id, Name, Semester, Professor_Name, Professor_Surname)
+Insert into sdi1500084.Course (University_Department_Id, Name, Semester, Professor_Name, Professor_Surname)
 Values  (30003, 'Μικροοικονομική 1',                1, 'Ιωάννης',       'Βαρσακέλης'),
         (30003, 'Διοίκιση Επιχειρήσεων',            1, 'Αλέξανδρος',    'Διαμαντίδης'),
         (30003, 'Χρηματοοικονομική Λογιστική 1',    2, 'Γεώργιος',      'Παπαχρήστου'),
@@ -50,7 +51,7 @@ Values  (30003, 'Μικροοικονομική 1',                1, 'Ιωάν�
 
 -- Users --
 
-Insert into mydb.User (Username, Email, Password, Type, Last_Login)
+Insert into sdi1500084.User (Username, Email, Password, Type, Last_Login)
 Values  ('brewknight', 'jmaliaras@gmail.com', 'password', 'Student', NOW() ),
         ('panospan', 'panospan@gmail.com', 'eimaimikros', 'Student', NOW() ),
         ('knossos', 'knossos.pub@gmail.com', 'xoxlious', 'PublDist',  NOW() ),
@@ -65,33 +66,33 @@ Values  ('brewknight', 'jmaliaras@gmail.com', 'password', 'Student', NOW() ),
 
 
 
-Insert into mydb.Student (Username, Name, Surname, Phone, Student_Id, Personal_Id, University_Department_Id)
+Insert into sdi1500084.Student (Username, Name, Surname, Phone, Student_Id, Personal_Id, University_Department_Id)
 Values  ('brewknight', 'Ιωάννης', 'Μαλιάρας', '1234567890', '123456789012', 'ΑΒ123456', 30001),
         ('panospan', 'Παναγιώτης', 'Παναγόπουλος', '0987654321', '210987654321', 'ΒΑ654321', 30002);
 
 
-Insert into mydb.Secretary (Username, University_Department_Id)
+Insert into sdi1500084.Secretary (Username, University_Department_Id)
 Values  ('dituoa', 30001), ('semfeuoa', 30002), ('msduoa', 30000),
         ('ecostudauth', 30003), ('vetauth', 30004);
 
 
-Alter Table mydb.Address AUTO_INCREMENT 60000;
+Alter Table sdi1500084.Address AUTO_INCREMENT 60000;
 
-Insert into mydb.Address (City, ZipCode, Street_Name, Street_Number)
+Insert into sdi1500084.Address (City, ZipCode, Street_Name, Street_Number)
 Values  ('Αθήνα', '11253', 'Κνωσσόυ', '15'),
         ('Αθήνα', '10564', 'Πεσμαζόγλου', '12'),
         ('Αθήνα', '10564', 'Σταδίου', '54'),
         ('Αθήνα', '10564', 'Πανεπιστημίου', '132'),
         ('Αθήνα', '16345', 'Ρήγα Φεραίου', '5');
 
-Insert into mydb.Publisher (Username, Name, Phone, Address_Id)
+Insert into sdi1500084.Publisher (Username, Name, Phone, Address_Id)
 Values  ('knossos', 'Εκδόσεις Κνωσσός', '2109784651', 60000),
         ('kleidarithmos', 'Εκδόσεις Κλειδάριθμος', '2106457894', 60001);
 
 
-Alter Table mydb.Distribution_Point AUTO_INCREMENT 70000;
+Alter Table sdi1500084.Distribution_Point AUTO_INCREMENT 70000;
 
-Insert into mydb.Distribution_Point (Owner, Name, Address_Id, Phone, Working_Hours)
+Insert into sdi1500084.Distribution_Point (Owner, Name, Address_Id, Phone, Working_Hours)
 Values  ('knossos', "Εκδόσεις Κνωσσός", 60000, '2109784651', 'ΔΕ - ΠΑ: 09:00 - 20:00'),
         ('ianos', "Βιβλιοπωλείο Ιανός", 60002, '2109950995', 'ΔΕ - ΠΑ: 09:00 - 20:00'),
         ('papasotiriou', "Παπασωτηρίου Πανεπιστήμιο", 60003, '2106457978', 'ΔΕ - ΣΑ: 09:00 - 20:00'),
@@ -99,9 +100,9 @@ Values  ('knossos', "Εκδόσεις Κνωσσός", 60000, '2109784651', 'Δ�
 
 -- Textbooks --
 
-Alter Table mydb.Textbook AUTO_INCREMENT 80000;
+Alter Table sdi1500084.Textbook AUTO_INCREMENT 80000;
 
-Insert into mydb.Textbook (Publisher_Username, Name, Writer, Date_Published, Last_Edited, Date_Added, Price, ISBN, Issue_Number)
+Insert into sdi1500084.Textbook (Publisher_Username, Name, Writer, Date_Published, Last_Edited, Date_Added, Price, ISBN, Issue_Number)
 Values  ('knossos', 'Η Μηχανική και Εγώ', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567880, 1),
         ('kleidarithmos', 'Εισαγωγή στη Γλώσσα C', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 1234567881, 3),
         ('kleidarithmos', 'Λογικός Προγραμματισμός', 'Παναγιώτης Σταματόπουλος', NOW(), NOW(), NOW(), 78.80, 1234567882, 5),
@@ -118,7 +119,7 @@ Values  ('knossos', 'Η Μηχανική και Εγώ', 'Ιωάννης Ιωά�
         ('knossos', 'Η Μηχανική και Αυτοί', 'Ιωάννης Ιωάννου', NOW(), NOW(), NOW(), 52.34, 1234567893, 1),
         ('knossos', 'Οι κίνδυνοι των Social Media στη σύγχρονη εποχή', 'Κινδύνιος Δεισιδαίμων', NOW(), NOW(), NOW(), 100.00, 1234567894, 1);
 
-Insert into mydb.Course_has_Textbook (Course_Id, Textbook_Id)
+Insert into sdi1500084.Course_has_Textbook (Course_Id, Textbook_Id)
 Values  (40005, 80006), (40005, 80007), /*Αντικειμενοστραφής*/
         (40006, 80005), /*ΕΑΜ*/
         (40007, 80003), /*Δομες*/
@@ -127,13 +128,13 @@ Values  (40005, 80006), (40005, 80007), /*Αντικειμενοστραφής*/
         (40010, 80001), /*Εισαγωγη στον Προγραμματισμό*/
         (40011, 80004); /*Δομή και Θεσμοί*/
 
-Alter Table mydb.Keyword AUTO_INCREMENT 90000;
+Alter Table sdi1500084.Keyword AUTO_INCREMENT 90000;
 
-Insert into mydb.Keyword (Word)
+Insert into sdi1500084.Keyword (Word)
 Values  ('Προγραμματισμός'), ('C'), ('Γλώσσα'), ('Μηχανική'), ('Εγώ'), ('Φρόυντ'), ('Εμείς'), ('Εσύ'), ('Αυτοί'), 
         ('Social Media'), ('Social'), ('Media'), ('Κίνδυνοι'), ('Σύγχρονη Εποχή');
 
-Insert into mydb.Textbook_has_Keyword (Textbook_Id, Keyword_Id)
+Insert into sdi1500084.Textbook_has_Keyword (Textbook_Id, Keyword_Id)
 Values  (80000, 90003), (80012, 90003), (80013, 90003), (80011, 90003),
         (80000, 90004), (80000, 90005), (80001, 90000), (80001, 90001), 
         (80001, 90002), (80012, 90006), (80011, 90007), (80013, 90008), 
@@ -141,7 +142,7 @@ Values  (80000, 90003), (80012, 90003), (80013, 90003), (80011, 90003),
         (80014, 90013);
 
 
-Insert into mydb.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies)
+Insert into sdi1500084.Distribution_Point_has_Textbook (Distribution_Point_Id, Textbook_Id, Copies)
 Values  (70000, 80000, 500), (70002, 80001, 431), (70000, 80014, 1000),
         (70001, 80002, 300), (70001, 80003, 300), (70000, 80004, 300),
         (70002, 80005, 300), (70001, 80006, 300),
@@ -150,7 +151,7 @@ Values  (70000, 80000, 500), (70002, 80001, 431), (70000, 80014, 1000),
 
 -- Textbook Applications --
 
-Insert into mydb.Textbook_Application (Date, Is_Current, PIN, Status)
+Insert into sdi1500084.Textbook_Application (Date, Is_Current, PIN, Status)
 Values  ('2016-3-11', 0, '0000000000000001', 'Completed'),
         ('2016-10-11', 0, '0000000000000002', 'Completed'),
         ('2017-3-11', 0, '0000000000000003', 'Completed'),
@@ -161,14 +162,14 @@ Values  ('2016-3-11', 0, '0000000000000001', 'Completed'),
         ('2013-3-10', 0, '0000000000000005', 'Completed'),
         ('2014-3-10', 0, '0000000000000005', 'Completed');
 
-Insert into mydb.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id, Taken)
+Insert into sdi1500084.Textbook_Application_has_Textbook(Textbook_Application_Id, Textbook_Id, Taken)
 Values  (1, 80000, TRUE), (1, 80001, TRUE),
         (2, 80002, TRUE),
         (3, 80003, TRUE),
         (4, 80004, TRUE),
         (5, 80005, TRUE), (5, 80006, TRUE), (5, 80008, FALSE);
 
-Insert into mydb.Student_has_Textbook_Application(Textbook_Application_Id, Student_Username)
+Insert into sdi1500084.Student_has_Textbook_Application(Textbook_Application_Id, Student_Username)
 Values (1, 'brewknight'), (2, 'brewknight'), (3, 'brewknight'), (4, 'brewknight'), (5, 'brewknight'),
     (6, 'brewknight'),(7, 'brewknight'), (8, 'brewknight'), (9, 'brewknight');
 

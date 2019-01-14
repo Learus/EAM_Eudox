@@ -705,7 +705,7 @@ class StudentSignupForm extends Component {
                     className={this.props.fpersonalid !== '' ? 'wrong' : 'right'}
                     type = "text" 
                     label = 'Αριθμός Προσωπικής Ταυτότητας (Χωρίς κενά) *'
-                    placeholder="π.χ. ΑΒ 111111"
+                    placeholder="π.χ. ΑΒ123456"
                     onChange = {this.props.hpersonalid}/>
 
                 <ComboDropdown  label="Πανεπιστήμιο *"

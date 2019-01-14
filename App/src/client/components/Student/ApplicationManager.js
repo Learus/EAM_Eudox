@@ -7,14 +7,9 @@ import LoginPopup from '../Login';
 import "../../css/Student/ApplicationManager.css"
 import searchimg from "../../images/search.png"
 import deleteimg from "../../images/trash.png"
-import {SimpleDropdown, ComboDropdown} from '../Utilities';
+import {ComboDropdown} from '../Utilities';
 
 import Popup from 'reactjs-popup'
-
-// import Select from 'react-select';
-// import createFilterOptions from 'react-select-fast-filter-options';
-
-// import {TextbookPopup} from './ApplicationPresenter'
 
 export default class ApplicationManager extends Component {
 
@@ -32,7 +27,6 @@ export default class ApplicationManager extends Component {
     }
 
     getCurrentApplication(user) {
-        console.log("klhuhka");
         if (user) {
             axios.post("/api/getCurrentTextbookApplication", {user: user ? user.Username : null})
             .then(res => {
@@ -328,6 +322,7 @@ class Filters extends Component {
         if (this.props.user) {
             axios.post('/api/getUserUniversityData', {user: this.props.user.Username})
             .then(res => {
+                console.log(res.data)
                 this.setState({
                     selecteduni: res.data.data.uid,
                     selectedudp: res.data.data.udpid
@@ -500,7 +495,7 @@ class Filters extends Component {
 
     handleSubmit() {
        
-        if (!this.state.selectedudp) {
+        if (!this.state.selectedudp.value) {
             return;
         }
 
@@ -510,7 +505,7 @@ class Filters extends Component {
 
     render() {
         const disabled = this.state.selectedudp ? false : true;
-        const buttonClassName = this.state.selectedudp ? "SearchButton" : "SearchButton Disabled"
+        const buttonClassName = this.state.selectedudp.value ? "SearchButton" : "SearchButton Disabled"
         return (
             <div className="Filters">
                 <ComboDropdown  label="Πανεπιστήμιο"
@@ -675,44 +670,61 @@ class CourseDropdown extends Component {
 function Textbook(props) {  
     let className = "Textbook";
     let chosen = false;
+    const tb = props.data;
     if (props.isChosen(props.data)) {
         className += " Chosen";
         chosen = true;
     }
 
     return (
-        <div className={className}>
-            <h3>{props.data.t.Name}</h3>
-            <div>
-                <div className="TextbookInfo">
+        // <div className={className}>
+            <div className={"TextbookPopupContent TextbookSearchDisplay SearchDisplay " + className}>
+                <h3>{tb.t.Name}</h3>
+
+                <div className="line"/>
+
+                <div className="AllContent">
+                    <div className="Info Content">  
+                        <h4>Στοιχεία</h4>  
+                        <p>{tb.t.Writer}</p>
+                        <p>{tb.t.Date_Published.split('-')[0]}</p>
+                        <p>ISBN: {tb.t.ISBN}</p>
+                        <p>{tb.p.Name}</p>
+                    </div>
+
+                    <div onClick={() => {
+                        var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                        ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
+                        win.focus();
+                    }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                        <h4>Σημείο Διανομής</h4>
+                        <p>{tb.dp.Name}</p>
+                        <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
+                        <p>{tb.dp.Phone}</p>
+                        <p>{tb.dp.Working_Hours}</p>
+                        <p>{tb.dpht.Copies + " Αντίτυπα"}</p>
+                    </div>
+
+                    <div className="Publisher Content">
+                        <h4>Εκδότης</h4>
+                        <p>{tb.p.Name}</p>
+                        <p>{tb.p.Phone}</p>
+                    </div>
+                        
                     
-                    <p className="Writer">{props.data.t.Writer}</p>
-                    <p>{props.data.t.Date_Published.split('-')[0]}</p>
-                    <p>{"ISBN: " + props.data.t.ISBN}</p>
-                    <p>{props.data.p.Name}</p>
-
-                </div>
-
-                {/* <div className="TextbookInfo">
-                    <p className="Writer">{props.data.dp.Name}</p>
-                    <p>{props.data.a.Street_Name} {props.data.a.Street_Number}, {props.data.a.City} {props.data.a.ZipCode}</p>
-                    <p>{props.data.dp.Phone}</p>
-                    <p>{props.data.dp.Working_Hours}</p>
-
-                </div> */}
+                </div>  
+                {chosen ? 
+                <button className="RemoveButton" onClick={() => { props.remover(props.data)}}>
+                    Διαγραφή
+                </button>
+                :
+                <button className="AddButton" onClick={() => { props.adder(props.data)}}>
+                    Επιλογή
+                </button>}
             </div>
             
             
- 
-            {chosen ? 
-            <button className="RemoveButton" onClick={() => { props.remover(props.data)}}>
-                Διαγραφή
-            </button>
-            :
-            <button className="AddButton" onClick={() => { props.adder(props.data)}}>
-                Επιλογή
-            </button>}
-        </div>
+        // </div>
     );
 }
 

@@ -27,7 +27,6 @@ export default class ActionPage extends Component {
     }
 
     signalLoggedStatus() {
-        console.log("hello")
         this.setState({
             login: !this.state.login
         })

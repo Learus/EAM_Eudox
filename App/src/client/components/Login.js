@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import Popup from "reactjs-popup";
-import {Link, browserHistory} from 'react-router';
+import {Link} from 'react-router';
 import axios from "axios"
 import '../css/Login.css'
-import Actions from './Actions';
 import autobind from 'react-autobind';
 
 export default function LoginPopup(props) {
@@ -24,7 +23,7 @@ export default function LoginPopup(props) {
         )
 }
 
-export class LoginForm extends React.Component {
+export class LoginForm extends Component {
     
     constructor(props) {
         super(props);

@@ -113,16 +113,18 @@
 
     background-color: rgb(241, 241, 241);
 
-    color: black;
+    color: rgb(61, 61, 61);
     
-
-    height: 180px;
     width: calc(100% - 33px);
 
-    margin: 0 auto;
+    margin: 2px auto;
 
     transition: 200ms;
     box-shadow: 1px 1px 5px black;
+}
+
+.Textbook.Chosen > .line {
+    background-color: white !important;
 }
 
 .TextbookInfo > p, .Textbook > h3 {
@@ -136,25 +138,44 @@
 }
 
 .Textbook > h3 {
-    font-size: 25px;
-    line-height: 20px;
-    margin-bottom: 10px;
-    margin-top: 25px;
-}
-
-.TextbookInfo > p {
-    font-size: 12px;
-}
-
-.TextbookInfo > .Writer {
-    font-size: 16px;
+    font-size: 22px;
     line-height: 10px;
+    padding: 20px !important;
+    margin: 0 !important;
+
 }
 
 .Textbook.Chosen {
-    background-color: cornflowerblue;
     border: 1px solid cornflowerblue;
     color: white;
+}
+
+.Textbook.Chosen > h3 {
+    background-color: cornflowerblue !important;
+    color: white !important;
+}
+
+.Textbook > .AllContent {
+    color: rgb(36, 36, 36);
+}
+
+.Textbook.Chosen > .AllContent > .Info.Content {
+    background-color: cornflowerblue !important;
+    color: white !important;
+}
+
+.Textbook.Chosen > .AllContent > .Distributor.Content {
+    background-color: rgb(71, 106, 170) !important;
+    color: white !important;
+}
+
+.Textbook.Chosen > .AllContent > .Distributor.Content:hover {
+    background-color: rgb(51, 76, 122) !important;
+}
+
+.Textbook.Chosen > .AllContent > .Publisher.Content {
+    background-color: cornflowerblue !important;
+    color: white !important;
 }
 
 .Textbook > button {

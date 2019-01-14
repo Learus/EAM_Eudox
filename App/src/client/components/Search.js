@@ -4,10 +4,8 @@ import axios from 'axios';
 import "../css/Search.css";
 
 import {browserHistory} from 'react-router'
-// import loadinggif from "../images/Loading_icon.gif"
 
-import {SimpleDropdown, ComboDropdown, UltraComboDropdown} from './Utilities';
-import FormTextInput from './Utilities'
+import {ComboDropdown, UltraComboDropdown} from './Utilities';
 import Header from './Header'
 import ReactLoading from 'react-loading';
 
