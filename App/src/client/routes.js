@@ -12,6 +12,7 @@ import Profile from './components/Profile';
 import Search from './components/Search'
 import NotFound from './components/NotFound';
 import Print from './components/Print';
+import AnnouncementPage from './components/AnnouncementPage'
 
 /**
  * All routes go here.
@@ -26,6 +27,7 @@ export default (
     <Route path="/profile" component={Profile}/>
     <Route path="/search/:active(/:id)" component={Search}/>
     <Route path="/print" component={Print}/>
+    <Route path="/announcements" component={AnnouncementPage}/>
     <Route path="*" exact={true} component={NotFound}/>
   </Route>
 );

@@ -22,9 +22,9 @@
 }
 
 .AnnouncementTable > h2 {
-    position: fixed;
+    position: sticky;
 
-    width: inherit;
+    width: 100%;
     text-align: center;
 
     border-radius: 3px;
@@ -39,7 +39,7 @@
 
 .AnnouncementTable > .Announcements {
     max-height: 610px;
-    margin-top: 60px;
+    /* margin-top: 60px; */
     overflow-y: auto;
 }
 

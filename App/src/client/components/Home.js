@@ -103,7 +103,7 @@ class Banner extends Component {
     }
 }
 
-class AnnouncementTable extends Component {
+export class AnnouncementTable extends Component {
     constructor(props) {
         super(props);
     }
