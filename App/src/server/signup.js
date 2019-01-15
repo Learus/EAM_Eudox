@@ -68,7 +68,7 @@ function insertStudent(base, spec, responsecb, response) {
 function insertPublisher(base, spec, responsecb, response) {
     let specinsert = `Insert into Publisher (Name, Phone, Username, Address_Id)\
         Values ( "${spec.name}", "${spec.phone}", "${base.username}",
-            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Address') - 1 )`
+            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sdi1500084' AND TABLE_NAME = 'Address') - 1 )`
 
     sql.query(specinsert, function(err) {
         if (err) {
@@ -101,7 +101,7 @@ function insertSecretary(base, spec, responsecb, response) {
 function insertDistribution_Point(base, spec, responsecb, response) {
     let specinsert = `Insert into Distribution_Point (Name, Phone, Owner, Address_Id)\
         Values ( "${spec.name}", "${spec.phone}", "${base.username}", 
-            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Address') - 1 )`;
+            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sdi1500084' AND TABLE_NAME = 'Address') - 1 )`;
 
     sql.query(specinsert, function(err) {
         if (err) {

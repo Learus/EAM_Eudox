@@ -50,7 +50,7 @@
 
     ~/App/src/server/sql/create_db.sql 
 
-δημιουργείται μία κενή βάση με όνομα 'mydb'.  
+δημιουργείται μία κενή βάση με όνομα 'sdi1500084'.  
 Για να αποφευχθούν λάθη διαφορετικής έκδοσης mysql έχουμε συμπεριλάβει στον φάκελο **~/App/data** το schema της βάσης το οποίο μπορείτε να κάνετε forward engineer σε sql script μέσω του <a href="https://www.mysql.com/products/workbench/">mysql-workbench</a> αντικαθιστώντας το αρχείο δημιουργίας.  
 Στη συνέχεια, συνδεθείτε μέσω terminal στον mysql-server εκτελώντας την εντολή:
 
@@ -58,7 +58,7 @@
 
 όπου account_name το όνομα που έχετε θέσει για όνομα λογαριασμού.  
 Όταν σας ζητηθεί, πληκτρολογήστε τον κωδικό σας και τρέξτε το script δημιουργίας.
-Τώρα έχει δημιουργηθεί η βάση mydb αλλά δεν εμπεριέχει entries. Πάλι μέσα απο το mysql terminal τρέξτε το script
+Τώρα έχει δημιουργηθεί η βάση sdi1500084 αλλά δεν εμπεριέχει entries. Πάλι μέσα απο το mysql terminal τρέξτε το script
 
     ~/App/src/server/sql/insert_tests.sql
 

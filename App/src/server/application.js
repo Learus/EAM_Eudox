@@ -120,7 +120,7 @@ function createTextbookApplication(req, res) {
 
                     const insertSHTAQuery = `Insert into Student_has_Textbook_Application (Student_Username, Textbook_Application_Id)
                     Values ('${req.body.user}', 
-                        (SELECT \`AUTO_INCREMENT\` as a FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Textbook_Application') - 1)`
+                        (SELECT \`AUTO_INCREMENT\` as a FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sdi1500084' AND TABLE_NAME = 'Textbook_Application') - 1)`
                     sql.query(insertSHTAQuery, function (err, rows) {
                         if (err) { console.error("line 124\n", err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
@@ -176,7 +176,7 @@ function insertApplication(textbooks, id, res) {
     }
     else {
         console.log("New Application")
-        const idquery = `(SELECT \`AUTO_INCREMENT\` as a FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Textbook_Application' )`;
+        const idquery = `(SELECT \`AUTO_INCREMENT\` as a FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sdi1500084' AND TABLE_NAME = 'Textbook_Application' )`;
 
         sql.query(idquery, function (err, rows) {
             if (err) { console.error("line 180\n", err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };

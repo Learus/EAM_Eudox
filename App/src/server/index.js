@@ -254,14 +254,14 @@ app.post('/api/updatePublisherDetails', function(req, res) {
                 
                 if(addressIds.length === 0)
                 {
-                    sql.query(  "Insert into mydb.Address (City, ZipCode, Street_Name, Street_Number) \
+                    sql.query(  "Insert into sdi1500084.Address (City, ZipCode, Street_Name, Street_Number) \
                                 Values  (?, ?, ?, ?)",
                                 [req.body.city, req.body.zipcode, req.body.street, req.body.street_number],
                                 function(err) { 
                                     if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
                                     
                                     sql.query(  "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES \
-                                                WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Address'",
+                                                WHERE TABLE_SCHEMA = 'sdi1500084' AND TABLE_NAME = 'Address'",
                                                 function(err, autoIncId) {
                                                     if(err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
                                                     console.log("if", autoIncId[0].AUTO_INCREMENT - 1);
