@@ -1,8 +1,12 @@
+* {
+  font-family: Ubuntu, Arial, Helvetica, sans-serif;
+}
+
 h1 {
   color: green;
 }
 
 body {
-  text-align: center;
-  margin: auto;
+  text-align: left;
+  margin: 0;
 }

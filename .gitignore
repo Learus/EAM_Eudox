@@ -8,3 +8,4 @@ App/yarn.lock
 App/dist
 App/package-lock.json
 App/src/server/sql/create_db.sql
+App/src/server/sql/create_database.sql

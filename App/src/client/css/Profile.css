@@ -1,0 +1,221 @@
+/* @import './PageInfo.css'; */
+
+.Profile {
+    /* margin-left: 400px; */
+    /* margin-right: 400px; */
+    height: 100%;
+}
+
+.Profile > div {
+    width: 300px;
+}
+
+.H1 {
+    font-weight: normal;
+
+    text-align: left;
+
+    margin: 40px 60px;
+
+    color: cornflowerblue;
+}
+
+.Profile > h2 {
+    font-weight: normal;
+
+    text-align: left;
+
+    margin: 40px 60px;
+
+    color: gray;
+}
+
+.Student.H1 {
+    color: cornflowerblue;
+}
+
+.Student.Line {
+    background-color: cornflowerblue;
+}
+
+.StudentPresenter > h3 {
+    text-align: left;
+    color: cornflowerblue;
+}
+
+.Publisher.H1, .PublDist.H1 {
+    color: rgb(47, 175, 103)
+}
+
+.Publisher.Line, .PublDist.Line {
+    background-color: rgb(47, 175, 103)
+}
+
+.PublisherPresenter > h3, .PublDistPresenter > h3 {
+    text-align: left;
+    color: rgb(47, 175, 103)
+}
+
+.Secretary.H1 {
+    color: #FA3A5B;
+}
+
+.Secretary.Line {
+    background-color: #FA3A5B;
+}
+
+.SecretaryPresenter > h3 {
+    text-align: left;
+    color: #FA3A5B;
+}
+
+.Distributor.H1 {
+    color: #FF9933;
+}
+
+.Distributor.Line {
+    background-color: #FF9933;
+}
+
+.DistributorPresenter > h3 {
+    text-align: left;
+    color: #FF9933;
+}
+
+.DataPresenter {
+    margin-bottom: 20px;
+}
+
+.DataPresenter > h3 {
+    font-size: 22px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.DataPresenter > h2{
+    font-size: 22px;
+    text-align: left;
+    color: #818181;
+    font-weight: normal;
+}
+
+.subPresenter > h3 {
+    margin: 10px 25px;
+
+    font-size: 14px;
+}
+
+.subPresenter > h2 {
+    margin: 10px 25px;
+    font-size: 19px;
+}
+
+.line {
+    height: 2px;
+    width: auto;
+
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.ProfileInput {
+    border-radius: 5px;
+    border: none;
+
+    width : 80%;
+
+    /* float: left; */
+
+    padding: 15px;
+
+    background-color: rgb(241, 241, 241);
+    margin: 2px;
+
+    color: #818181;
+}
+
+.ProfileInput.wrong {
+    border: 1px solid rgb(248, 97, 97);
+}
+
+p.Publisher, p.PublDist {
+    color: rgb(35, 129, 76);
+}
+
+p.Student {
+    color: rgb(98, 138, 180);
+}
+
+p.Secretary {
+    color: #FA3A5B;
+}
+
+p.Distributor {
+    color: #FF9933;
+}
+
+.subPresenter.StudentPresenter > h3 {
+    color: rgb(98, 138, 180);
+}
+
+.Profile > div > label > p {
+    margin: 10px 25px;
+
+    font-size: 14px;
+
+    text-align: left;
+}
+
+.Profile > div > button, .PublisherEdit, .StudentEdit {
+    font-size: 15px;
+    padding: 15px;
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 5px;
+    /* margin-top: 15px 2px */
+    margin: 20px 17px;
+    box-shadow: 0px 2px 5px black;
+    transition: 200ms;
+    cursor: pointer;
+    float: left;
+}
+
+/* .PublisherEdit {
+    margin-left: 0px !important;
+} */
+
+
+button.Publisher:hover, button.PublDist:hover {
+    background-color: rgb(35, 128, 75);
+}
+
+button.Publisher, button.PublDist {
+    background-color: rgb(47, 175, 103);
+}
+
+button.Student {
+    background-color: cornflowerblue;
+}
+
+button.Student:hover {
+    background-color: rgb(79, 116, 184);
+}
+
+button.Secretary {
+    background-color: #FA3A5B;
+}
+
+button.Secretary:hover {
+    background-color: rgb(179, 41, 64);
+}
+
+button.Distributor {
+    background-color: #FF9933;
+}
+
+button.Distributor:hover {
+    background-color: rgb(201, 120, 39);
+}

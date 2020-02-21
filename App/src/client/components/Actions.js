@@ -1,8 +1,19 @@
 import Header from "./Header";
 import React from "react";
+
+import StudentApplications from "./Student/ApplicationPresenter";
+import StudentHelp from "./Student/StudentHelp"
 import ApplicationManager from "./Student/ApplicationManager";
-import { StudentApplications } from "./StudentActions";
-import { PublisherPublish } from "./PublisherActions";
+
+import PublisherPublish from "./Publisher/PublisherPublish";
+import PublisherHelp from "./Publisher/PublisherHelp";
+
+import SecretaryHelp from "./Secretary/SecretaryHelp";
+
+import DistributorHelp from "./Distributor/DistributorHelp";
+
+import { NotFoundSmall } from "./NotFound";
+
 
 export default {
     Student: {
@@ -10,14 +21,16 @@ export default {
         Actions: [
             "Δήλωση Συγγραμμάτων",
             "Προβολή Δηλώσεων",
+            "Ανταλλαγή Συγγραμμάτων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0, 1],
+        Quicks: [0, 1, 2],
         Default: 3,
         Components: [
-            () => {return <ApplicationManager/>},
+            (props) => {return <ApplicationManager login={props.login} loginHandler={props.loginHandler}/>},
             () => {return <StudentApplications/>},
-            () => {return <h1>Test2</h1>},
+            () => {return <NotFoundSmall/>},
+            () => {return <StudentHelp/>},
         ],
         Type: "Student"
     },
@@ -26,14 +39,16 @@ export default {
         Actions: [
             "Καταχώριση Μαθημάτων",
             "Αντιστοίχιση Συγραμμάτων",
+            "Προβολή Καταχωρημένων Μαθημάτων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0, 1],
-        Default: 2,
+        Quicks: [0, 1, 3],
+        Default: 3,
         Components: [
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <SecretaryHelp/>},
         ],
         Type: "Secretary"
     },
@@ -46,14 +61,14 @@ export default {
             "Προβολή Αιτήσεων",
             "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0],
+        Quicks: [0, 2, 4],
         Default: 4,
         Components: [
-            (state) => {return <PublisherPublish username = {state.user}/>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
+            (props) => {return <PublisherPublish login={props.login} loginHandler={props.loginHandler}/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <PublisherHelp/>},
         ],
         Type: "Publisher"
     },
@@ -63,16 +78,25 @@ export default {
             "Παράδοση Συγγραμμάτων",
             "Προβολή Συγγραμμάτων",
             "Προβολή Αιτήσεων",
-            "Οδηγίες Βοήθεια"
+            "Οδηγίες - Βοήθεια"
         ],
-        Quicks: [0],
+        Quicks: [0, 1, 3],
         Default: 3,
         Components: [
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
-            () => {return <h1>Test0</h1>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <NotFoundSmall/>},
+            () => {return <DistributorHelp/>},
         ],
         Type: "Distributor"
+    },
+    Search: {
+        Header: "Αναζήτηση",
+        Actions: [
+            "Συγγράμματα",
+            "Εκδότες",
+            "Σημεία Διανομής"
+        ],
+        Default: 0
     }
 }

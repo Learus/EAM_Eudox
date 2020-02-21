@@ -6,19 +6,43 @@ import Actions from './Actions';
 
 import logo from '../images/logo.svg';
 
-import {LoginPopup} from './Login';
+import LoginPopup from './Login';
 import Popup from 'reactjs-popup';
+import autoBind from 'react-autobind';
 
 export default class Header extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {user: JSON.parse(sessionStorage.getItem('EudoxusUser')) };
+        autoBind(this);
     }
 
     loginHandler() {
         this.setState({
             user: JSON.parse(sessionStorage.getItem('EudoxusUser')) 
         });
+        this.signalLoggedStatus();
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
+
+        if (user) {
+            if (nextState.user){
+                if (nextState.user.Username !== user.Username) {
+                    this.setState({user: user})
+                }
+            }
+            else {
+                this.setState({user: user})
+            }
+        }
+        return true;
+    }
+
+    signalLoggedStatus() {
+        if (this.props.signalLoggedStatus) this.props.signalLoggedStatus();
     }
 
     render() {
@@ -30,10 +54,16 @@ export default class Header extends Component {
                         <br/>
                         Εύδοξος
                     </Link>
-                    <AccountSnapshot user={this.state.user} loginHandler={this.loginHandler.bind(this)}/>
+                    <AccountSnapshot user={this.state.user}
+                                     loginHandler={this.loginHandler}/>
                 </div>
     
                 <div className="header-bottom">
+
+                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/')}>
+                        <Link to="/" style={{textDecoration: 'none', color: 'white'}}>Αρχική</Link>
+                    </button>
+
                     <MenuOption type="Student"/>
     
                     <MenuOption type="Publisher"/>
@@ -41,9 +71,11 @@ export default class Header extends Component {
                     <MenuOption type="Secretary"/>
     
                     <MenuOption type="Distributor"/>
+
+                    <MenuOption type="Search" prefix="/search"/>
     
-                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/about')}>
-                        <Link to="/about" style={{textDecoration: 'none', color: 'white'}}>Σχετικά με εμάς</Link>
+                    <button className="MenuOptionButton" onClick={() => browserHistory.push('/announcements')}>
+                        <Link to="/announcements" style={{textDecoration: 'none', color: 'white'}}>Ανακοινώσεις</Link>
                     </button>
     
                 </div>
@@ -57,6 +89,12 @@ function AccountSnapshot(props) {
 
     if(props.user != null)
     {
+        let type = props.user.Type;
+        if (props.user.Type === "PublDist")
+            type = "Publisher";
+
+        const meta = Actions[`${type}`];
+        
 
         return (
             <Popup 
@@ -72,22 +110,20 @@ function AccountSnapshot(props) {
                         }
                     </Link>
                 )}
+                position="bottom right"
             >
 
                 <div>
-                    <button key="profile" onClick={ () => {browserHistory.push("/actionpage")} }>
+                    <button key="profile" onClick={ () => {browserHistory.push("/profile")} }>
                         Το προφίλ μου
                     </button>
 
-                    <button key="settings" onClick={ () => {browserHistory.push("/actionpage")} }>
-                        Ρυθμίσεις
-                    </button>
-
-                    <button key="help" onClick={ () => {browserHistory.push("/actionpage")} }>
+                    <button key="help" onClick={ () => {browserHistory.push(`/actionpage/${type}/${meta.Actions.length - 1}`)} }>
                         Βοήθεια
                     </button>
 
-                    <button key="logout" onClick={ () => {sessionStorage.removeItem('EudoxusUser'); props.loginHandler();} }>
+                    <button key="logout" onClick={ () => {  sessionStorage.removeItem('EudoxusUser');
+                                                            props.loginHandler();} }>
                         Αποσύνδεση
                     </button>
                 </div>
@@ -116,11 +152,14 @@ function MenuOption(props) {
     const meta = Actions[`${props.type}`];
     let links = meta.Actions;
     links = links.map ( (option, index) => {
+        let path;
+
+        if (props.prefix) path = `${props.prefix}/${index}`
+        else path = `/actionpage/${props.type}/${index}`
+
         return (
-            <button key={option} onClick={ () => {browserHistory.push(`/actionpage/${props.type}/${index}`)} }>
-                {/* <Link to={`/actionpage/${props.type}/${index}`} className="MenuOptionLink"> */}
-                    {option}
-                {/* </Link> */}
+            <button key={option} onClick={ () => {browserHistory.push(path)} }>
+                {option}
             </button>
         )
     });
@@ -129,7 +168,13 @@ function MenuOption(props) {
         <Popup 
             className = "SubMenuPopup"
             trigger = { open => (
-                <button className={open ? "MenuOptionButton Open" : "MenuOptionButton Closed"}>
+                <button onClick={() => {
+                    let path;
+                    if (props.prefix) path = `${props.prefix}/${meta.Default}`
+                    else path = `/actionpage/${props.type}/${meta.Default}`
+                    browserHistory.push(path)
+            }} 
+                className={open ? "MenuOptionButton Open" : "MenuOptionButton Closed"}>
                     {meta.Header}
                 </button>
             )}

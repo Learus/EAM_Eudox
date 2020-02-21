@@ -8,6 +8,9 @@
     border-radius: 5px;
 
     box-shadow: 1px 1px 10px !important;
+
+    padding-bottom: 20px !important;
+    text-align: center !important;
 }
 
 .LoginForm {
@@ -36,7 +39,7 @@
 
     margin: 10px auto;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
 
@@ -74,7 +77,7 @@
 
     color: white;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 20px;
 
     padding: 10px 20px;
@@ -88,13 +91,15 @@
 }
 
 .LoginForm > span {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 15px;
     color: gray;
 }
 
-.Link {
+.LoginForm > span > .Link {
     color: #4b8ee6;
+    font-size: 15px;/*  */
     text-decoration: none;
     cursor: pointer;
+    
 }

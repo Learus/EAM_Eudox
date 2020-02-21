@@ -5,6 +5,7 @@ import Actions from './Actions';
 import {Link, browserHistory} from 'react-router';
 import autoBind from 'react-autobind';
 import axios from 'axios';
+import NotFound, { NotFoundSmall } from './NotFound';
 
 export default class ActionPage extends Component {
 
@@ -15,27 +16,28 @@ export default class ActionPage extends Component {
             user: null,
             type: this.props.params.type,
             meta: Actions[`${this.props.params.type}`],
-            active: this.props.params.active
+            active: this.props.params.active,
+            login: false
         };
-        
-        if (this.props.params.user) {
-            axios.post('/api/getUser', {
-                username: this.props.params.user
-            })
-            .then(res => {
-                if (res.data.error) {
-                    console.error(res.data.message);
-                }
-                else {
-                    this.setState({
-                        user: res.data.data
-                    })
-                }
-            })
-            .catch(err => console.error(err))
-        }
 
+        if (!this.props.params.active) {
+            if (this.state.meta)
+                browserHistory.push(`/actionpage/${this.props.params.type}/${Actions[`${this.props.params.type}`].Default}`)
+            else
+                browserHistory.push(`/`);
+        }
+        else {
+            if (!this.state.meta)
+                browserHistory.push(`/`);
+        }
         autoBind(this);
+    }
+
+    signalLoggedStatus() {
+        this.setState({
+            login: !this.state.login
+        })
+        this.forceUpdate();
     }
 
     shouldComponentUpdate(nextProps) {
@@ -45,6 +47,7 @@ export default class ActionPage extends Component {
                 meta: Actions[`${nextProps.params.type}`],
                 active: nextProps.params.active
             });
+            // return true;
         }
         return true;
     }
@@ -56,28 +59,33 @@ export default class ActionPage extends Component {
     }
 
     render() {
+
         return (
             <div className = 'Container'>
-                <Header user={this.state.user}/>
+                <Header signalLoggedStatus={this.signalLoggedStatus}/>
                 <ActionList meta={this.state.meta} active={this.state.active} activeChanger={this.changeActive}/>
-                <Main meta={this.state.meta} active={this.state.active} state={this.state}/>
+                <Main id={this.props.params.id} loginHandler={this.signalLoggedStatus} meta={this.state.meta} active={this.state.active} login={this.state.login}/>
             </div>
         );
     }
 }
 
 function Main(props) {
-    if (props.meta.Components[props.active])
+    // console.log(props)
+    if (!props.meta) return null;
+    if(props.meta.Components[props.active])
         return (
             <div className="Main">
-                {props.meta.Components[props.active](props.state)}
+                {props.meta.Components[props.active]( {id: props.id, login: props.login, loginHandler: props.loginHandler} )}
             </div>
         )
 
-    return (null);
+
+    return (<NotFoundSmall/>);
 }
 
 function ActionList(props) {
+    if (!props.meta) return null;
 
     const actions = props.meta.Actions.map( (action, index) => {
         return (

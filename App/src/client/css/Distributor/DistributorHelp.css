@@ -1,0 +1,15 @@
+
+.DistributorHelp > ul {
+    font-size: 20px;
+}
+
+.DistributorHelp > ul > li {
+    text-align: left;
+    margin: 40px 60px;
+    color: gray
+}
+
+#Link {
+    cursor: pointer;
+    color: cornflowerblue;
+}

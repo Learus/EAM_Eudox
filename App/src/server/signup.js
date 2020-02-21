@@ -55,7 +55,7 @@ function insertStudent(base, spec, responsecb, response) {
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Student Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Student Application. Please try again.", trace: err})
             return;
         }
 
@@ -68,11 +68,11 @@ function insertStudent(base, spec, responsecb, response) {
 function insertPublisher(base, spec, responsecb, response) {
     let specinsert = `Insert into Publisher (Name, Phone, Username, Address_Id)\
         Values ( "${spec.name}", "${spec.phone}", "${base.username}",
-            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Address') - 1 )`
+            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sdi1500084' AND TABLE_NAME = 'Address') - 1 )`
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Publisher Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Publisher Application. Please try again.", trace: err})
             return;
         }
 
@@ -88,7 +88,7 @@ function insertSecretary(base, spec, responsecb, response) {
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Secretary Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Secretary Application. Please try again.", trace: err})
             return;
         }
 
@@ -101,11 +101,11 @@ function insertSecretary(base, spec, responsecb, response) {
 function insertDistribution_Point(base, spec, responsecb, response) {
     let specinsert = `Insert into Distribution_Point (Name, Phone, Owner, Address_Id)\
         Values ( "${spec.name}", "${spec.phone}", "${base.username}", 
-            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'mydb' AND TABLE_NAME = 'Address') - 1 )`;
+            (SELECT \`AUTO_INCREMENT\` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sdi1500084' AND TABLE_NAME = 'Address') - 1 )`;
 
     sql.query(specinsert, function(err) {
         if (err) {
-            res.send({error: true, message: "Something went wrong with Distribution_Point Application. Please try again.", trace: err})
+            response.send({error: true, message: "Something went wrong with Distribution_Point Application. Please try again.", trace: err})
             return;
         }
 
@@ -120,7 +120,7 @@ function insertAddress(base, spec, insertcb, rescb, res) {
                     Values ("${spec.street}", "${spec.number}", ${spec.zipcode}, "${spec.city}")`;
     
     sql.query(adinsert, function (err) {
-        if (err) throw err;
+        if (err) { console.error(err); res.send({error: true, message: "Something went wrong in database retrieval. Please try again."}); return; };
 
         console.log("Inserted Address.");
 

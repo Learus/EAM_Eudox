@@ -1,0 +1,26 @@
+.PublisherHelp > h1, .PublisherPublish > h1 {
+    color: rgb(47, 175, 103) !important;
+}
+
+.PublisherHelp > .line, .PublisherPublish > .line {
+    background-color: rgb(47, 175, 103) !important;
+
+    height: 2px;
+    width: auto;
+
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.PublisherHelp > ul {
+    font-size: 20px;
+}
+
+
+.PublisherHelp > ul > li {
+    text-align: left;
+    margin: 40px 60px;
+    color: gray
+}

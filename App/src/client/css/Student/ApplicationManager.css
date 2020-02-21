@@ -23,7 +23,7 @@
 
 .ApplicationManager > h1 {
     color: rgb(63, 118, 190);;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-weight: 400;
     text-align: left;
     margin-left: 20px;
@@ -67,7 +67,7 @@
     width: 99.9%;
 
     color: white;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
     /* margin: 5px; */
@@ -95,7 +95,7 @@
 
 .CourseDropdown > .Textbooks {
     /* margin: 15px; */
-    background-color: rgb(194, 207, 233);
+    background-color: rgb(205, 210, 221);
     padding: 20px 0;
     border-radius: 5px;
 }
@@ -106,48 +106,76 @@
 
 .Textbook {
     position: relative;
+    border-radius: 5px;
 
     border: 1px solid rgb(241, 241, 241);
     text-align: left;
 
     background-color: rgb(241, 241, 241);
 
-    color: black;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-
-    height: 180px;
+    color: rgb(61, 61, 61);
+    
     width: calc(100% - 33px);
 
-    margin: 0 auto;
-
+    margin: 2px auto;
 
     transition: 200ms;
     box-shadow: 1px 1px 5px black;
 }
 
-.Textbook > p, .Textbook > h3 {
+.Textbook.Chosen > .line {
+    background-color: white !important;
+}
+
+.TextbookInfo > p, .Textbook > h3 {
     margin-left: 20px;
     font-weight: normal;
 }
 
+.Textbook > div {
+    display: grid;
+    grid-template-columns: 250px 250px;
+}
+
 .Textbook > h3 {
-    font-size: 25px;
-    line-height: 20px;
-}
-
-.Textbook > p {
-    font-size: 12px;
-}
-
-.Textbook > .Writer {
-    font-size: 16px;
+    font-size: 22px;
     line-height: 10px;
+    padding: 20px !important;
+    margin: 0 !important;
+
 }
 
 .Textbook.Chosen {
-    background-color: cornflowerblue;
     border: 1px solid cornflowerblue;
     color: white;
+}
+
+.Textbook.Chosen > h3 {
+    background-color: cornflowerblue !important;
+    color: white !important;
+}
+
+.Textbook > .AllContent {
+    color: rgb(36, 36, 36);
+}
+
+.Textbook.Chosen > .AllContent > .Info.Content {
+    background-color: cornflowerblue !important;
+    color: white !important;
+}
+
+.Textbook.Chosen > .AllContent > .Distributor.Content {
+    background-color: rgb(71, 106, 170) !important;
+    color: white !important;
+}
+
+.Textbook.Chosen > .AllContent > .Distributor.Content:hover {
+    background-color: rgb(51, 76, 122) !important;
+}
+
+.Textbook.Chosen > .AllContent > .Publisher.Content {
+    background-color: cornflowerblue !important;
+    color: white !important;
 }
 
 .Textbook > button {
@@ -158,7 +186,7 @@
     padding: 15px;
 
     color: white;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
     cursor: pointer;
@@ -174,39 +202,49 @@
     background-color: #FA3A5B;
 }
 
+.Textbook > button.RemoveButton:hover {
+    background-color: rgb(207, 47, 74);
+}
+
 .Textbook > button.AddButton {
     background-color: cornflowerblue;
+}
+
+.Textbook > button.AddButton:hover {
+    background-color: rgb(81, 119, 190);
 }
 
 .Filters {
     height: 120px;
     margin-left: 20px;
     display: grid;
-    grid-template-columns: 6fr 6fr 1fr 6fr 1fr;
+    grid-template-columns: 5fr 5fr 2fr 5fr 38px;
     width: 80%;
+    
 }
 
-.Filters > .SearchBar > select{
+/* dropdown control */
+.Filters > .SearchBar > .ComboDropdown > div{
     border-radius: 5px;
     border: none;
-
+    /* padding: 1px; */
     width : 100%;
 
-    float: left;
-
-    padding: 15px;
-
-    background-color: rgb(241, 241, 241)
+    background-color: rgb(241, 241, 241);
+    color: rgb(75, 75, 75);
 }
 
+
+
 .Filters > .SearchBar {
-    margin: 5px;
+    /* margin: 0 20px; */
+    width: 90%;
 }
 
 .Filters > .SearchBar > p {
     margin: 10px auto;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
     color: rgb(63, 118, 190);;
@@ -217,22 +255,30 @@
     border-radius: 5px;
     border: none;
 
-    width : 100%;
+    width : 38px;
 
-    float: left;
+    padding-top: 5px;
 
-    padding: 15px;
-
-    height: 47px;
+    height: 38px;
 
     border: none;
     outline: none;
     background-color: rgb(63, 118, 190);
     cursor: pointer;
+    transition: 200ms;
+}
+
+.SearchButton:hover {
+    background-color: rgb(52, 97, 155);
+}
+
+.SearchButton.Disabled {
+    background-color: rgb(238, 238, 238) !important;
+    cursor: initial;
 }
 
 .SearchImg {
-    width: 100%;
+    width: 20px;
     filter: brightness(200%)
 }
 
@@ -241,11 +287,13 @@
     top: 200px;
     right: 100px;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     display: grid;
     grid-template-columns: 350px;
     text-align: left;
-    max-height: 200px;
+    /* max-height: 200px; */
+
+    box-shadow: 1px 1px 10px;
 }
 
 .Basket > h3 {
@@ -265,33 +313,8 @@
 }
 
 .BasketEntry {
-    margin: 0;
-    position: relative;
-    padding: 10px;
-    
-}
-
-.BasketEntry > div > p {
-    /* padding-left: 10px;  */
-    margin-bottom: 5px;
-    margin-top: 0;
-    color: rgb(105, 105, 105);
-}
-
-.BasketEntry.Even {
-    background-color: rgb(241, 241, 241);
-}
-
-.BasketEntryCourse {
-    font-size: 10px;
-}
-
-.BasketEntryName {
-    font-size: 14px;
-}
-
-.BasketEntry.Odd {
-    background-color: rgb(230, 230, 230);
+    display: grid;
+    grid-template-columns: 5fr 40px;
 }
 
 .BasketRemoveButton {
@@ -300,23 +323,55 @@
     cursor: pointer;
     font-size: 30px;
     border-radius: 3px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
     width: 40px;
     background-color: #FA3A5B;
     color: white;
     transition: 200ms;
 }
 
-.BasketRemoveButton:hover {
+.BasketRemoveButton.Disabled {
+    background-color: gray;
+    cursor: initial;
+}
+
+.BasketRemoveButton:not([disabled]):hover {
     background-color: rgb(211, 48, 75);
 }
 
 .BasketRemoveButton > img {
     width : 30px;
 }
+
+.BasketPopupEntry {
+    margin: 0;
+    position: initial;
+    padding: 20px;
+    text-align: left;
+}
+
+.BasketPopupEntry > p {
+    margin-bottom: 5px;
+    margin-top: 0;
+    color: rgb(83, 83, 83);
+}
+
+.BasketPopupEntry.Even {
+    background-color: rgb(241, 241, 241);
+}
+
+.BasketPopupEntryCourse {
+    font-size: 10px;
+}
+
+.BasketPopupEntryName {
+    font-size: 14px;
+    color: rgb(70, 70, 70);
+}
+
+.BasketPopupEntry.Odd {
+    background-color: rgb(216, 216, 216);
+}
+
 
 .ApplyButton {
     border: none;
@@ -327,7 +382,7 @@
     padding: 15px;
 
     color: white;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 25px;
 
     cursor: pointer;
@@ -340,6 +395,10 @@
     height: 80px;
 
     background-color: rgb(63, 118, 190);
+}
+
+.ApplyButton:hover {
+    background-color: rgb(44, 84, 136);
 }
 
 .ApplyButton.Disabled {

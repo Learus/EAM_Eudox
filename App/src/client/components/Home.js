@@ -6,6 +6,10 @@ import { Link, browserHistory } from "react-router";
 import '../css/Home.css';
 
 import Actions from './Actions';
+import Announcements from './Announcements'
+
+import autobind from 'react-autobind';
+import Popup from 'reactjs-popup'
 
 import stud_logo from '../images/student_logo.png';
 import secr_logo from '../images/secretary_logo.svg';
@@ -13,20 +17,33 @@ import publ_logo from '../images/publisher_logo.png';
 import dist_logo from '../images/distributor_logo.svg';
 
 export default class Home extends Component{
+
+    constructor(props) {
+        super(props);
+
+        autobind(this);
+    }
+
+    signalLoggedStatus() {}
+
     render() {
         return(
-            <div>
-                <Header/>
-                <div className="grid-container">
-                    <Banner 
-                        type='Student'/>
-                    <Banner 
-                        type='Publisher'/>
-                    <Banner 
-                        type='Secretary'/>
-                    <Banner 
-                        type='Distributor'/>
-                </div>
+            <div className="Home">
+                <Header signalLoggedStatus={this.signalLoggedStatus}/>
+                    <main>
+                    <div className="grid-container">
+                        <Banner 
+                            type='Student'/>
+                        <Banner 
+                            type='Publisher'/>
+                        <Banner 
+                            type='Secretary'/>
+                        <Banner 
+                            type='Distributor'/>
+                    </div>
+                    <AnnouncementTable/>
+                </main>
+                
             </div>
         );
     }
@@ -58,13 +75,16 @@ class Banner extends Component {
     render() {
         const meta = Actions[`${this.props.type}`];
         let buttons = meta.Quicks.map(index => {
-            return meta.Actions[index];
+            return {
+                name: meta.Actions[index],
+                index: index
+            }
         })
 
-        buttons = buttons.map( (button, index) => {
+        buttons = buttons.map( (button) => {
             return (
-                <li key={button} onClick={ () => {browserHistory.push(`/actionpage/${this.props.type}/${index}`)} }>
-                    <Link to={`/actionpage/${this.props.type}/${index}`} className="BannerLink">{button}</Link>
+                <li key={button.name} onClick={ () => {browserHistory.push(`/actionpage/${this.props.type}/${button.index}`)} }>
+                    <Link to={`/actionpage/${this.props.type}/${button.index}`} className="BannerLink">{button.name}</Link>
                 </li>
             )
         });
@@ -80,5 +100,53 @@ class Banner extends Component {
             </div>
         )
            
+    }
+}
+
+export class AnnouncementTable extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        console.log(Announcements)
+        const announcements = Announcements.map((a, index) => {
+            const even = index % 2 === 0 ? "Even" : "Odd"
+            if (a.content !== '')
+                return (
+                    <Popup className='AnnouncementPopup' key={index} modal position="left center" trigger=
+                    {
+                        <div className={`Announcement ${even}`} >
+                            <h3>{a.title}</h3>
+                            <p>{a.type}</p>
+                        </div>
+                    }>
+                        <div>
+                            <h3>{a.title}</h3>
+                            <span>{a.type}</span>
+                            <p>{a.content}</p>
+                        </div>
+                          
+                    </Popup>
+                    
+                );
+            else 
+                return (
+                    <div className={`Announcement ${even}`} >
+                        <h3>{a.title}</h3>
+                        <p>{a.type}</p>
+                    </div>
+                );
+        })
+
+        return (
+            <div className="AnnouncementTable">
+                <h2>Ανακοινώσεις</h2>
+                <div className="Announcements">
+                    {announcements}
+                </div>
+                
+            </div>
+        )
     }
 }

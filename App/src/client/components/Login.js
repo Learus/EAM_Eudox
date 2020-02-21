@@ -1,34 +1,34 @@
 import React, {Component} from 'react';
 import Popup from "reactjs-popup";
-import {Link, browserHistory} from 'react-router';
+import {Link} from 'react-router';
 import axios from "axios"
 import '../css/Login.css'
-import Actions from './Actions';
+import autobind from 'react-autobind';
 
-export class LoginPopup extends React.Component {
-    render() {
+export default function LoginPopup(props) {
+    let className = (props.className ? props.className : "Link");
+    let content = (props.content ? props.content : "Σύνδεση")
+    if (props.disabled)
+        return <button className={className} disabled>{content}</button>
+    else
         return (
-            <Popup className='LoginPopup' trigger={<Link className="Link">Σύνδεση</Link>} modal>
-                { close => (
-                    this.props.hasOwnProperty('loginHandler') ?
-                    <LoginForm loginHandler={this.props.loginHandler} Close={close}/>
-                    :
-                    <LoginForm Close={close}/>
-                )}
-            </Popup>
-        );
-    }
+        <Popup className='LoginPopup' trigger={<button className={className}>{content}</button>} modal>
+            { close => (
+                props.hasOwnProperty('loginHandler') ?
+                <LoginForm saveData={props.saveData} signupRedirect={props.signupRedirect} loginHandler={props.loginHandler} Close={close}/>
+                :
+                <LoginForm signupRedirect={props.signupRedirect} Close={close}/>
+            )}
+        </Popup>
+        )
 }
 
-export class LoginForm extends React.Component {
+export class LoginForm extends Component {
     
     constructor(props) {
         super(props);
         this.state = {username: '', password: '', wrong: false};
-            
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        autobind(this);
     }
   
     handleUsernameChange(event) {
@@ -53,16 +53,12 @@ export class LoginForm extends React.Component {
                 })
             }
             else {
-                alert("Login successful, Welcome " + res.data.data.Type);
-                const meta = Actions[`${res.data.data.Type}`];
                 this.props.Close();
                 sessionStorage.setItem('EudoxusUser', JSON.stringify(res.data.data) );
 
                 if (this.props.hasOwnProperty('loginHandler')) {
-                    console.log(this.props);
                     this.props.loginHandler();
                 }
-                // browserHistory.push(`/actionpage/${res.data.data.Username}/${meta.Type}/${meta.Default}`);
             }
         })
         .catch(err => console.log(err));
@@ -72,6 +68,7 @@ export class LoginForm extends React.Component {
     }
   
     render() {
+        const signupPath = this.props.signupRedirect ? `/signup/${this.props.signupRedirect}` : '/signup'
         return (
             <form className='LoginForm' onSubmit={this.handleSubmit}>
 
@@ -102,7 +99,7 @@ export class LoginForm extends React.Component {
 
                 <span>
                     Νέος χρήστης; &nbsp;
-                    <Link to="/signup" className="Link">Γίνε μέλος.</Link>
+                    <Link to={signupPath} onClick={this.props.saveData} className="Link">Γίνε μέλος.</Link>
                 </span>
                 
             </form>

@@ -2,11 +2,14 @@ import React, {Component} from 'react';
 import autoBind from 'react-autobind';
 import axios from 'axios';
 import {browserHistory} from 'react-router';
+import LoginPopup from '../Login';
 
 import "../../css/Student/ApplicationManager.css"
 import searchimg from "../../images/search.png"
 import deleteimg from "../../images/trash.png"
+import {ComboDropdown} from '../Utilities';
 
+import Popup from 'reactjs-popup'
 
 export default class ApplicationManager extends Component {
 
@@ -18,20 +21,78 @@ export default class ApplicationManager extends Component {
             basket: [],
             textbooksBySemester: [],
             searchType: null,
-            user: this.getUser()
+            user: null,
+            oldApplication: null
         }
     }
 
+    getCurrentApplication(user) {
+        if (user) {
+            axios.post("/api/getCurrentTextbookApplication", {user: user ? user.Username : null})
+            .then(res => {
+                if (res.data.error) {
+                    this.setState({
+                        basket: [],
+                        oldApplication: null
+                    })
+                }
+                else {
+                    this.setState({
+                        basket: res.data.data,
+                        user: user,
+                        oldApplication: res.data.data[0].ta.Id
+                    })
+                }
+            })
+        }
+        else {
+            this.setState({
+                user : null,
+                basket: [],
+                oldApplication: null
+            })
+        }
+    }
+
+    componentDidMount() {
+        const user = this.getUser();
+
+        let application = sessionStorage.getItem("PendingTextbookApplication");
+        if (application) {
+            application = JSON.parse(application);
+            this.setState({
+                basket: application
+            })
+        }
+        else {
+            this.getCurrentApplication(user)
+        }
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.login !== this.props.login) {
+            this.getCurrentApplication(this.getUser());
+            return true;
+        }
+
+        return true;
+    }
+
     getUser() {
-        return JSON.parse(sessionStorage.getItem('EudoxusUser'));
+        const user = JSON.parse(sessionStorage.getItem('EudoxusUser'));
+        return user;
+    }
+
+    loginHandler() {
+        this.props.loginHandler();
     }
 
     Search(filters) {
         filters = {
-            university: filters.selecteduni,
-            udp: filters.selectedudp,
-            course: filters.selectedcourse,
-            semester: filters.selectedsemester
+            university: filters.selecteduni.value,
+            udp: filters.selectedudp.value,
+            course: filters.selectedcourse.value,
+            semester: filters.selectedsemester.value
         }
 
         let searchType = null;
@@ -61,10 +122,17 @@ export default class ApplicationManager extends Component {
     }
 
     Add(textbook) {
+
         let newBasket = this.state.basket;
         let replaced = false;
         for (let i = 0; i < newBasket.length; i++) {
             if (textbook.c.Id === newBasket[i].c.Id) {
+                console.log(newBasket[i])
+                if (newBasket[i].taht)
+                    if (newBasket[i].taht.Taken) {
+                        alert("Έχετε παραλάβει σύγγραμμα για αυτό το μάθημα.");
+                        return;
+                    }
                 newBasket[i] = textbook;
                 replaced = true;
                 break;
@@ -83,13 +151,21 @@ export default class ApplicationManager extends Component {
 
     Remove(textbook) {
         let newBasket = [];
+
         for (let i = 0; i < this.state.basket.length; i++) {
             if (textbook.c.Id === this.state.basket[i].c.Id) {
-                continue;
+                if (this.state.basket[i].taht) {
+                    if (this.state.basket[i].taht.Taken) {
+                        alert("Έχετε παραλάβει σύγγραμμα για αυτό το μάθημα. Δεν μπορείτε να το διαγράψετε.");
+                    }
+                    else continue;
+                }
+                else continue;
             }
+
             newBasket.push(this.state.basket[i]);
         }
-
+        console.log(newBasket);
         this.setState({
             basket: newBasket
         })
@@ -142,49 +218,71 @@ export default class ApplicationManager extends Component {
     }
 
     isChosen(textbook) {
-        if (this.state.basket.includes(textbook)) {
-            return true;
+        for (let i = 0; i < this.state.basket.length; i++) {
+            if (textbook.c.Id === this.state.basket[i].c.Id && textbook.t.Id === this.state.basket[i].t.Id) {
+                return true;
+            }
         }
         return false;
     }
 
     Apply() {
-        let path;
-        let body;
-        if (this.props.old) {
-            path = '/api/updateTextbookApplication'
-            body = {
-                old: this.props.old,
-                new: this.state.basket,
-            }
+        const user = this.state.user ? this.state.user : this.getUser();
+        if (user && user.Type !== "Student") {
+            alert("Δεν δικαιούστε να κάνετε δήλωση. Παρακαλώ συνδεθείτε σε έναν φοιτητικό λογαριασμό")
+            return;
         }
-        else {
-            path = '/api/createTextbookApplication'
-            body = {
-                new: this.state.basket
-            }
+
+        const body = {
+            new: this.state.basket,
+            old: this.state.oldApplication,
+            user: user.Username
         }
-        
-        axios.post(path, body)
-        .then(res => {
-            if (res.data.error) {
-                alert(res.message)
-            }
-            else {
-                alert('Η Δήλωσή σας ήταν επιτυχής!');
-                browserHistory.push(`/actionpage/Student/1`)
-            }
-        })
+        console.log(body);
+        if (confirm("Είστε σίγουροι για την δήλωσή σας;"))
+        {
+            axios.post('/api/createTextbookApplication', body)
+            .then(res => {
+                if (res.data.error) {
+                    alert(res.data.message)
+                }
+                else {
+                    alert('Η Δήλωσή σας ήταν επιτυχής!');
+                    sessionStorage.removeItem("PendingTextbookApplication");
+                    browserHistory.push(`/actionpage/Student/1`)
+                }
+            })
+        }
     }
 
+    saveData() {
+        console.log(this.state.basket)
+        sessionStorage.setItem("PendingTextbookApplication", JSON.stringify(this.state.basket))
+    }
+    
     render() {
-        let buttonClassName = this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
+        const user = this.state.user ? this.state.user : this.getUser();
+        
+        const buttonClassName = this.state.basket && this.state.basket.length !== 0 ? "ApplyButton" : "ApplyButton Disabled"
+        const disabled = this.state.basket && this.state.basket.length === 0 ? true : false;
+
+        const buttonContent = user ? 
+            <button className={buttonClassName} onClick={this.Apply} disabled={disabled}>
+                Υποβολή Δήλωσης
+            </button> 
+            : 
+            <LoginPopup signupRedirect={'StudentTextbookApplication'} 
+                        className={buttonClassName} 
+                        loginHandler={ () => {this.loginHandler()} }
+                        content="Υποβολή Δήλωσης"
+                        saveData={this.saveData}
+                        disabled={disabled}/>
 
         return (
             <div className="ApplicationManager">
                 <h1>Δήλωση Συγγραμμάτων</h1>
                 <div className="line"/>
-                <Filters submit={this.Search}/>
+                <Filters user={user} submit={this.Search}/>
                 <TextbookContainer 
                     type={this.state.searchType}
                     textbooks={this.state.textbooksBySemester} 
@@ -192,9 +290,7 @@ export default class ApplicationManager extends Component {
                     remover={this.Remove}
                     isChosen={this.isChosen}/>
                 <Basket data={this.state.basket} Remove={this.Remove}/>
-                <button className={buttonClassName} onClick={this.Apply}>
-                    Υποβολή Δήλωσης
-                </button>
+                {buttonContent}
             </div>
         )
     }
@@ -207,167 +303,184 @@ class Filters extends Component {
 
         this.state = {
             universities: [],
-            selecteduni: null,
+            selecteduni: {value: null,label: null},
 
             udp: [],
-            selectedudp: null,
+            selectedudp: {value: null,label: null},
 
             courses: [],
-            selectedcourse: null,
+            selectedcourse: {value: null,label: null},
 
             semesters: [],
-            selectedsemester: null
+            selectedsemester: {value: null,label: null}
         };
-
-        axios.post('/api/getUniversities')
-        .then(res => {
-            if (res.data.error) {
-                alert(res.message)
-            }
-            else {
-                // console.log(res.data);
-                this.setState ( {
-                    universities: res.data.data,
-                    selecteduni: null,
-                    udp: []
-                });
-            }
-        })
 
         autoBind(this);
     }
 
+    componentDidMount() {
+        if (this.props.user) {
+            axios.post('/api/getUserUniversityData', {user: this.props.user.Username})
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    selecteduni: res.data.data.uid,
+                    selectedudp: res.data.data.udpid
+                })
+            })
+        }
+
+        axios.post('/api/getUniversities')
+        .then(res => {
+            if (res.data.error) {
+                alert(res.data.message)
+            }
+            else {
+                let newState = this.state;
+                newState.universities = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.universities.unshift({value: null,label: null})
+                // newState.selecteduni = {value: null,label: null};
+                newState.udp = [];
+                this.setState(newState);
+            }
+        })
+
+        
+    }
+
     getDepartments(event) {
         this.setState({
-            selecteduni: event.target.value
+            selecteduni: event
         });
 
-        if (event.target.value === '') {
+        if (!event.value) {
             this.setState({
-                selecteduni: null,
+                selecteduni: {value: null,label: null},
 
                 udp: [],
-                selectedudp: null,
+                selectedudp: {value: null,label: null},
 
                 courses: [],
-                selectedcourse: null,
+                selectedcourse: {value: null,label: null},
 
                 semesters: [],
-                selectedsemester: null
+                selectedsemester: {value: null,label: null}
             })
             return;
         };
 
         axios.post('/api/getDepartments', {
-            university: event.target.value
+            university: event.value
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message)
+                alert(res.data.message)
             }
             else {
-                // console.log(res.data);
-                this.setState ({
-                    udp: res.data.data
-                });
+                let newState = this.state;
+                newState.udp = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.udp.unshift({value: "",label: null})
+                this.setState(newState);
             }
         })
     }
 
     getSemesters(event) {
         this.setState({
-            selectedudp: event.target.value
+            selectedudp: event
         });
 
-        if (event.target.value === '') {
+        if (!event.value) {
             this.setState({
-                selectedudp: null,
+                selectedudp: {value: null,label: null},
 
                 courses: [],
-                selectedcourse: null,
+                selectedcourse: {value: null,label: null},
 
                 semesters: [],
-                selectedsemester: null
+                selectedsemester: {value: null,label: null}
             })
             return;
         };
 
         axios.post('/api/getSemesters', {
-            udp: event.target.value
+            udp: event.value
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message);
+                alert(res.data.message);
             }
             else {
-                // console.log("Semesters" , res.data);
-                this.setState({
-                    semesters: res.data.data
-                })
+                let newState = this.state;
+                newState.semesters = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.semesters.unshift({value: "",label: null})
+                this.setState(newState);
             }
         })
     }
 
     getCourses(event) {
+        console.log(event)
         this.setState({
-            selectedudp: event.target.value
+            selectedudp: event
         });
 
-        if (event.target.value === '') {
+        if (!event.value) {
             this.setState({
-                selectedudp: null,
+                selectedudp: {value: null,label: null},
 
                 courses: [],
-                selectedcourse: null,
+                selectedcourse: {value: null,label: null},
 
                 semesters: [],
-                selectedsemester: null
+                selectedsemester: {value: null,label: null}
             })
             return;
         };
 
         axios.post('/api/getCourses', {
-            udp: event.target.value
+            udp: event.value
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message);
+                alert(res.data.message);
             }
             else {
-                // console.log(res.data);
-
-                this.setState({
-                    courses: res.data.data
-                })
+                let newState = this.state;
+                newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.courses.unshift({value: null,label: null})
+                this.setState(newState);
             }
         })
     }
 
     getCoursesBySemester(event) {
         this.setState({
-            selectedsemester: event.target.value
+            selectedsemester: event
         });
 
-        if (event.target.value === '') {
+        if (!event.value) {
             this.setState({
-                selectedsemester: null
+                selectedsemester: {value: null,label: null},
+                selectedcourse: {value: null,label: null}
             })
-            return this.getCourses({target: {value: this.state.selectedudp}});
+            return this.getCourses(this.state.selectedudp);
         }
 
         axios.post('/api/getCourses/Semesters', {
-            udp: this.state.selectedudp,
-            semester: event.target.value
+            udp: this.state.selectedudp.value,
+            semester: event.value
         })
         .then(res => {
             if (res.data.error) {
-                alert(res.message);
+                alert(res.data.message);
             }
             else {
-                // console.log(res.data);
-                this.setState({
-                    courses: res.data.data
-                })
+                let newState = this.state;
+                newState.courses = res.data.data.map(element => {return {value: element.Id, label: element.Name} })
+                newState.courses.unshift({value: null,label: null});
+                newState.selectedcourse = {value: null, label: null}
+                this.setState(newState);
             }
         })
 
@@ -375,68 +488,14 @@ class Filters extends Component {
 
     handleCourse(event) {
         this.setState({
-            selectedcourse: event.target.value
+            selectedcourse: event
         })
     }
 
-    Dropdown(props) {
-
-        let content;
-        if (props.groupBy)
-        {
-            let groups = {};
-            for (let i = 0; i < props.data.length; i++) {
-                const element = props.data[i];
-                
-                if (!groups.hasOwnProperty(element[props.groupBy])) {
-                    groups[`${element[props.groupBy]}`] = [];
-                }
-
-                groups[`${element[props.groupBy]}`].push(element);
-            }
-
-            content = Object.keys(groups).map(key => {
-                const group = groups[key];
-
-                return (
-                    <optgroup key={key} label={key + props.groupLabel}>
-                        {
-                            group.map(element => {
-                                // console.log(element);
-                                return <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                            })
-                        }
-                    </optgroup>
-                )
-            })
-        }
-        else {
-            content = props.data.map(element => {
-
-                return (
-                    <option key = {element.Id} value = {element.Id}>{element.Name}</option>
-                );
-
-            });
-        }
-
-        return (
-            <label className="SearchBar">
-                <p>{props.label}</p>
-                <select 
-                    type = "dropdown"
-                    onChange = {props.onChange}
-                    >
-                    <option value = ''></option>
-                    {content}
-                </select>
-            </label>
-        )
-    }
 
     handleSubmit() {
        
-        if (!this.state.selectedudp) {
+        if (!this.state.selectedudp.value) {
             return;
         }
 
@@ -445,15 +504,37 @@ class Filters extends Component {
 
 
     render() {
+        const disabled = this.state.selectedudp ? false : true;
+        const buttonClassName = this.state.selectedudp.value ? "SearchButton" : "SearchButton Disabled"
         return (
             <div className="Filters">
-                <this.Dropdown label="Πανεπιστήμιο" onChange={this.getDepartments} data={this.state.universities}/>
-                <this.Dropdown label="Τμήμα" onChange={(event) => {this.getCourses(event); this.getSemesters(event); }} data={this.state.udp}/>
-                <this.Dropdown label="Εξάμηνο" onChange={this.getCoursesBySemester} data={this.state.semesters}/>
-                <this.Dropdown label="Μάθημα" groupBy='Semester' groupLabel='ο Εξάμηνο:' onChange={this.handleCourse} data={this.state.courses}/>
+                <ComboDropdown  label="Πανεπιστήμιο"
+                                placeholder=""
+                                options={this.state.universities} 
+                                onChange={this.getDepartments} 
+                                value={this.state.selecteduni}/>
+
+                <ComboDropdown  label="Τμήμα"
+                                placeholder=""
+                                options={this.state.udp} 
+                                onChange={(event) => {this.getCourses(event); this.getSemesters(event);}} 
+                                value={this.state.selectedudp}/>
+
+                <ComboDropdown  label="Εξάμηνο"
+                                placeholder=" "
+                                options={this.state.semesters} 
+                                onChange={this.getCoursesBySemester}
+                                value={this.state.selectedsemester} />
+
+                <ComboDropdown  label="Μάθημα"
+                                placeholder=""
+                                options={this.state.courses} 
+                                onChange={this.handleCourse}
+                                value={this.state.selectedcourse} />
+
                 <label className="SearchBar">
                     <p>&nbsp;</p>
-                    <button onClick={this.handleSubmit} className="SearchButton">
+                    <button onClick={this.handleSubmit} className={buttonClassName} disabled={disabled}>
                         <img src={searchimg} className="SearchImg"/>
                     </button>
                 </label>
@@ -461,8 +542,6 @@ class Filters extends Component {
         )
     }
 }
-
-
 
 class TextbookContainer extends Component {
 
@@ -591,28 +670,122 @@ class CourseDropdown extends Component {
 function Textbook(props) {  
     let className = "Textbook";
     let chosen = false;
+    const tb = props.data;
     if (props.isChosen(props.data)) {
         className += " Chosen";
         chosen = true;
     }
+
     return (
-        <div className={className}>
-            <h3>{props.data.t.Name}</h3>
-            <p className="Writer">{props.data.t.Writer}</p>
-            <p>{props.data.t.Date_Published}</p>
-            <p>{"ISBN: " + props.data.t.ISBN}</p>
-            <p>{props.data.p.Name}</p>
-            {chosen ? 
-            <button className="RemoveButton" onClick={() => { props.remover(props.data)}}>
-                Διαγραφή
-            </button>
-            :
-            <button className="AddButton" onClick={() => { props.adder(props.data)}}>
-                Επιλογή
-            </button>}
-        </div>
+        // <div className={className}>
+            <div className={"TextbookPopupContent TextbookSearchDisplay SearchDisplay " + className}>
+                <h3>{tb.t.Name}</h3>
+
+                <div className="line"/>
+
+                <div className="AllContent">
+                    <div className="Info Content">  
+                        <h4>Στοιχεία</h4>  
+                        <p>{tb.t.Writer}</p>
+                        <p>{tb.t.Date_Published.split('-')[0]}</p>
+                        <p>ISBN: {tb.t.ISBN}</p>
+                        <p>{tb.p.Name}</p>
+                    </div>
+
+                    <div onClick={() => {
+                        var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                        ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
+                        win.focus();
+                    }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                        <h4>Σημείο Διανομής</h4>
+                        <p>{tb.dp.Name}</p>
+                        <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
+                        <p>{tb.dp.Phone}</p>
+                        <p>{tb.dp.Working_Hours}</p>
+                        <p>{tb.dpht.Copies + " Αντίτυπα"}</p>
+                    </div>
+
+                    <div className="Publisher Content">
+                        <h4>Εκδότης</h4>
+                        <p>{tb.p.Name}</p>
+                        <p>{tb.p.Phone}</p>
+                    </div>
+                        
+                    
+                </div>  
+                {chosen ? 
+                <button className="RemoveButton" onClick={() => { props.remover(props.data)}}>
+                    Διαγραφή
+                </button>
+                :
+                <button className="AddButton" onClick={() => { props.adder(props.data)}}>
+                    Επιλογή
+                </button>}
+            </div>
+            
+            
+        // </div>
     );
 }
+
+
+export function TextbookPopup(props) {
+    const tb = props.data;
+    const title = tb.taht && tb.taht.Taken ? "Το σύγγραμμα αυτό έχει ήδη παρθεί ή η προθεσμία έχει λήξει" : null
+
+    const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
+    const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
+    const disabled = tb.taht && tb.taht.Taken;
+
+    return (
+        <Popup 
+            className = "TextbookPopup"
+            trigger = { open => (
+                <div title={title} className={open ? `TextbookPopupButton Open ${props.className}` : `TextbookPopupButton Closed ${props.className}`}>
+                    <p className="BasketPopupEntryName">{tb.t.Name}</p>
+                    <p className="BasketPopupEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
+                </div>
+            )}
+            closeOnDocumentClick
+            on="hover"
+            position="left center"
+            arrow={true}
+        >
+            <div className="TextbookPopupContent">
+                <h3>{tb.t.Name}</h3>
+
+                <div className="line"/> 
+
+                <div className="AllContent">
+                    <div className="Info Content">  
+                        <h4>Στοιχεία</h4>  
+                        <p>{tb.t.Writer}</p>
+                        <p>{tb.t.Date_Published.split('-')[0]}</p>
+                        <p>ISBN: {tb.t.ISBN}</p>
+                        <p>{tb.p.Name}</p>
+                    </div>
+                        
+                    <div onClick={() => {
+                        var win = window.open(`https://www.google.com/maps/search/?api=1&query=
+                        ${tb.a.Street_Name}+${tb.a.Street_Number}%2C+${tb.a.City}+${tb.a.ZipCode}`);
+                        win.focus();
+                    }} className="Distributor Content" title='Ανοίξτε στο Google-Maps'>
+                        <h4>Σημείο Διανομής</h4>
+                        <p>{tb.dp.Name}</p>
+                        <p>{tb.a.Street_Name} {tb.a.Street_Number}, {tb.a.City} {tb.a.ZipCode}</p>
+                        <p>{tb.dp.Phone}</p>
+                        <p>{tb.dp.Working_Hours}</p>
+                        <p>{tb.dpht.Copies + " Αντίτυπα"}</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </Popup>
+    )
+}
+
+
 
 class Basket extends Component {
     constructor(props) {
@@ -620,23 +793,43 @@ class Basket extends Component {
     }
 
     render() {
-        const items = this.props.data.map( (tb, index) => {
-            const even = index % 2 === 0 ? "Even": "Odd"
-            return (
-                <div key={tb.c.Id} className={`BasketEntry ${even}`}>
-                    <div>
-                        <p className="BasketEntryName">{tb.t.Name}</p>
-                        <p className="BasketEntryCourse">{tb.c.Name}</p>
+        let items;
+        if (this.props.data)
+            items = this.props.data.map( (tb, index) => {
+                const even = index % 2 === 0 ? "Even": "Odd"
+
+                const buttonTitle = tb.taht && tb.taht.Taken ? "Δεν μπορείτε να αφαιρέσετε αυτό το σύγγραμμα" : "Αφαίρεση Συγγράμματος";
+                const buttonClass = tb.taht && tb.taht.Taken ? "BasketRemoveButton Disabled" : "BasketRemoveButton"
+                const disabled = tb.taht && tb.taht.Taken;
+
+                return (
+                    <div key={tb.c.Id} className={`BasketEntry ${even}`}>
+                        <TextbookPopup className={`BasketPopupEntry ${even}`} data={tb} onClick={() => {this.props.Remove(tb)}}/>
+                        <button title={buttonTitle} className={buttonClass} onClick={() => {this.props.Remove(tb)}} disabled={disabled}>
+                            <img src={deleteimg}/>
+                        </button>
                     </div>
-                    <button className="BasketRemoveButton" onClick={() => {this.props.Remove(tb)}}>
-                        <img src={deleteimg}/>
-                    </button>
-                </div>
-            )
-        })
+                    
+                )
+
+                return (
+                    <div key={tb.c.Id} className={`BasketEntry ${even}`}>
+                        <div>
+                            <p className="BasketEntryName">{tb.t.Name}</p>
+                            <p className="BasketEntryCourse">{tb.c.Name} - {tb.c.Semester}o Εξάμηνο</p>
+                        </div>
+                        <button title={buttonTitle} className={buttonClass} onClick={() => {this.props.Remove(tb)}} disabled={disabled}>
+                            <img src={deleteimg}/>
+                        </button>
+                    </div>
+                )
+            })
+        else {
+            items = null;
+        }
 
         return (
-            items.length ?
+            items && items.length ?
 
                 <div className="Basket">
                     <h3>Επιλεγμένα Συγγράμματα</h3>

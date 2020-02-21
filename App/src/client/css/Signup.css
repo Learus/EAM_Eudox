@@ -16,7 +16,7 @@
 }
 
 .SignupChoices > button {
-    box-shadow: 1px 1px 10px gray;
+    box-shadow: 1px 1px 10px rgb(75, 75, 75);;
     
     border: none;
     border-radius: 5px;
@@ -25,7 +25,7 @@
 
     color: white;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 20px;
 
     padding: 10px 20px;
@@ -40,12 +40,8 @@
 
 }
 
-.SignupChoices > div {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-}
-
 #SignupLink, #LoginLink {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     cursor: pointer;
     color: cornflowerblue;
 }
@@ -62,17 +58,17 @@
 }
 
 
-.SignupForm > label {
+.SignupForm > label, .SearchBar {
     margin: 0 auto;
     width: 80%;
     height: 100%;
 }
 
-.SignupForm > label > p {
+.SignupForm > label > p, .SignupForm > .SearchBar > p {
 
     margin: 10px auto;
 
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    
     font-size: 18px;
 
 
@@ -80,25 +76,28 @@
     text-align: left;
 }
 
-.SignupForm > label > input.wrong, .SignupForm > label > select.wrong {
+.SignupForm > label > input.wrong, .SignupForm > .SearchBar >.ComboDropdown.wrong > div {
     border: 1px solid rgb(248, 97, 97);
 }
 
-.SignupForm > label > input.right, .SignupForm > label > select.right {
+.SignupForm > label > input.right, .SignupForm > .SearchBar > .ComboDropdown.right > div {
     border: none;
 }
 
-.SignupForm > label > input, .SignupForm > label > select {
+.SignupForm > label > input, .SignupForm > .SearchBar > .ComboDropdown > div {
     border-radius: 5px;
     border: none;
 
     width : 80%;
 
-    float: left;
-
     padding: 15px;
 
     background-color: rgb(241, 241, 241);
+}
+
+.SignupForm > .SearchBar > .ComboDropdown > div {
+    padding: 0;
+    color: rgb(75, 75, 75);;
 }
 
 .radioInputs {
@@ -106,13 +105,19 @@
 }
 
 .SignupForm > label > .radioInputs > div > label {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    color: gray;
+    color: rgb(75, 75, 75);;
 }
 
 
 .SignupForm > span {
-    font-family: Ubuntu, Arial, Helvetica, sans-serif;
-    color: gray;
+    color: rgb(75, 75, 75);;
+}
+
+.Link {
+    border: none;
+    outline: none;
+    color: cornflowerblue;
+    background: none;
+    font-size: 18px;
 }
 
